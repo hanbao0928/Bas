@@ -16,8 +16,7 @@ public class Converters {
 
     private static JsonConverter mJsonConverter;
 
-    private Converters() {
-    }
+    private Converters() { }
 
     static {
         try {
