@@ -1,0 +1,8 @@
+关于序列化/反序列化工具之间的差异化对比：
+
+以下为默认配置规则：
+1、Jackson&FastJson
+对public的getter/setter方法（即使没有对应的字段）、public的字段有效；
+
+2、Gson
+对任意访问修饰符的字段有效，对方法无效（包括public的getter/setter方法）；

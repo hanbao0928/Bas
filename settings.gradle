@@ -1,0 +1,6 @@
+include ':bas-core-and'
+include ':bas-tangram'
+include ':bas-core-ktx'
+include ':bas-core'
+include ':app'
+rootProject.name = "Basic"
