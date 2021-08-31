@@ -1,11 +1,13 @@
 package com.bas.core.converter.jackson;
 
 import com.bas.core.converter.JsonConverter;
+import com.bas.core.lang.DateUtils;
 import com.bas.core.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,13 +22,6 @@ import java.util.List;
 public class JacksonConverter implements JsonConverter {
 
     private final ObjectMapper objectMapper;
-
-    private static ObjectMapper createDefaultObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        //不存在属性字段时不发生错误
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper;
-    }
 
     public JacksonConverter() {
         this(createDefaultObjectMapper());
@@ -75,5 +70,22 @@ public class JacksonConverter implements JsonConverter {
         } catch (JsonProcessingException e) {
             throw new SerializeException(e);
         }
+    }
+
+    public static ObjectMapper createDefaultObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        //不存在属性字段时不发生错误
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper;
+    }
+
+    /**
+     * 使用UTC时间格式
+     * @param om
+     */
+    public static ObjectMapper applyUTCDateFormat(ObjectMapper om){
+        om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
+        om.setDateFormat(DateUtils.getUTCDateFormat());
+        return om;
     }
 }

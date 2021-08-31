@@ -1,19 +1,36 @@
 package com.bas.core.converter.gson;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+/**
+ * 参考来源：https://github.com/ikidou/TypeBuilder
+ * 用法：
+ * public static <T> Result<List<T>> fromJsonArray(Reader reader, Class<T> clazz) {
+ *     Type type = TypeBuilder
+ *             .newInstance(Result.class)
+ *             .beginSubType(List.class)
+ *             .addTypeParam(clazz)
+ *             .endSubType()
+ *             .build();
+ *     return GSON.fromJson(reader, type);
+ * }
+ *
+ * public static <T> Result<T> fromJsonObject(Reader reader, Class<T> clazz) {
+ *     Type type = TypeBuilder
+ *             .newInstance(Result.class)
+ *             .addTypeParam(clazz)
+ *             .build();
+ *     return GSON.fromJson(reader, type);
+ * }
+ *
+ * 参考资料：https://www.jianshu.com/p/d62c2be60617
+ */
 public class TypeBuilder {
+
     private final TypeBuilder parent;
     private final Class<?> raw;
-    @JsonIgnore(false)
-    @LocalJsonField(serialize = false,deserialize = false)
     private final List<Type> args = new ArrayList<>();
 
 

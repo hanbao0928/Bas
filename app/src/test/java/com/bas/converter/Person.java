@@ -69,8 +69,5 @@ class Person {
     @Override
     public String toString() {
         return "(name:"+this.name + " age:"+this.age +" address:"+this.address + " like:"+this.Like +")";
-
-
-
     }
 }

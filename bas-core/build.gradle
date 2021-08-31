@@ -13,9 +13,20 @@ dependencies {
 
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+    /*
+    https://github.com/google/gson
+    */
     compileOnly "com.google.code.gson:gson:2.8.7"
-    /*实际会引入jackson-core、jackson-annotations依赖*/
+
+    /*实际会引入jackson-core、jackson-annotations依赖
+    * https://github.com/FasterXML/jackson-dataformat-xml
+    * */
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+
+    /*https://github.com/square/retrofit/wiki/Converters
+    https://github.com/ligboy/retrofit-converter-fastjson
+    https://github.com/alibaba/fastjson
+    * */
     compileOnly "com.alibaba:fastjson:1.2.10"
 
     def retrofit_version = "2.6.4"

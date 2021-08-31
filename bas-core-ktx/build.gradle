@@ -13,4 +13,7 @@ dependencies {
 
     api project(path: ':bas-core')
     compileOnly 'com.google.code.gson:gson:2.8.7'
+
+    /*实际会引入jackson-core、jackson-annotations依赖*/
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
 }

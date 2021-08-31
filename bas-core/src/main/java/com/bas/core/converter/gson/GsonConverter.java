@@ -2,12 +2,14 @@ package com.bas.core.converter.gson;
 
 
 import com.bas.core.converter.JsonConverter;
+import com.bas.core.lang.DateUtils;
 import com.bas.core.lang.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -53,8 +55,15 @@ public class GsonConverter implements JsonConverter {
     @Nullable
     @Override
     public <T> List<T> toObjectList(@Nullable String json, Class<T> clazz) {
-        ParameterizedTypeImpl type = new ParameterizedTypeImpl(List.class, new Class<?>[]{clazz}, null);
+//        ParameterizedTypeImpl type = new ParameterizedTypeImpl(List.class, new Class<?>[]{clazz}, null);
+//        return this.mGson.fromJson(json, type);
+        Type type = TypeBuilder
+                .newInstance(List.class)
+                .addTypeParam(clazz)
+                .build();
         return this.mGson.fromJson(json, type);
+
+
         //        /*无法使用下面代码完成反序列化，如果是直接使用而不是封装在方法中是可以的
 //        * 具体参考：https://www.jianshu.com/p/d62c2be60617*/
 ////        if (json.isNullOrEmpty())
@@ -86,6 +95,17 @@ public class GsonConverter implements JsonConverter {
 
     public static GsonBuilder newGsonBuilder() {
         return new GsonBuilder();
+    }
+
+    public static GsonBuilder applyLocalFieldStrategy(GsonBuilder builder) {
+        builder.addDeserializationExclusionStrategy(new LocalJsonFieldDeserializationExclusionStrategy())
+                .addSerializationExclusionStrategy(new LocalJsonFieldSerializationExclusionStrategy());
+        return builder;
+    }
+
+    public static GsonBuilder applyUTCDateFormat(GsonBuilder builder){
+        builder.setDateFormat(DateUtils.UTC_DATE_PATTERN);
+        return builder;
     }
 
     public static GsonBuilder newStrategyGsonBuilder() {
