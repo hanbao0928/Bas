@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
 //    id 'kotlin'
 }
+apply from: "../doc/jitpack/publish.gradle"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7
@@ -9,7 +10,7 @@ java {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'org.jetbrains:annotations:16.0.1'
 
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
