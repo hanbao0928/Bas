@@ -65,17 +65,18 @@ val Date.week: String
 val Date.toUtc: String
     get() = DateUtils.toUTC(this)
 
-/**
- * 获取UTC时间
- * @return
- */
-inline fun UTCDate(): Date {
-    return DateUtils.createUTCDate()
-}
-
-/**
- * 时间转换成本地时间
- */
-inline fun Date.toLocalDate(): Date {
-    return DateUtils.utcDateToLocalDate(this)
-}
+///**
+// * 获取UTC时间
+// * @return
+// */
+//inline fun UTCDate(): Date {
+//    return DateUtils.createUTCDate()
+//}
+//
+///**
+// * 时间转换成本地时间
+// */
+//@Deprecated(message = "慎用，该方法是在指定时间的基础上，减去相差的时区")
+//inline fun Date.toLocalDate(): Date {
+//    return DateUtils.utcDateToLocalDate(this)
+//}

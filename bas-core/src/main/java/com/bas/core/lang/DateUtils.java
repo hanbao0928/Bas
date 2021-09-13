@@ -82,36 +82,36 @@ public class DateUtils {
         return format(date, WEEK_PATTERN);
     }
 
-    /**
-     * 创建UTC日期
-     *
-     * @return
-     */
-    public static Date createUTCDate() {
-        // 1、取得本地时间：
-        Calendar cal = Calendar.getInstance();
-        // 2、取得时间偏移量：
-        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
-        // 3、取得夏令时差：
-        int dstOffset = cal.get(Calendar.DST_OFFSET);
-        // 4、从本地时间里扣除这些差量，即可以取得UTC时间：
-        cal.add(Calendar.MILLISECOND, -(zoneOffset + dstOffset));
-        return cal.getTime();
-    }
-
-    /**
-     * UTC日期转换成本地日期
-     */
-    public static Date utcDateToLocalDate(Date date) {
-        // 1、取得本地时间：
-        Calendar cal = Calendar.getInstance();
-        // 2、取得时间偏移量：
-        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
-        // 3、取得夏令时差：
-        int dstOffset = cal.get(Calendar.DST_OFFSET);
-        cal.setTime(date);
-        cal.add(Calendar.MILLISECOND, zoneOffset + dstOffset);
-        return cal.getTime();
-    }
+//    /**
+//     * 创建UTC日期
+//     *
+//     * @return
+//     */
+//    public static Date createUTCDate() {
+//        // 1、取得本地时间：
+//        Calendar cal = Calendar.getInstance();
+//        // 2、取得时间偏移量：
+//        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
+//        // 3、取得夏令时差：
+//        int dstOffset = cal.get(Calendar.DST_OFFSET);
+//        // 4、从本地时间里扣除这些差量，即可以取得UTC时间：
+//        cal.add(Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+//        return cal.getTime();
+//    }
+//
+//    /**
+//     * UTC日期转换成本地日期
+//     */
+//    public static Date utcDateToLocalDate(Date date) {
+//        // 1、取得本地时间：
+//        Calendar cal = Calendar.getInstance();
+//        // 2、取得时间偏移量：
+//        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
+//        // 3、取得夏令时差：
+//        int dstOffset = cal.get(Calendar.DST_OFFSET);
+//        cal.setTime(date);
+//        cal.add(Calendar.MILLISECOND, zoneOffset + dstOffset);
+//        return cal.getTime();
+//    }
 
 }

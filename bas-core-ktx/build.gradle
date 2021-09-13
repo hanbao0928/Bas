@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'kotlin'
 }
-apply from: "../doc/jitpack/publish.gradle"
+apply from: "../bas-doc/jitpack/publish.gradle"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7

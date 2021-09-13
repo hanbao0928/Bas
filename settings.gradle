@@ -1,3 +1,4 @@
+include ':bas-player'
 include ':bas-core-and'
 include ':bas-tangram'
 include ':bas-core-ktx'
