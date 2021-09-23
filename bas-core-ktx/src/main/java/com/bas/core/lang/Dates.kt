@@ -49,20 +49,20 @@ val UTC_DATE_FORMAT by lazy {
 /**
  * 格式化时间
  */
-fun Date?.format(pattern: String): String {
+inline fun Date?.format(pattern: String): String {
     return DateUtils.format(this, pattern)
 }
 
 /**
  * 获取星期几
  */
-val Date.week: String
+inline val Date.week: String
     get() =DateUtils.getWeek(this)
 
 /**
  * utc时间格式字符串
  */
-val Date.toUtc: String
+inline val Date.toUtc: String
     get() = DateUtils.toUTC(this)
 
 ///**

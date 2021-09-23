@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("SystemServices")
+@file:JvmName("SysServices")
 package com.bas.core.android.util
 
 import android.app.ActivityManager

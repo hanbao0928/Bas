@@ -1,3 +1,8 @@
+/**
+ * Created by Lucio on 2020-03-07.
+ * 跟设备相关的工具函数
+ */
+
 @file:JvmName("Devices")
 @file:JvmMultifileClass
 
@@ -17,14 +22,7 @@ import android.os.ResultReceiver
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.IntDef
 import androidx.annotation.RequiresPermission
-
-/**
- * Created by Lucio on 2020-03-07.
- * 跟设备相关的工具函数
- */
-
 
 /**
  * 手机信号是否打开

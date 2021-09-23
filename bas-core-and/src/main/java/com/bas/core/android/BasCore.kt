@@ -1,3 +1,4 @@
+@file:JvmName("BasCore")
 package com.bas.core.android
 
 import android.app.Application

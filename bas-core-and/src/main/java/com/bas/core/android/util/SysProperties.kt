@@ -1,6 +1,7 @@
 /**
  * Created by Lucio on 2021/9/16.
  */
+@file:JvmName("SysProperties")
 
 package com.bas.core.android.util
 
