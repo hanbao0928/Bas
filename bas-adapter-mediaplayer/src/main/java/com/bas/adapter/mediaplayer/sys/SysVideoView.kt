@@ -55,7 +55,7 @@ class SysVideoView @JvmOverloads constructor(
         }
     }
 
-    private val internalErrorListener = SysMediaPlayer.OnErrorListener { mediaPlayer, what, extra ->
+    private val internalErrorListener = SysMediaPlayer.OnErrorListener { _, what, extra ->
         log("OnErrorListener(what=$what extra=$extra)")
         cancelLoadingAssist()
         listeners.forEach {
@@ -64,7 +64,7 @@ class SysVideoView @JvmOverloads constructor(
         true
     }
 
-    private val internalInfoListener = SysMediaPlayer.OnInfoListener { mp, what, extra ->
+    private val internalInfoListener = SysMediaPlayer.OnInfoListener { _, what, extra ->
         log("OnInfoListener(what=$what extra=$extra)")
         when (what) {
             SysMediaPlayer.MEDIA_INFO_BUFFERING_START -> {
