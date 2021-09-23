@@ -1,4 +1,4 @@
-include ':bas-player'
+include ':bas-adapter-mediaplayer'
 include ':bas-core-and'
 include ':bas-tangram'
 include ':bas-core-ktx'

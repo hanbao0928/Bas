@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ConfigurablePlayerView">
+
+        <attr name="kernel">
+            <enum name="system" value="0" />
+            <enum name="tx" value="1" />
+            <enum name="qn" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <item name="kernel_view_id" type="id"/>
+</resources>
