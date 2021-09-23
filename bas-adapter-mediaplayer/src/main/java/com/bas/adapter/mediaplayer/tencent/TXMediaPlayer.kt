@@ -7,10 +7,7 @@ import android.view.View
 import com.bas.adapter.mediaplayer.BaseMediaPlayerView
 import com.bas.adapter.mediaplayer.MediaPlayer
 import com.bas.core.android.util.Logger
-import com.tencent.rtmp.ITXVodPlayListener
-import com.tencent.rtmp.TXLiveConstants
-import com.tencent.rtmp.TXVodPlayConfig
-import com.tencent.rtmp.TXVodPlayer
+import com.tencent.rtmp.*
 import com.tencent.rtmp.ui.TXCloudVideoView
 import java.util.concurrent.CopyOnWriteArrayList
 

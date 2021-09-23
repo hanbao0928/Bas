@@ -1,4 +1,4 @@
--keep public class com.bas.core.*{
+-keep public class com.bas.core.**{
     public *;
     protected * ;
 }

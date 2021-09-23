@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep public class *{
+-keep public class com.bas.core.**{
     public *;
     protected * ;
 }

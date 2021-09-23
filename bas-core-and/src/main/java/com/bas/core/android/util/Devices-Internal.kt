@@ -1,4 +1,4 @@
-@file:JvmName("AMDevice")
+@file:JvmName("Devices")
 @file:JvmMultifileClass
 
 
