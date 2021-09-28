@@ -19,8 +19,8 @@ object QNPlayer {
 
     private fun DefaultAVOptions(): AVOptions {
         return AVOptions().apply {
-            //默认软解
-            setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_SW_DECODE)
+            //硬解优先，失败后自动切换到软解
+            setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_AUTO)
 //            //快开模式，启用后会加快该播放器实例再次打开相同协议的视频流的速度
 //            setInteger(AVOptions.KEY_FAST_OPEN, 1)
             setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, RETRY_TIMES)

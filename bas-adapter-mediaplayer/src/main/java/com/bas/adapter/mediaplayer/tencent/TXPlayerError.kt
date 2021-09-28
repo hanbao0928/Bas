@@ -20,6 +20,7 @@ class TXPlayerError(val errorCode: Int) :
         @JvmStatic
         private fun getFriendlyMessage(errorCode: Int, isLive: Boolean): String {
             return when (errorCode) {
+                //https://cloud.tencent.com/document/product/454/17246
                 TXLiveConstants.PLAY_ERR_NET_DISCONNECT -> {
                     if (isLive) {
                         if (basCtx.isNetworkConnected()) {
@@ -31,8 +32,18 @@ class TXPlayerError(val errorCode: Int) :
                         "网络异常"
                     }
                 }
+
+                TXLiveConstants.PLAY_ERR_FILE_NOT_FOUND ->{
+                    "播放文件不存在"
+                }
                 TXLiveConstants.PLAY_ERR_HLS_KEY -> {
                     "HLS 解密 key 获取失败"
+                }
+                TXLiveConstants.PLAY_ERR_HEVC_DECODE_FAIL -> {
+                    "H265 解码失败"
+                }
+                TXLiveConstants.PLAY_ERR_GET_PLAYINFO_FAIL->{
+                    "获取点播文件信息失败"
                 }
                 else -> {
                     "未知错误:code=${errorCode}"

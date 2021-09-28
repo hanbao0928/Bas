@@ -20,11 +20,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -50,8 +50,9 @@ dependencies {
 
     api project(path: ':bas-core-and')
     /*七牛播放器*/
-    implementation files('libs/pldroid-player-2.2.0.jar')
+    api files('libs/pldroid-player-2.2.2.jar')
     /*腾讯云播放器：https://cloud.tencent.com/document/product/881/20216 9.1.10566*/
-    implementation 'com.tencent.liteav:LiteAVSDK_Professional:9.1.10566'
+    api 'com.tencent.liteav:LiteAVSDK_Professional:9.1.10566'
+
 
 }

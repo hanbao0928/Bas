@@ -2,35 +2,35 @@ package com.bas.adapter.mediaplayer.qn
 
 import android.content.Context
 import android.util.AttributeSet
-import com.bas.adapter.mediaplayer.BaseMediaPlayerView
+import android.view.View
+import com.bas.adapter.mediaplayer.BaseVideoView
+import com.bas.adapter.mediaplayer.KernelViewFactory
 import com.bas.adapter.mediaplayer.MediaPlayer
+import com.bas.core.android.util.layoutInflater
+import com.bas.player.R
 import com.pili.pldroid.player.*
 import com.pili.pldroid.player.widget.PLVideoView
 import java.util.concurrent.CopyOnWriteArrayList
 
-
 /**
  * Created by Lucio on 2021/9/19.
  */
-class QNVideoView : BaseMediaPlayerView {
+class QNVideoView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : BaseVideoView(
+    context,
+    attrs,
+    defStyleAttr
+) {
 
-    val kernel: PLVideoView
+    val kernelView: PLVideoView
 
     private var defaultAVOptions: AVOptions = QNPlayer.VideoPlayOptions()
 
     private var listeners: CopyOnWriteArrayList<MediaPlayer.PlayerListener> =
         CopyOnWriteArrayList<MediaPlayer.PlayerListener>()
-
-    @JvmOverloads
-    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        kernel = PLVideoView(context)
-        addView(kernel, createDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
-        initKernel()
-    }
 
     private val internalPreparedListener = PLOnPreparedListener {
         listeners.forEach {
@@ -75,22 +75,49 @@ class QNVideoView : BaseMediaPlayerView {
         }
     }
 
-    private fun initKernel() {
-        kernel.setOnPreparedListener(internalPreparedListener)
-        kernel.setOnCompletionListener(internalCompleteListener)
-        kernel.setOnErrorListener(internalErrorListener)
-        kernel.setOnInfoListener(internalInfoListener)
+    init {
+        kernelView =
+            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else PLVideoView(
+                context
+            )
+
+        kernelView.id = R.id.bas_video_view_kernel_id
+
+
+        addView(kernelView, generateDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
+        kernelView.setOnPreparedListener(internalPreparedListener)
+        kernelView.setOnCompletionListener(internalCompleteListener)
+        kernelView.setOnErrorListener(internalErrorListener)
+        kernelView.setOnInfoListener(internalInfoListener)
         setDefaultConfig()
     }
 
+    protected open fun createKernelViewFromXmlForLeanback(): PLVideoView {
+        val view = context.layoutInflater.inflate(
+            R.layout.bas_video_view_kernel_qn,
+            this,
+            false
+        ) as PLVideoView
+        view.isFocusable = false
+        view.isFocusableInTouchMode = false
+        view.visibility = View.VISIBLE
+        return view
+    }
+
+    /**
+     * 请在开始播放之前配置
+     */
     fun setAVOptions(options: AVOptions) {
         defaultAVOptions = options
-        kernel.setAVOptions(options)
+//        if(kernelView.isPlaying){
+//            kernelView.stopPlayback()
+//        }
+        kernelView.setAVOptions(options)
     }
 
     private fun setDefaultConfig() {
         //默认铺满全屏幕
-        kernel.displayAspectRatio = PLVideoView.ASPECT_RATIO_FIT_PARENT
+        kernelView.displayAspectRatio = PLVideoView.ASPECT_RATIO_FIT_PARENT
     }
 
     /**
@@ -99,8 +126,8 @@ class QNVideoView : BaseMediaPlayerView {
     override fun setDataSource(url: String) {
         val options = defaultAVOptions
         options.setInteger(AVOptions.KEY_START_POSITION, 0)
-        kernel.setAVOptions(options)
-        kernel.setVideoPath(url)
+        kernelView.setAVOptions(options)
+        kernelView.setVideoPath(url)
     }
 
     /**
@@ -110,15 +137,15 @@ class QNVideoView : BaseMediaPlayerView {
     override fun setDataSource(url: String, seekTimeMs: Int) {
         val options = defaultAVOptions
         options.setInteger(AVOptions.KEY_START_POSITION, seekTimeMs)
-        kernel.setAVOptions(options)
-        kernel.setVideoPath(url)
+        kernelView.setAVOptions(options)
+        kernelView.setVideoPath(url)
     }
 
     override fun setDataSource(url: String, headers: Map<String, String>) {
         val options = defaultAVOptions
         options.setInteger(AVOptions.KEY_START_POSITION, 0)
-        kernel.setAVOptions(options)
-        kernel.setVideoPath(url, headers)
+        kernelView.setAVOptions(options)
+        kernelView.setVideoPath(url, headers)
     }
 
     /**
@@ -129,15 +156,15 @@ class QNVideoView : BaseMediaPlayerView {
     override fun setDataSource(url: String, headers: Map<String, String>, seekTimeMs: Int) {
         val options = defaultAVOptions
         options.setInteger(AVOptions.KEY_START_POSITION, seekTimeMs)
-        kernel.setAVOptions(options)
-        kernel.setVideoPath(url, headers)
+        kernelView.setAVOptions(options)
+        kernelView.setVideoPath(url, headers)
     }
 
     /**
      * 是否正在播放
      */
     override fun isPlaying(): Boolean {
-        return kernel.isPlaying
+        return kernelView.isPlaying
     }
 
     /**
@@ -145,7 +172,7 @@ class QNVideoView : BaseMediaPlayerView {
      * @param positionMs ms
      */
     override fun seekTo(positionMs: Int) {
-        kernel.seekTo(positionMs.toLong())
+        kernelView.seekTo(positionMs.toLong())
     }
 
     /**
@@ -153,7 +180,7 @@ class QNVideoView : BaseMediaPlayerView {
      * @return ms
      */
     override fun getDuration(): Int {
-        return kernel.duration.toInt()
+        return kernelView.duration.toInt()
     }
 
     /**
@@ -161,36 +188,36 @@ class QNVideoView : BaseMediaPlayerView {
      * @return ms
      */
     override fun getCurrentPosition(): Int {
-        return kernel.currentPosition.toInt()
+        return kernelView.currentPosition.toInt()
     }
 
     /**
      * 开始播放
      */
     override fun start() {
-        kernel.start()
+        kernelView.start()
     }
 
     /**
      * 暂停播放
      */
     override fun pause() {
-        kernel.pause()
+        kernelView.pause()
     }
-
 
     /**
      * 停止播放
      */
     override fun stop() {
-        kernel.stopPlayback()
+        kernelView.pause()
     }
 
     /**
      * 释放播放器
      */
     override fun release() {
-        kernel.stopPlayback()
+        kernelView.stopPlayback()
+        listeners.clear()
     }
 
     /**
@@ -198,7 +225,7 @@ class QNVideoView : BaseMediaPlayerView {
      * @return ms
      */
     override fun getBufferPercentage(): Int {
-        return kernel.bufferPercentage
+        return kernelView.bufferPercentage
     }
 
     override fun addPlayerListener(listener: MediaPlayer.PlayerListener) {
@@ -208,4 +235,5 @@ class QNVideoView : BaseMediaPlayerView {
     override fun removePlayerListener(listener: MediaPlayer.PlayerListener) {
         listeners.remove(listener)
     }
+
 }

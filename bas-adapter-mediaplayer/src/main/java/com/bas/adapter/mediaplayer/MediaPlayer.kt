@@ -16,7 +16,10 @@ interface MediaPlayer {
      */
     fun setDataSource(url: String,seekTimeMs:Int)
 
-
+    /**
+     * 设置播放数据
+     * @param headers 播放设置的headers
+     */
     fun setDataSource(url: String, headers: Map<String, String>)
 
     /**
@@ -65,7 +68,7 @@ interface MediaPlayer {
     fun stop()
 
     /**
-     * 释放播放器
+     * 释放播放器,一般表示该播放器不会再被使用
      */
     fun release()
 
@@ -75,54 +78,15 @@ interface MediaPlayer {
      */
     fun getBufferPercentage(): Int
 
+    /**
+     * 添加播放监听
+     */
     fun addPlayerListener(listener: PlayerListener)
 
+    /**
+     * 移除播放监听
+     */
     fun removePlayerListener(listener: PlayerListener)
-
-//    fun addCompletionListener(listener: OnAMPlayerCompleteListener)
-//    fun removeCompletionListener(listener: OnAMPlayerCompleteListener)
-//
-//    fun addErrorListener(listener: OnAMPlayerErrorListener)
-//    fun removeErrorListener(listener: OnAMPlayerErrorListener)
-//
-//    fun addPreparedListener(listener: OnAMPlayerPreparedListener)
-//    fun removePreparedListener(listener: OnAMPlayerPreparedListener)
-//
-//    fun addInfoListener(listener: OnAMPlayerInfoListener)
-//    fun removeInfoListener(listener: OnAMPlayerInfoListener)
-//
-
-//    /**
-//     * 播放已准备回调
-//     */
-//    fun interface OnAMPlayerPreparedListener {
-//        fun onAMPlayerPrepared(player: MediaPlayer)
-//    }
-//
-//    /**
-//     * 错误结束回调
-//     */
-//    fun interface OnAMPlayerErrorListener {
-//        /**
-//         * @return 如果返回true则表示处理消耗了该异常，后续不会回调[OnAMPlayerCompleteListener],相反返回false则会触发后续回调
-//         */
-//        fun onAMPlayerError(player: MediaPlayer, e: Exception): Boolean
-//    }
-
-//    /**
-//     * 播放结束回调
-//     */
-//    fun interface OnAMPlayerCompleteListener {
-//        fun onAMPlayerComplete(player: MediaPlayer)
-//    }
-//
-//    /**
-//     * 信息回调
-//     */
-//    fun interface OnAMPlayerInfoListener {
-//        fun onAMPlayerInfo(player: MediaPlayer, what: Int, extra: Int)
-//    }
-//
 
     /**
      * 播放器监听回调
@@ -144,28 +108,24 @@ interface MediaPlayer {
          * 停止缓冲
          */
         fun onPlayBufferingEnd() {
-
         }
 
         /**
          *  开始播放
          */
         fun onPlayStart() {
-
         }
 
         /**
          * 播放结束
          */
         fun onPlayEnd() {
-
         }
 
         /**
          * 播放出错
          */
         fun onPlayError(extra: Any?) {
-
         }
     }
 

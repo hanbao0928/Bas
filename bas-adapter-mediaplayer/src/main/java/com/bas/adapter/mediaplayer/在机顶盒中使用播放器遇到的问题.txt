@@ -1,0 +1,29 @@
+1、使用系统播放器，缓冲中回调异常
+    现象：通过setOnInfoListener为VideoView绑定监听后，在某些盒子上视频处于缓冲中，但不回调MEDIA_INFO_BUFFERING_START和MEDIA_INFO_BUFFERING_END（从始至终无相关回调）
+    解决办法：
+        开启辅助措施：记录当前播放器播放位置，然后每隔一秒去读取当前播放器的位置，如果与之前的位置相等，则说明处于缓冲中，相反则说明正在播放。修改当前播放位置记录。
+
+2、使用系统播放器，MEDIA_INFO_VIDEO_RENDERING_START不回调
+    现象：河北的盒子使用VideoView播放视频，视频已经开始播放了，但是并没有回调MEDIA_INFO_VIDEO_RENDERING_START。但是回调了MEDIA_INFO_BUFFERING_START和MEDIA_INFO_BUFFERING_END
+    解决办法：如果该回调影响功能，则考虑看是否用其他状态码的回调。也可以换其他第三方播放器实现。
+
+3、使用系统播放器，频繁出现onError(what=0,extra=0)
+    现象：播放视频的时候，较频繁出现what=0,extra=0的错误，播放地址没有问题
+    解决办法：出现该情况时尝试重新播放一次
+
+4、腾讯云播放器导致设备卡死并花屏
+    SDK版本号：9.1.10566
+    现象：腾讯云播放器在ViewPager2中使用，第一个视频Item播放完成之后，切换到下一个item开始播放，下一个Item Prepare之后设备卡死并花屏。只在部分盒子上出现。
+    原因：提交腾讯客服工单，讨论之后回复说可能是因为不同设备性能不同导致的，异常的可能原因是因为该盒子性能问题
+    解决办法：经多次尝试，在腾讯播放器播放结束之后（正常播放结束或者出现导致无法继续播放的异常时）手动调用TXVodPlayer的stopPlay方法释放内存。
+
+5、VideoView在ViewPager2（RecyclerView）中使用的焦点问题
+    原因：VideoView默认会获取焦点，因此在RV切换到下一项时，创建的VideoView获取焦点，导致焦点异常。
+    解决办法：创建VideoView时，设置其为不可见，即View.Gone,这样子在VideoView请求获取焦点时因为其不可见导致无法获取焦点，等VideoView加载成功之后，再设置其可见。
+
+6、七牛播放器调用暂停引起的异常
+    SDK版本号：2.2.2
+    现象：在2.2.2版本之前，在Activity中使用播放器，一直在onStop（或onPause）生命周期中调用stopPlayBack方法停止播放。在ViewPager2（rv）中，
+    ViewHolder调用stopPlayBack之后复用，会出现设置播放地址之后不回调的问题（相当于跟没设置播放地址一样，sdk内部不会做任何处理）
+    解决办法：如果只是解决当前界面不可见时暂停播放资源，使用pause方法替代stopPlayBack方法。
+

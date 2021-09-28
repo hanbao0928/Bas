@@ -4,10 +4,15 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
+import android.view.View
 import android.widget.VideoView
 import androidx.annotation.RequiresApi
+import com.bas.adapter.mediaplayer.BaseVideoView
+import com.bas.adapter.mediaplayer.KernelViewFactory
 import com.bas.adapter.mediaplayer.MediaPlayer
 import com.bas.core.android.util.Logger
+import com.bas.core.android.util.layoutInflater
+import com.bas.player.R
 import java.util.concurrent.CopyOnWriteArrayList
 import android.media.MediaPlayer as SysMediaPlayer
 
@@ -16,28 +21,14 @@ import android.media.MediaPlayer as SysMediaPlayer
  */
 class SysVideoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : VideoView(context, attrs, defStyleAttr), MediaPlayer {
+) : BaseVideoView(context, attrs, defStyleAttr), MediaPlayer {
+
+    val kernelView: VideoView
 
     private var listeners: CopyOnWriteArrayList<MediaPlayer.PlayerListener> =
         CopyOnWriteArrayList<MediaPlayer.PlayerListener>()
 
     private var loadingAssistPosition: Int = -1
-    private val loadingAssistRunnable = object : Runnable {
-        override fun run() {
-            val duration = currentPosition
-            if (isPlaying && loadingAssistPosition == duration) {
-                listeners.forEach {
-                    it.onPlayBuffering()
-                }
-            } else {
-                listeners.forEach {
-                    it.onPlayBufferingEnd()
-                }
-            }
-            loadingAssistPosition = duration
-            postDelayed(this, 1000)
-        }
-    }
 
     private val internalPreparedListener = SysMediaPlayer.OnPreparedListener {
         log("OnPreparedListener")
@@ -59,7 +50,7 @@ class SysVideoView @JvmOverloads constructor(
         log("OnErrorListener(what=$what extra=$extra)")
         cancelLoadingAssist()
         listeners.forEach {
-            it.onPlayError(SysMediaPlayerError.new(what, extra))
+            it.onPlayError(SysPlayerError.new(what, extra))
         }
         true
     }
@@ -88,10 +79,45 @@ class SysVideoView @JvmOverloads constructor(
     }
 
     init {
-        setOnCompletionListener(internalCompleteListener)
-        setOnErrorListener(internalErrorListener)
-        setOnPreparedListener(internalPreparedListener)
-        setOnInfoListener(internalInfoListener)
+        kernelView =
+            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoView(
+                context
+            )
+        kernelView.id = R.id.bas_video_view_kernel_id
+        addView(kernelView, generateDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
+        kernelView.setOnCompletionListener(internalCompleteListener)
+        kernelView.setOnErrorListener(internalErrorListener)
+        kernelView.setOnPreparedListener(internalPreparedListener)
+        kernelView.setOnInfoListener(internalInfoListener)
+    }
+
+    protected open fun createKernelViewFromXmlForLeanback(): VideoView {
+        val view = context.layoutInflater.inflate(
+            R.layout.bas_video_view_kernel_sys,
+            this,
+            false
+        ) as VideoView
+        view.isFocusable = false
+        view.isFocusableInTouchMode = false
+        view.visibility = View.VISIBLE
+        return view
+    }
+
+    private val loadingAssistRunnable = object : Runnable {
+        override fun run() {
+            val duration = this@SysVideoView.kernelView.currentPosition
+            if (this@SysVideoView.kernelView.isPlaying && loadingAssistPosition == duration) {
+                listeners.forEach {
+                    it.onPlayBuffering()
+                }
+            } else {
+                listeners.forEach {
+                    it.onPlayBufferingEnd()
+                }
+            }
+            loadingAssistPosition = duration
+            postDelayed(this, 1000)
+        }
     }
 
     private fun log(msg: String) {
@@ -118,7 +144,7 @@ class SysVideoView @JvmOverloads constructor(
     }
 
     override fun setDataSource(url: String) {
-        setVideoPath(url)
+        kernelView.setVideoPath(url)
     }
 
     /**
@@ -126,13 +152,13 @@ class SysVideoView @JvmOverloads constructor(
      * @param seekTimeMs 开始播放时间，单位ms
      */
     override fun setDataSource(url: String, seekTimeMs: Int) {
-        setVideoPath(url)
+        kernelView.setVideoPath(url)
         seekTo(seekTimeMs)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setDataSource(url: String, headers: Map<String, String>) {
-        setVideoURI(Uri.parse(url), headers)
+        kernelView.setVideoURI(Uri.parse(url), headers)
     }
 
     /**
@@ -142,22 +168,78 @@ class SysVideoView @JvmOverloads constructor(
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setDataSource(url: String, headers: Map<String, String>, seekTimeMs: Int) {
-        setVideoURI(Uri.parse(url), headers)
+        kernelView.setVideoURI(Uri.parse(url), headers)
         seekTo(seekTimeMs)
+    }
+
+    /**
+     * 是否正在播放
+     */
+    override fun isPlaying(): Boolean {
+        return kernelView.isPlaying
+    }
+
+    /**
+     * 从指定位置开始播放
+     * @param positionMs ms
+     */
+    override fun seekTo(positionMs: Int) {
+        kernelView.seekTo(positionMs)
+    }
+
+    /**
+     * 获取持续时间
+     * @return ms
+     */
+    override fun getDuration(): Int {
+        return kernelView.duration
+    }
+
+    /**
+     * 获取当前播放位置
+     * @return ms
+     */
+    override fun getCurrentPosition(): Int {
+        return kernelView.currentPosition
+    }
+
+    /**
+     * 开始播放
+     */
+    override fun start() {
+        kernelView.start()
+    }
+
+    /**
+     * 暂停播放
+     */
+    override fun pause() {
+        if (kernelView.canPause())
+            kernelView.pause()
     }
 
     /**
      * 停止播放
      */
     override fun stop() {
-        stopPlayback()
+        kernelView.stopPlayback()
     }
 
     /**
      * 释放播放器
      */
     override fun release() {
-        stopPlayback()
+        kernelView.stopPlayback()
+        //清除所有对外的回调
+        listeners.clear()
+    }
+
+    /**
+     * 缓冲百分比
+     * @return ms
+     */
+    override fun getBufferPercentage(): Int {
+        return kernelView.bufferPercentage
     }
 
     override fun addPlayerListener(listener: MediaPlayer.PlayerListener) {

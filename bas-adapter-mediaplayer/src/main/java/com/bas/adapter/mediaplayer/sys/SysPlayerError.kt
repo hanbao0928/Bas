@@ -9,14 +9,14 @@ import com.bas.core.lang.orDefaultIfNullOrEmpty
 /**
  * Created by Lucio on 2021/9/18.
  */
-class SysMediaPlayerError private constructor(val what: Int, val extra: Int) :
+class SysPlayerError private constructor(val what: Int, val extra: Int) :
     MediaPlayerError("what=${what} extra=${extra}") {
 
     companion object {
 
         @JvmStatic
-        fun new(what: Int, extra: Int): SysMediaPlayerError {
-            return SysMediaPlayerError(what, extra)
+        fun new(what: Int, extra: Int): SysPlayerError {
+            return SysPlayerError(what, extra)
         }
     }
 

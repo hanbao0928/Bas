@@ -7,21 +7,24 @@ import android.widget.FrameLayout
 /**
  * Created by Lucio on 2021/9/22.
  */
-abstract class BaseMediaPlayerView @JvmOverloads constructor(
+abstract class BaseVideoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), MediaPlayer {
 
     companion object {
 
+        /**
+         * 生成默认内核视图布局参数
+         */
         @JvmStatic
-        fun createDefaultKernelViewLayoutParams(
+        internal fun generateDefaultKernelViewLayoutParams(
             ctx: Context,
             attrs: AttributeSet? = null,
             defStyleAttr: Int = 0
-        ): FrameLayout.LayoutParams {
-            return FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
+        ): LayoutParams {
+            return LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
             )
         }
     }

@@ -4,10 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
-import com.bas.adapter.mediaplayer.BaseMediaPlayerView
+import androidx.annotation.IntRange
+import com.bas.adapter.mediaplayer.BaseVideoView
 import com.bas.adapter.mediaplayer.MediaPlayer
 import com.bas.core.android.util.Logger
-import com.tencent.rtmp.*
+import com.bas.core.converter.toJson
+import com.bas.core.lang.annotation.Compat
+import com.bas.core.lang.annotation.CompatNote
+import com.bas.player.R
+import com.tencent.rtmp.ITXVodPlayListener
+import com.tencent.rtmp.TXLiveConstants
+import com.tencent.rtmp.TXVodPlayConfig
+import com.tencent.rtmp.TXVodPlayer
 import com.tencent.rtmp.ui.TXCloudVideoView
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -15,39 +23,32 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * Created by Lucio on 2021/9/20.
  */
-class TXMediaPlayer @JvmOverloads constructor(
+@CompatNote(message = "版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏")
+class TXVideoView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseMediaPlayerView(context, attrs, defStyleAttr), MediaPlayer {
+) : BaseVideoView(context, attrs, defStyleAttr), MediaPlayer {
 
-    companion object {
-
-        private fun Long.toFloatTime(): Float {
-            return this / 1000f
-        }
-
-        private fun Int.toFloatTime(): Float {
-            return this / 1000f
-        }
-    }
-
-    val kernelView: TXCloudVideoView
-    val kernel: TXVodPlayer
-
+    private val kernelView: TXCloudVideoView
+    private val kernel: TXVodPlayer
     private var playUrl: String? = null
 
-    private var listeners: CopyOnWriteArrayList<MediaPlayer.PlayerListener> =
+    private val listeners: CopyOnWriteArrayList<MediaPlayer.PlayerListener> =
         CopyOnWriteArrayList<MediaPlayer.PlayerListener>()
 
-    private val internalListener = object : ITXVodPlayListener {
+    private var customVodListener: ITXVodPlayListener? = null
+
+    private val vodListener = object : ITXVodPlayListener {
         override fun onPlayEvent(player: TXVodPlayer, event: Int, param: Bundle?) {
-            Logger.i("TXMediaPlayer", "onPlayEvent(event=$event)")
+            logi("onPlayEvent(event=$event)")
             onKernelEvent(player, event, param)
+            customVodListener?.onPlayEvent(player, event, param)
         }
 
         override fun onNetStatus(player: TXVodPlayer, param: Bundle?) {
-            Logger.i("TXMediaPlayer", "onNetStatus")
+            logi("onNetStatus")
+            customVodListener?.onNetStatus(player, param)
         }
     }
 
@@ -55,15 +56,34 @@ class TXMediaPlayer @JvmOverloads constructor(
         kernelView = TXCloudVideoView(context)
         kernelView.visibility = View.GONE
         kernelView.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION)
-        addView(kernelView, createDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
-        kernel = TXVodPlayer(context)
-        //默认开启硬解码，解码失败会切换成软解
-        kernel.enableHardwareDecode(true)
-        kernel.setPlayerView(kernelView)
-        kernel.setVodListener(internalListener)
+        kernelView.id = R.id.bas_video_view_kernel_id
+        addView(kernelView, generateDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
+        kernel = TXVodPlayer(context).apply {
+            //默认开启硬解码，解码失败会切换成软解
+            enableHardwareDecode(true)
+            setVodListener(vodListener)
+            setPlayerView(kernelView)
+        }
+        logi("init complete")
     }
 
+    private fun logi(msg: String) {
+        Logger.i("TXMediaPlayer", msg)
+    }
+
+    private fun logw(msg: String) {
+        Logger.w("TXMediaPlayer", msg)
+    }
+
+    /**
+     * 播放器事件，参考连接：https://cloud.tencent.com/document/product/454/17246
+     *
+     * note：
+     * 判断直播是否结束：基于各种标准的实现原理不同，很多直播流通常没有结束事件（2006）抛出，此时可预期的表现是：主播结束推流后，SDK 会很快发现数据流拉取失败（WARNING_RECONNECT），然后开始重试，直至三次重试失败后抛出 PLAY_ERR_NET_DISCONNECT 事件。所以2006和 -2301都要判断，用来作为直播结束的判定事件。
+     * 不要在收到 PLAY_LOADING 后隐藏播放画面：因为 PLAY_LOADING 到 PLAY_BEGIN 的时间长短是不确定的，可能是5s也可能是5ms，有些客户考虑在 LOADING 时隐藏画面， BEGIN 时显示画面，会造成严重的画面闪烁（尤其是直播场景下）。推荐的做法是在视频播放画面上叠加一个半透明的加载动画。
+     */
     private fun onKernelEvent(player: TXVodPlayer, event: Int, param: Bundle?) {
+        logi("onEvent event=${event}")
         when (event) {
             TXLiveConstants.PLAY_EVT_VOD_PLAY_PREPARED -> {
                 listeners.forEach {
@@ -111,14 +131,25 @@ class TXMediaPlayer @JvmOverloads constructor(
                 listeners.forEach {
                     it.onPlayEnd()
                 }
+                onPlayCompleteCompat()
             }
             TXLiveConstants.PLAY_ERR_NET_DISCONNECT -> {
+                onPlayCompleteCompat()
                 //网络断连,且经多次重连亦不能恢复,更多重试请自行重启播放
                 listeners.forEach {
                     it.onPlayError(TXPlayerError(event))
                 }
             }
-            TXLiveConstants.PLAY_ERR_HLS_KEY -> {
+            TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL->{
+                //获取加速拉流失败，这是由于您传给liveplayer的加速流地址中没有携带txTime和txSecret签名，或者是签名计算的不对。出现这个错误时，liveplayer会放弃拉取加速流转而拉取 CDN 上的视频流，从而导致延迟很大。
+                //需要注意：只有 RTMP 协议的播放地址才支持低延时加速。
+            }
+            TXLiveConstants.PLAY_ERR_HLS_KEY,
+            TXLiveConstants.PLAY_ERR_FILE_NOT_FOUND,
+            TXLiveConstants.PLAY_ERR_HEVC_DECODE_FAIL,
+            TXLiveConstants.PLAY_ERR_GET_PLAYINFO_FAIL,
+            TXLiveConstants.PLAY_ERR_STREAM_SWITCH_FAIL -> {
+                onPlayCompleteCompat()
                 //HLS 解密 key 获取失败
                 listeners.forEach {
                     it.onPlayError(TXPlayerError(event))
@@ -127,7 +158,17 @@ class TXMediaPlayer @JvmOverloads constructor(
         }
     }
 
-    private fun createDefaultConfig(): TXVodPlayConfig {
+    /**
+     *  版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏
+     *  提交工单跟腾讯客户沟通之后，对方给出的回复：您好，这个日志前面看了，调用流程是没问题的，和后台确认了，结论也是说应该是机器性能不一致引起的。两个机器虽然Ram都是1G，但他们的系统优化层都可能会影响到，sdk不会自动去回收资源，需要您这边手动调用stopPlay去释放资源解决这个问题的
+     */
+    @Compat(message = "版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏")
+    private fun onPlayCompleteCompat() {
+        logi("执行部分盒子卡死花屏的兼容代码")
+        kernel.stopPlay(true)
+    }
+
+    private fun DefaultPlayConfig(): TXVodPlayConfig {
         return TXVodPlayConfig()
     }
 
@@ -135,8 +176,7 @@ class TXMediaPlayer @JvmOverloads constructor(
      * 设置播放数据
      */
     override fun setDataSource(url: String) {
-        this.playUrl = url
-        kernel.startPlay(url)
+        setKernelParams(url)
     }
 
     /**
@@ -144,17 +184,11 @@ class TXMediaPlayer @JvmOverloads constructor(
      * @param seekTimeMs 开始播放时间，单位ms
      */
     override fun setDataSource(url: String, seekTimeMs: Int) {
-        setStartTime(kernel, seekTimeMs)
-        this.playUrl = url
-        kernel.startPlay(url)
+        setKernelParams(url, seekTimeMs)
     }
 
     override fun setDataSource(url: String, headers: Map<String, String>) {
-        val config = createDefaultConfig()
-        config.setHeaders(headers)
-        kernel.setConfig(config)
-        this.playUrl = url
-        kernel.startPlay(url)
+        setKernelParams(url, headers = headers)
     }
 
     /**
@@ -163,17 +197,27 @@ class TXMediaPlayer @JvmOverloads constructor(
      * @param seekTimeMs 开始播放时间，单位ms
      */
     override fun setDataSource(url: String, headers: Map<String, String>, seekTimeMs: Int) {
-        val config = createDefaultConfig()
-        config.setHeaders(headers)
-        setStartTime(kernel, seekTimeMs)
-        kernel.setConfig(config)
-        this.playUrl = url
-        kernel.startPlay(url)
+        setKernelParams(url, seekTimeMs, headers)
     }
 
-    private fun setStartTime(player: TXVodPlayer, startTime: Int) {
-        if (startTime > 3000)
-            player.setStartTime(startTime.toFloatTime())
+    private fun setKernelParams(
+        url: String,
+        startTime: Int = 0,
+        headers: Map<String, String>? = null,
+        autoPlay: Boolean = false
+    ) {
+        this.playUrl = url
+        kernel.also {
+            val config = DefaultPlayConfig()
+            if (headers != null) {
+                config.setHeaders(headers)
+            }
+            it.setConfig(config)
+            it.setStartTime(startTime.toFloat())
+            it.setAutoPlay(autoPlay)
+            it.startPlay(url)
+        }
+        logi("setKernelParams \nurl=${url} \nstartTime=$startTime \nheaders=${headers.toJson()} \nautoPlay=$autoPlay")
     }
 
     /**
@@ -233,7 +277,11 @@ class TXMediaPlayer @JvmOverloads constructor(
      * 停止播放
      */
     override fun stop() {
-        kernel.stopPlay(true)
+        stop(true)
+    }
+
+    fun stop(isNeedClearLastImg: Boolean) {
+        kernel.stopPlay(isNeedClearLastImg)
     }
 
     /**
@@ -242,14 +290,17 @@ class TXMediaPlayer @JvmOverloads constructor(
     override fun release() {
         kernel.stopPlay(true)
         kernelView.onDestroy()
+        //清除所有对外的回调
+        listeners.clear()
     }
 
     /**
      * 缓冲百分比
      * @return ms
      */
+    @IntRange(from = 0, to = 100)
     override fun getBufferPercentage(): Int {
-        return (kernel.bufferDuration * 100f / kernel.duration).toInt()
+        return (kernel.bufferDuration * 100f / kernel.duration.coerceAtLeast(1f)).toInt()
     }
 
     override fun addPlayerListener(listener: MediaPlayer.PlayerListener) {
@@ -274,5 +325,12 @@ class TXMediaPlayer @JvmOverloads constructor(
             kernel.stopPlay(true)
             kernel.enableHardwareDecode(true)
         }
+    }
+
+    /**
+     * 对外提供设置内核事件监听：避免直接访问kernel设置vodlistener，会导致内部设置的vodlistener失效
+     */
+    fun setVodListener(listener: ITXVodPlayListener?) {
+        customVodListener = listener
     }
 }
