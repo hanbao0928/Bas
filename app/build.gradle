@@ -9,12 +9,16 @@ android {
 
     defaultConfig {
         applicationId "com.bas"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     buildTypes {
@@ -30,10 +34,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+//
+//    buildFeatures {
+//        dataBinding = true
+//        viewBinding = true
+//    }
+
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -44,7 +53,36 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    implementation project(path: ':bas-core-and')
-    implementation project(path: ':bas-adapter-mediaplayer')
+//    implementation 'com.jakewharton.timber:timber:4.7.1'
+    api project(path: ':bas-core-and')
+    api project(path: ':bas-adapter-mediaplayer')
+
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    implementation 'com.tencent.bugly:crashreport:3.3.92'//latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
+
+
+    api 'com.google.android.exoplayer:exoplayer:2.12.1'
+    api 'com.tencent.tbs.tbssdk:sdk:43939'
+
+    compileOnly 'com.aliyun.dpa:oss-android-sdk:2.9.5'
+    //app crash 交互展示
+    implementation 'cat.ereza:customactivityoncrash:2.3.0'
+
+    /*播放器：https://github.com/CarGuo/GSYVideoPlayer*/
+    api 'com.shuyu:GSYVideoPlayer:8.1.0'
+//
+//    /*添加java和你想要的so支持*/
+//    implementation 'com.shuyu:gsyVideoPlayer-java:8.1.0'
+    //是否需要ExoPlayer模式
+    api 'com.shuyu:GSYVideoPlayer-exo2:8.1.0'
+//    //根据你的需求ijk模式的so
+//    implementation 'com.shuyu:gsyVideoPlayer-armv5:8.1.0'
+    api 'com.shuyu:gsyVideoPlayer-armv7a:8.1.0'
+//    implementation 'com.shuyu:gsyVideoPlayer-arm64:8.1.0'
+//    implementation 'com.shuyu:gsyVideoPlayer-x64:8.1.0'
+//    implementation 'com.shuyu:gsyVideoPlayer-x86:8.1.0'
+
 }
