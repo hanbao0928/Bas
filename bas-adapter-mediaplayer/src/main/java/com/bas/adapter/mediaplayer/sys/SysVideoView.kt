@@ -80,7 +80,7 @@ class SysVideoView @JvmOverloads constructor(
 
     init {
         kernelView =
-            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoView(
+            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoViewCompat(
                 context
             )
         kernelView.id = R.id.bas_video_view_kernel_id
@@ -134,13 +134,6 @@ class SysVideoView @JvmOverloads constructor(
 
     fun cancelLoadingAssist() {
         removeCallbacks(loadingAssistRunnable)
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val width = getDefaultSize(0, widthMeasureSpec)
-        val height = getDefaultSize(0, heightMeasureSpec)
-        setMeasuredDimension(width, height)
     }
 
     override fun setDataSource(url: String) {
