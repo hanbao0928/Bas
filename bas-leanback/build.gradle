@@ -35,6 +35,12 @@ android {
 dependencies {
 
     api project(path: ':bas-core-and')
+    implementation 'androidx.leanback:leanback:1.1.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
+    /*使gridlayout在5.0之前支持weight属性
+    * https://developer.android.google.cn/jetpack/androidx/releases/gridlayout*/
+    api "androidx.gridlayout:gridlayout:1.0.0"
+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'

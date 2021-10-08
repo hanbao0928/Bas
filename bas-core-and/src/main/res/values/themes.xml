@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--透明白色-->
+    <color name="bas_theme_opacity_white_view">@color/white_opacity_10</color>
+
+
+</resources>

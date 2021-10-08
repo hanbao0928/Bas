@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--默认圆角半径-->
+    <dimen name="bas_rounded_radius">6dp</dimen>
+
+    <!--shake 动画重复次数-->
+    <integer name="bas_shake_anim_cycles">3</integer>
+    <!--shake 动画持续时间-->
+    <integer name="bas_shake_anim_duration">500</integer>
+
+    <!--占位图颜色-->
+    <color name="bas_image_placeholder_color">@color/white_opacity_15</color>
+    <!--占位图圆角半径-->
+    <dimen name="bas_image_placeholder_radius">@dimen/bas_rounded_radius</dimen>
+</resources>
