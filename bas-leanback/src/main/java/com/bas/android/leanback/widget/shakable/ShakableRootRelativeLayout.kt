@@ -3,10 +3,8 @@ package com.bas.android.leanback.widget.shakable
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import com.bas.android.leanback.Leanback
 import com.bas.core.android.util.shakeX
 import com.bas.core.android.util.shakeY
 
@@ -18,7 +16,19 @@ class ShakableRootRelativeLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
+    private var shakeAnimEnable = Leanback.isLeanbackMode
+
+    /**
+     * 设置启用边界抖动动画
+     */
+    fun setShakeAnimEnable(isEnable: Boolean) {
+        this.shakeAnimEnable = isEnable
+    }
+
     override fun focusSearch(focused: View?, direction: Int): View? {
+        if (!shakeAnimEnable) {
+            return super.focusSearch(focused, direction)
+        }
         val nextFocus = super.focusSearch(focused, direction)
         if (nextFocus == null && focused != null) {
             when (direction) {
@@ -32,5 +42,4 @@ class ShakableRootRelativeLayout @JvmOverloads constructor(
         }
         return nextFocus
     }
-
 }

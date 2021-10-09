@@ -1,15 +1,9 @@
-package com.bas.core.converter
 
 /**
  * Created by Lucio on 2021/7/27.
  */
 
-/**
- * 异常捕获flow
- */
-class TryWorkFlow{
-
-}
+package com.bas.core.lang
 
 
 inline fun <T> T.tryIgnore(action: T.() -> Unit): Throwable? {

@@ -18,7 +18,7 @@ import com.bas.player.R
  *
  * @see MediaPlayer
  * @see R.styleable.ConfigurablePlayerView_kernel 在xml中通过该属性可以配置默认加载的播放器内核，lazy属性表示不加载默认播放器内核
- * @see [ConfigurableVideoView.setKernelVideoView] 根据类型指定播放器内核
+ * @see [ConfigurableVideoView.setKernelVideoView] 根据类型动态指定播放器内核
  */
 class ConfigurableVideoView @JvmOverloads constructor(
     context: Context,
@@ -66,7 +66,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
         if (type == this.kernelType && kernelView != null) {
             Logger.i(
                 TAG,
-                "switch kernel video view fail,the param type value is same with current type."
+                "switch kernel video view fail,the type value is same with current type value."
             )
             return
         }
