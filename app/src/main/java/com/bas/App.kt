@@ -6,6 +6,7 @@ import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash
 import cat.ereza.customactivityoncrash.config.CaocConfig
+import com.bas.core.android.initBasCore
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
@@ -39,6 +40,8 @@ class App : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+
+        initBasCore(this)
 
         val strategy = CrashReport.UserStrategy(this)
         strategy.isUploadProcess = true

@@ -52,8 +52,9 @@
         <attr name="bringToFrontOnFocus"/>
     </declare-styleable>
 
-
     <declare-styleable name="TabLayoutBas">
 
     </declare-styleable>
+
+
 </resources>
