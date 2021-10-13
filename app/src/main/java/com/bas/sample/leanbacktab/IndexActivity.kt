@@ -23,16 +23,19 @@ class IndexActivity : Activity() {
     fun onBtnClick(v: View) {
         when (v.id) {
             R.id.text_tab_btn -> {
-                startActivity(Intent(this,TextTabActivity::class.java))
+                startActivity(Intent(this, TextTabActivity::class.java))
             }
             R.id.text_icon_tab_btn -> {
-                startActivity(Intent(this,TextIconTabActivity::class.java))
+                startActivity(Intent(this, TextIconTabActivity::class.java))
             }
             R.id.custom_tab_btn -> {
-                startActivity(Intent(this,CustomTabActivity::class.java))
+                startActivity(Intent(this, CustomTabActivity::class.java))
             }
             R.id.mixed_tab_btn -> {
-                startActivity(Intent(this,MixedTabActivity::class.java))
+                startActivity(Intent(this, MixedTabActivity::class.java))
+            }
+            R.id.refresh_tab_btn -> {
+                startActivity(Intent(this, DynamicTabActivity::class.java))
             }
         }
     }

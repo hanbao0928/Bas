@@ -34,6 +34,7 @@
         <activity android:name=".sample.leanbacktab.TextIconTabActivity" />
         <activity android:name=".sample.leanbacktab.CustomTabActivity" />
         <activity android:name=".sample.leanbacktab.MixedTabActivity" />
+        <activity android:name=".sample.leanbacktab.DynamicTabActivity" />
     </application>
 
 </manifest>

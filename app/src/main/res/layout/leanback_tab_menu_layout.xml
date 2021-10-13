@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/change_cnt_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="将Tab改为6个"/>
+
+    <Button
+        android:id="@+id/reset_adapter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重新设置ViewPager Adapter"/>
+</LinearLayout>

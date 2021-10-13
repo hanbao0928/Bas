@@ -11,6 +11,9 @@ import com.bas.core.android.util.Logger
  */
 class TabFragment() : Fragment(R.layout.leanback_tab_fragment) {
 
+    init {
+        Logger.d("TabActivity","创建TabFragment${this.hashCode()}")
+    }
     /**
      * Called immediately after [.onCreateView]
      * has returned, but before any saved state has been restored in to the view.

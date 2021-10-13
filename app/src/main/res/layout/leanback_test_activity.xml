@@ -31,5 +31,11 @@
         android:layout_height="wrap_content"
         android:text="Mixed Tab(混合tab)"
         android:onClick="onBtnClick"/>
+    <Button
+        android:id="@+id/refresh_tab_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="动态刷新tab(动态改变tab数据tab)"
+        android:onClick="onBtnClick"/>
 
 </LinearLayout>

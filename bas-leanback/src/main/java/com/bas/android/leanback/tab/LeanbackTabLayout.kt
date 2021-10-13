@@ -1,17 +1,13 @@
 package com.bas.android.leanback.tab
 
 import android.content.Context
-import android.database.DataSetObserver
 import android.util.AttributeSet
 import android.view.FocusFinder
 import android.view.View
 import android.widget.LinearLayout
-import androidx.viewpager.widget.PagerAdapter
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnAdapterChangeListener
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.tabs.TabLayout
-import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -24,14 +20,22 @@ import java.util.*
 class LeanbackTabLayout : TabLayout {
 
     private var focusOutEnabled: Boolean = true
+    private var focusMemoryEnabled:Boolean = true
 
     private var viewPager: ViewPager? = null
-    private var currentVpSelectedListener: ViewPagerOnTabSelectedListener? = null
-    private var pageChangeListener: TabLayoutOnPageChangeListener? = null
-    private var adapterChangeListener: AdapterChangeListener? = null
-    private val adapterDataSetObserver = AdapterDataSetObserver(this)
 
-    private val tabStrip get() = getChildAt(0) as? LinearLayout
+    /**
+     * 是否支持在TV上运行
+     * 默认支持在TV上运行，原因如下：
+     * 1、在某些电视上运行通过[com.bas.core.android.util.isTVUIMode]读取到的值为false
+     * 2、支持TV运行也不影响在手机上的运行
+     */
+    private var isLeanbackMode: Boolean = true
+
+    /**
+     * 与ViewPager联动
+     */
+    private var mediator: LeanbackTabLayoutMediator? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -41,6 +45,18 @@ class LeanbackTabLayout : TabLayout {
         defStyleAttr
     )
 
+    /**
+     * 设置是否是电视上的操作模式
+     * 电视上通过Tab的焦点改变切换ViewPager
+     * 手机上通过Tab的点击切换ViewPager
+     */
+    fun setLeanbackMode(isLeanback: Boolean) {
+        this.isLeanbackMode = isLeanback
+    }
+
+    /**
+     * 横向边界（左或右）是否允许焦点移出
+     */
     fun setFocusOutEnabled(enableFocusOut: Boolean) {
         focusOutEnabled = enableFocusOut
     }
@@ -65,6 +81,31 @@ class LeanbackTabLayout : TabLayout {
     }
 
     /**
+     * 是否启用焦点记忆：获取焦点时让之前已选中的tab获取焦点
+     */
+    fun setFocusMemoryEnabled(enableFocusMemory: Boolean){
+        this.focusMemoryEnabled = enableFocusMemory
+    }
+
+    override fun addFocusables(views: ArrayList<View>?, direction: Int, focusableMode: Int) {
+        if(views == null
+            || tabCount <= 0
+            || direction == FOCUS_LEFT
+            || direction == FOCUS_RIGHT
+            || !focusMemoryEnabled
+            || (canTakeFocus() && this.descendantFocusability == FOCUS_BLOCK_DESCENDANTS)){
+            return super.addFocusables(views, direction, focusableMode)
+        }
+
+        val selectedTab = getTabAt(selectedTabPosition)?: getTabAt(0) ?: return super.addFocusables(views, direction, focusableMode)
+        views.add(selectedTab.view)
+    }
+
+    private fun canTakeFocus(): Boolean{
+        return isFocusable && isVisible && isEnabled
+    }
+
+    /**
      * @return Returns true this HorizontalScrollView can be scrolled
      */
     private fun canScroll(): Boolean {
@@ -76,197 +117,109 @@ class LeanbackTabLayout : TabLayout {
         return false
     }
 
-    /**
-     * 初始化ViewPager
-     */
-    fun setupWithLeanbackViewPager(viewPager: LeanbackViewPager?, autoRefresh: Boolean = true) {
-        this.viewPager?.let { preVP ->
-            pageChangeListener?.let {
-                preVP.removeOnPageChangeListener(it)
-            }
-            adapterChangeListener?.let {
-                preVP.removeOnAdapterChangeListener(it)
-            }
+    override fun setupWithViewPager(viewPager: ViewPager?, autoRefresh: Boolean) {
+        if (viewPager == null) {
+            detachViewPager()
+            return
         }
-
-        currentVpSelectedListener?.let {
-            removeOnTabSelectedListener(it)
-        }
-        currentVpSelectedListener = null
-
-        if (viewPager != null) {
-            this.viewPager = viewPager
-            if (pageChangeListener == null) {
-                pageChangeListener = TabLayoutOnPageChangeListener(this)
-            }
-//            pageChangeListener.reset()
-        }
-        this.viewPager?.adapter?.unregisterDataSetObserver(adapterDataSetObserver)
-        this.viewPager = viewPager
-
-        this.viewPager?.adapter?.registerDataSetObserver(adapterDataSetObserver)
+        setupWithViewPager(
+            viewPager,
+            TabConfigurationStrategy.ViewPagerStrategy(viewPager),
+            autoRefresh
+        )
     }
 
-    override fun setupWithViewPager(viewPager: ViewPager?) {
-        super.setupWithViewPager(viewPager)
-        if (this.viewPager != null && this.viewPager!!.adapter != null) {
-            this.viewPager!!.adapter!!.unregisterDataSetObserver(adapterDataSetObserver)
+    /**
+     * 根据ViewPager进行初始化；
+     * 调用此方法之前需要ViewPager已设置adapter
+     */
+    fun setupWithViewPager(
+        viewPager: ViewPager?,
+        tabConfigurationStrategy: TabConfigurationStrategy,
+        autoRefresh: Boolean = true
+    ) {
+        if (viewPager == null) {
+            detachViewPager()
+            return
+        }
+        check(mediator == null) {
+            "TabLayout has setup with viewpager,if you want reattach,please call detachViewPager method first."
         }
         this.viewPager = viewPager
-        if (this.viewPager != null && this.viewPager!!.adapter != null) {
-            this.viewPager!!.adapter!!.registerDataSetObserver(adapterDataSetObserver)
-        }
+        mediator =
+            LeanbackTabLayoutMediator(this, viewPager, tabConfigurationStrategy, autoRefresh).also {
+                it.attach()
+            }
     }
+
+    fun detachViewPager() {
+        this.viewPager = null
+        mediator?.detach()
+        mediator = null
+    }
+
 
     /**
-     * 设置ViewPager适配器
-     */
-    private fun setPagerAdapter(adapter: PagerAdapter?, addObserver: Boolean) {
-
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        updatePageTabs()
-    }
-
-    /**
-     * 更新tab
-     */
-    internal fun updatePageTabs() {
-        val tabStrip = tabStrip ?: return
-        val tabCount = tabStrip.childCount
-        for (i in 0 until tabCount) {
-            val tabView = tabStrip.getChildAt(i)
-            tabView.isFocusable = true
-            tabView.onFocusChangeListener = TabFocusChangeListener(
-                this,
-                viewPager
-            )
-        }
-    }
-
-    /**
-     * A [TabLayout.OnTabSelectedListener] class which contains the necessary calls back to the
-     * provided [ViewPager] so that the tab position is kept in sync.
-     */
-    class ViewPagerOnTabSelectedListener(private val viewPager: ViewPager) : OnTabSelectedListener {
-        override fun onTabSelected(tab: Tab) {
-            viewPager.currentItem = tab.position
-        }
-
-        override fun onTabUnselected(tab: Tab?) {
-            // No-op
-        }
-
-        override fun onTabReselected(tab: Tab?) {
-            // No-op
-        }
-    }
-
-    /**
-     * A [ViewPager.OnPageChangeListener] class which contains the necessary calls back to the
-     * provided [TabLayout] so that the tab position is kept in sync.
+     * Create and return a new [Tab]. You need to manually add this using [.addTab]
+     * or a related method.
      *
-     * This class stores the provided TabLayout weakly, meaning that you can use [ViewPager.addOnPageChangeListener] without removing the listener and not cause a
-     * leak.
+     * @return A new Tab
+     * @see .addTab
      */
-    private class TabLayoutOnPageChangeListener(tabLayout: TabLayout) :
-        OnPageChangeListener {
-        private val tabLayoutRef: WeakReference<TabLayout>
-        private var previousScrollState = 0
-        private var scrollState = 0
-        override fun onPageScrollStateChanged(state: Int) {
-            previousScrollState = scrollState
-            scrollState = state
-        }
-
-        override fun onPageScrolled(
-            position: Int, positionOffset: Float, positionOffsetPixels: Int
-        ) {
-            val tabLayout = tabLayoutRef.get()
-            if (tabLayout != null) {
-                // Only update the text selection if we're not settling, or we are settling after
-                // being dragged
-                val updateText =
-                    scrollState != ViewPager.SCROLL_STATE_SETTLING || previousScrollState == ViewPager.SCROLL_STATE_DRAGGING
-                // Update the indicator if we're not settling after being idle. This is caused
-                // from a setCurrentItem() call and will be handled by an animation from
-                // onPageSelected() instead.
-                val updateIndicator =
-                    !(scrollState == ViewPager.SCROLL_STATE_SETTLING && previousScrollState == ViewPager.SCROLL_STATE_IDLE)
-                tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator)
-            }
-        }
-
-        override fun onPageSelected(position: Int) {
-            val tabLayout = tabLayoutRef.get()
-            if (tabLayout != null && tabLayout.selectedTabPosition != position && position < tabLayout.tabCount) {
-                // Select the tab, only updating the indicator if we're not being dragged/settled
-                // (since onPageScrolled will handle that).
-                val updateIndicator = (scrollState == ViewPager.SCROLL_STATE_IDLE
-                        || (scrollState == ViewPager.SCROLL_STATE_SETTLING
-                        && previousScrollState == ViewPager.SCROLL_STATE_IDLE))
-                tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator)
-            }
-        }
-
-        fun reset() {
-            scrollState = ViewPager.SCROLL_STATE_IDLE
-            previousScrollState = scrollState
-        }
-
-        init {
-            tabLayoutRef = WeakReference(tabLayout)
-        }
+    override fun newTab(): Tab {
+        val tab = super.newTab()
+        setupTabViewLeanbackMode(tab.view)
+        return tab
     }
 
-    private inner class AdapterChangeListener constructor() : OnAdapterChangeListener {
-
-        private var autoRefresh = false
-
-        override fun onAdapterChanged(
-            viewPager: ViewPager,
-            oldAdapter: PagerAdapter?,
-            newAdapter: PagerAdapter?
-        ) {
-
-            if (this@LeanbackTabLayout.viewPager == viewPager) {
-                setPagerAdapter(newAdapter, autoRefresh)
-            }
-        }
-
-        fun setAutoRefresh(autoRefresh: Boolean) {
-            this.autoRefresh = autoRefresh
-        }
+    override fun releaseFromTabPool(tab: Tab?): Boolean {
+        return super.releaseFromTabPool(tab)
     }
 
-    private class AdapterDataSetObserver constructor(val leanbackTabLayout: LeanbackTabLayout) :
-        DataSetObserver() {
-
-        override fun onChanged() {
-            leanbackTabLayout.updatePageTabs()
-        }
-
-        override fun onInvalidated() {
-            leanbackTabLayout.updatePageTabs()
+    private fun setupTabViewLeanbackMode(view: View) {
+        if (isLeanbackMode) {
+            view.let {
+                it.isFocusable = true
+                it.isFocusableInTouchMode = true
+                it.onFocusChangeListener = TabFocusChangeListener(
+                    this,
+                    viewPager
+                )
+            }
+        } else {
+            val listener = view.onFocusChangeListener
+            if (listener != null && listener is TabFocusChangeListener) {
+                view.onFocusChangeListener = null
+            }
         }
     }
 
     private class TabFocusChangeListener constructor(
-        var leanbackTabLayout: LeanbackTabLayout,
-        var viewPager: ViewPager?
-    ) :
-        OnFocusChangeListener {
+        val tabLayout: TabLayout,
+        val viewPager: ViewPager?
+    ) : OnFocusChangeListener {
         override fun onFocusChange(v: View, hasFocus: Boolean) {
-            if (hasFocus) {
-                val tabStrip = leanbackTabLayout.tabStrip ?: return
-                viewPager?.let {
-                    for (i in 0 until tabStrip.childCount) {
-                        if (v == tabStrip.getChildAt(i)) {
-                            it.setCurrentItem(i, true)
-                            return@let
-                        }
+            if (!hasFocus)
+                return
+
+            val tabStrip = tabLayout.getChildAt(0) as? LinearLayout ?: return
+            if (viewPager == null) {
+                val currentItem = tabLayout.selectedTabPosition
+                //未绑定viewpger，则直接让tab选中即可：没有通过setupWithViewPager绑定会出现该情况
+                for (i in 0 until tabStrip.childCount) {
+                    if (v == tabStrip.getChildAt(i) && currentItem != i) {
+                        tabLayout.selectTab(tabLayout.getTabAt(i))
+                        return
+                    }
+                }
+            } else {
+                val currentItem = viewPager.currentItem
+
+                for (i in 0 until tabStrip.childCount) {
+                    if (v == tabStrip.getChildAt(i) && i != currentItem) {
+                        //当前选中位置不同，让viewpager切换选项卡
+                        viewPager.setCurrentItem(i, true)
+                        return
                     }
                 }
             }

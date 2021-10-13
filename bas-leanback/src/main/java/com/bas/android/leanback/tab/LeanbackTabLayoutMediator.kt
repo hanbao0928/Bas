@@ -15,18 +15,17 @@ import java.lang.ref.WeakReference
  * [TabConfigurationStrategy.CustomViewStrategy]
  */
 class LeanbackTabLayoutMediator(
-    val tabLayout: TabLayout,
-    val viewPager: ViewPager,
-    val autoRefresh: Boolean = true,
-    val tabConfigurationStrategy: TabConfigurationStrategy
+    private val tabLayout: TabLayout,
+    internal val viewPager: ViewPager,
+    private var tabConfigurationStrategy: TabConfigurationStrategy,
+    private var autoRefresh: Boolean = true
 ) {
-
     private var attached = false
     private var onPageChangeCallback: TabLayoutOnPageChangeListener
     private val onTabSelectedListener: ViewPagerOnTabSelectedListener
     private var pagerAdapterDataSetObserver: PagerAdapterDataSetObserver
     private val adapterChangeListener: AdapterChangeListener
-    private var adapter: PagerAdapter? = null
+    private var pagerAdapter: PagerAdapter? = null
 
     init {
         onTabSelectedListener = ViewPagerOnTabSelectedListener(viewPager)
@@ -47,53 +46,52 @@ class LeanbackTabLayoutMediator(
      */
     fun attach() {
         check(!attached) { "TabLayoutMediator is already attached" }
-        adapter = viewPager.adapter
-        checkNotNull(adapter) { "TabLayoutMediator attached before ViewPager has an adapter" }
-
         attached = true
         onPageChangeCallback.reset()
         viewPager.addOnPageChangeListener(onPageChangeCallback)
         tabLayout.addOnTabSelectedListener(onTabSelectedListener)
-        if (autoRefresh) {
-            // Register our observer on the new adapter
-            adapter!!.registerDataSetObserver(pagerAdapterDataSetObserver)
-        }
-        populateTabsFromPagerAdapter()
+        setPagerAdapter(viewPager.adapter,autoRefresh)
         // Now update the scroll position to match the ViewPager's current item
         tabLayout.setScrollPosition(viewPager.currentItem, 0f, true)
     }
 
     /**
      * Unlink the TabLayout and the ViewPager. To be called on a stale TabLayoutMediator if a new one
-     * is instantiated, to prevent holding on to a view that should be garbage collected. Also to be
-     * called before [.attach] when a ViewPager2's adapter is changed.
+     * is instantiated, to prevent holding on to a view that should be garbage collected.
      */
     fun detach() {
-        adapter?.unregisterDataSetObserver(pagerAdapterDataSetObserver)
         tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
         viewPager.removeOnPageChangeListener(onPageChangeCallback)
+        setPagerAdapter(null,false)
         attached = false
-        adapter = null
     }
 
-    private fun populateTabsFromPagerAdapter() {
+    private fun setPagerAdapter(adapter: PagerAdapter?, addObserver: Boolean) {
+        // If we already have a PagerAdapter, unregister our observer
+        pagerAdapter?.unregisterDataSetObserver(pagerAdapterDataSetObserver)
+        pagerAdapter = adapter
+        if (addObserver && adapter != null) {
+            adapter.registerDataSetObserver(pagerAdapterDataSetObserver)
+        }
+        // Finally make sure we reflect the new adapter
+        populateTabsFromPagerAdapter()
+    }
+
+    internal fun populateTabsFromPagerAdapter() {
         tabLayout.removeAllTabs()
 
-        val adapter = this.adapter
-        if (adapter != null) {
-            val adapterCount: Int = adapter.count
-            for (i in 0 until adapterCount) {
-                val tab = tabLayout.newTab()
-                tabConfigurationStrategy.onConfigureTab(tab, i)
-                tabLayout.addTab(tab, false)
-            }
-            // Make sure we reflect the currently set ViewPager item
-            if (adapterCount > 0) {
-                val lastItem = tabLayout.tabCount - 1
-                val currItem = viewPager.currentItem.coerceAtMost(lastItem)
-                if (currItem != tabLayout.selectedTabPosition) {
-                    tabLayout.selectTab(tabLayout.getTabAt(currItem))
-                }
+        val adapterCount: Int = this.pagerAdapter?.count ?: return
+        for (i in 0 until adapterCount) {
+            val tab = tabLayout.newTab()
+            tabConfigurationStrategy.onConfigureTab(tab, i)
+            tabLayout.addTab(tab, false)
+        }
+        // Make sure we reflect the currently set ViewPager item
+        if (adapterCount > 0) {
+            val lastItem = tabLayout.tabCount - 1
+            val currItem = viewPager.currentItem.coerceAtMost(lastItem)
+            if (currItem != tabLayout.selectedTabPosition) {
+                tabLayout.selectTab(tabLayout.getTabAt(currItem))
             }
         }
     }
@@ -105,7 +103,7 @@ class LeanbackTabLayoutMediator(
      * This class stores the provided TabLayout weakly, meaning that you can use [ViewPager.addOnPageChangeListener] without removing the listener and not cause a
      * leak.
      */
-    private class TabLayoutOnPageChangeListener(tabLayout: TabLayout) :
+    internal class TabLayoutOnPageChangeListener(tabLayout: TabLayout) :
         ViewPager.OnPageChangeListener {
         private val tabLayoutRef: WeakReference<TabLayout> = WeakReference(tabLayout)
         private var previousScrollState = 0
@@ -155,7 +153,7 @@ class LeanbackTabLayoutMediator(
      * A [TabLayout.OnTabSelectedListener] class which contains the necessary calls back to the
      * provided [ViewPager] so that the tab position is kept in sync.
      */
-    private class ViewPagerOnTabSelectedListener(private val viewPager: ViewPager) :
+    internal class ViewPagerOnTabSelectedListener(private val viewPager: ViewPager) :
         TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab) {
             viewPager.currentItem = tab.position
@@ -174,8 +172,6 @@ class LeanbackTabLayoutMediator(
      * [ViewPager]绑定的[PagerAdapter]发生变化时重新绑定
      */
     private inner class AdapterChangeListener : ViewPager.OnAdapterChangeListener {
-
-
         override fun onAdapterChanged(
             viewPager: ViewPager,
             oldAdapter: PagerAdapter?,
@@ -183,8 +179,7 @@ class LeanbackTabLayoutMediator(
         ) {
             if (this@LeanbackTabLayoutMediator.viewPager != viewPager)
                 return
-            detach()
-            attach()
+            setPagerAdapter(newAdapter,autoRefresh)
         }
     }
 
