@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator
  * A callback interface that must be implemented to set the text and styling of newly created
  * tabs.
  *
+ *
  */
 interface TabConfigurationStrategy {
     /**

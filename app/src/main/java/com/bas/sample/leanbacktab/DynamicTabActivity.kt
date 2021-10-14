@@ -1,9 +1,7 @@
 package com.bas.sample.leanbacktab
 
 import android.os.Bundle
-import android.widget.Button
-import androidx.viewpager.widget.PagerAdapter
-import com.bas.android.leanback.tab.TabConfigurationStrategy
+import android.widget.Toast
 import com.bas.databinding.LeanbackTabMenuLayoutBinding
 
 /**
@@ -11,35 +9,37 @@ import com.bas.databinding.LeanbackTabMenuLayoutBinding
  */
 class DynamicTabActivity : BaseTabActivity() {
 
-    private lateinit var strategy: TabConfigurationStrategy.TextStrategy
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val menuLayout = LeanbackTabMenuLayoutBinding.inflate(layoutInflater,binding.root,false)
 
         binding.root.addView(menuLayout.root,0)
+        menuLayout.setAdapterBtn.setOnClickListener {
+            super.bindAdapter()
+        }
         menuLayout.changeCntBtn.setOnClickListener {
-            val tabTitles = mutableListOf<CharSequence>()
-            for (i in 0 until 6) {
-                tabTitles.add("Tab$i")
+            if(isAdapterInit()){
+                adapter.setChildCount(6)
+            }else{
+                Toast.makeText(this,"Adapter还未初始化",Toast.LENGTH_SHORT).show()
             }
-            strategy.update(tabTitles)
-            adapter.setChildCount(6)
+
         }
         menuLayout.resetAdapterBtn.setOnClickListener {
             adapter = MyPagerAdapter(supportFragmentManager)
             binding.tabViewPager.adapter = adapter
         }
 
-    }
-
-    override fun createTabConfigurationStrategy(adapter: PagerAdapter): TabConfigurationStrategy {
-
-        val tabTitles = mutableListOf<CharSequence>()
-        for (i in 0 until adapter.count) {
-            tabTitles.add("Tab$i")
+        menuLayout.detachAdapterBtn.setOnClickListener {
+            binding.tabViewPager.adapter = null
         }
-        strategy =  TabConfigurationStrategy.TextStrategy(tabTitles)
-        return strategy
+
     }
+
+    override fun bindAdapter() {
+        //NO-op：暂时不绑定adapter
+    }
+
+
 }

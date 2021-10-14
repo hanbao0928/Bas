@@ -5,6 +5,12 @@
     android:orientation="horizontal">
 
     <Button
+        android:id="@+id/set_adapter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="绑定Adapter"/>
+
+    <Button
         android:id="@+id/change_cnt_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,4 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="重新设置ViewPager Adapter"/>
+
+    <Button
+        android:id="@+id/detach_adapter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置adapter = null"/>
 </LinearLayout>

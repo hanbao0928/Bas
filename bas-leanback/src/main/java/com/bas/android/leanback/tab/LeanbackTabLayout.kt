@@ -2,11 +2,13 @@ package com.bas.android.leanback.tab
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.FocusFinder
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
+import com.bas.core.lang.orDefault
 import com.google.android.material.tabs.TabLayout
 import java.util.*
 
@@ -20,7 +22,7 @@ import java.util.*
 class LeanbackTabLayout : TabLayout {
 
     private var focusOutEnabled: Boolean = true
-    private var focusMemoryEnabled:Boolean = true
+    private var focusMemoryEnabled: Boolean = true
 
     private var viewPager: ViewPager? = null
 
@@ -61,6 +63,10 @@ class LeanbackTabLayout : TabLayout {
         focusOutEnabled = enableFocusOut
     }
 
+    private fun log(msg: String) {
+        Log.d("LeanbackTab", msg)
+    }
+
     /**
      * Find the nearest view in the specified direction that wants to take
      * focus.
@@ -71,51 +77,66 @@ class LeanbackTabLayout : TabLayout {
      */
     override fun focusSearch(focused: View?, direction: Int): View? {
         //如果允许焦点移出、或者不是点击遥控器左右键、或者当前为非固定Tab模式并且可以滚动（tab的内容不足整个TabLayout）
-        if (focusOutEnabled || (direction != FOCUS_LEFT && direction != FOCUS_RIGHT)
-            || (tabMode != MODE_FIXED && canScroll())
+        if (focusOutEnabled//允许焦点移除
+            || (direction != FOCUS_LEFT && direction != FOCUS_RIGHT)//不是按的左、右键
+//            || (tabMode != MODE_FIXED && canScroll())
         ) {
+            log("focusSearch = super")
             return super.focusSearch(focused, direction)
         } else {
-            return FocusFinder.getInstance().findNextFocus(this, focused, direction) ?: focused
+            val ss = FocusFinder.getInstance().findNextFocus(this, focused, direction) ?: null
+            log("focusSearch = $ss")
+            return ss
         }
     }
 
     /**
      * 是否启用焦点记忆：获取焦点时让之前已选中的tab获取焦点
      */
-    fun setFocusMemoryEnabled(enableFocusMemory: Boolean){
+    fun setFocusMemoryEnabled(enableFocusMemory: Boolean) {
         this.focusMemoryEnabled = enableFocusMemory
     }
 
     override fun addFocusables(views: ArrayList<View>?, direction: Int, focusableMode: Int) {
-        if(views == null
-            || tabCount <= 0
-            || direction == FOCUS_LEFT
-            || direction == FOCUS_RIGHT
-            || !focusMemoryEnabled
-            || (canTakeFocus() && this.descendantFocusability == FOCUS_BLOCK_DESCENDANTS)){
+        if (views == null   //不会出现这种情况，只是重写方法时[views]参数可空，做个预防
+            || tabCount <= 0 //当前还未添加任何tab
+            || !focusMemoryEnabled//未启用焦点记忆
+            || hasFocus() //当前焦点在内部,不用指定特定的可以获取焦点的view
+        ) {
+            log("addFocusables = super")
             return super.addFocusables(views, direction, focusableMode)
         }
 
-        val selectedTab = getTabAt(selectedTabPosition)?: getTabAt(0) ?: return super.addFocusables(views, direction, focusableMode)
-        views.add(selectedTab.view)
+        val strategyTab =
+            getTabAt(selectedTabPosition) ?: getTabAt(0)
+
+        if (strategyTab == null //理论上不会出现这个情况，前面已经过滤了tabCount<=0的情况
+            || !strategyTab.view.canTakeFocus()// 不能获取焦点，放弃焦点记忆
+        ) {
+            return super.addFocusables(views, direction, focusableMode)
+        }
+
+        if (this.canTakeFocus())
+            views.add(this)
+        views.add(strategyTab.view)
+
     }
 
-    private fun canTakeFocus(): Boolean{
+    private fun View.canTakeFocus(): Boolean {
         return isFocusable && isVisible && isEnabled
     }
 
-    /**
-     * @return Returns true this HorizontalScrollView can be scrolled
-     */
-    private fun canScroll(): Boolean {
-        val child = getChildAt(0)
-        if (child != null) {
-            val childWidth = child.width
-            return width < childWidth + paddingLeft + paddingRight
-        }
-        return false
-    }
+//    /**
+//     * @return Returns true this HorizontalScrollView can be scrolled
+//     */
+//    private fun canScroll(): Boolean {
+//        val child = getChildAt(0)
+//        if (child != null) {
+//            val childWidth = child.width
+//            return width < childWidth + paddingLeft + paddingRight
+//        }
+//        return false
+//    }
 
     override fun setupWithViewPager(viewPager: ViewPager?, autoRefresh: Boolean) {
         if (viewPager == null) {
@@ -158,6 +179,9 @@ class LeanbackTabLayout : TabLayout {
         mediator = null
     }
 
+    fun isAttachMediator(): Boolean {
+        return mediator?.attached.orDefault()
+    }
 
     /**
      * Create and return a new [Tab]. You need to manually add this using [.addTab]

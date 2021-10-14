@@ -11,27 +11,19 @@ import com.google.android.material.tabs.TabLayout
  */
 class MixedTabActivity : BaseTabActivity() {
 
-    override fun createTabConfigurationStrategy(adapter: PagerAdapter): TabConfigurationStrategy {
-
-        val tabTitles = mutableListOf<CharSequence>()
-        val tabIcons = mutableListOf<Drawable?>()
-        for (i in 0 until adapter.count) {
-            tabTitles.add("Tab$i")
-            tabIcons.add(getDrawable("ic_tab_${i + 1}"))
+    override fun createTabConfigurationStrategy(adapter: PagerAdapter?): TabConfigurationStrategy {
+        val textStrategy = TabConfigurationStrategy.ViewPagerStrategy(binding.tabViewPager)
+        val textIconStrategy = object : TabConfigurationStrategy{
+            override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
+                tab.text = "Tab$position"
+                tab.icon = getDrawable("ic_tab_${position + 1}");
+            }
         }
-        val textStrategy = TabConfigurationStrategy.TextStrategy(tabTitles)
-        val textIconStrategy = TabConfigurationStrategy.TextIconStrategy(tabTitles, tabIcons)
 
         val customStrategy =
-            TabConfigurationStrategy.CustomViewStrategy(CustomTabViewFactory(this, adapter))
+            TabConfigurationStrategy.CustomViewStrategy(CustomTabViewFactory(this))
+
         return object : TabConfigurationStrategy {
-            /**
-             * Called to configure the tab for the page at the specified position. Typically calls [ ][TabLayout.Tab.setText], but any form of styling can be applied.
-             *
-             * @param tab The Tab which should be configured to represent the title of the item at the given
-             * position in the data set.
-             * @param position The position of the item within the adapter's data set.
-             */
             override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
                 if (position == 0) {
                     textStrategy.onConfigureTab(tab, position)
@@ -44,11 +36,8 @@ class MixedTabActivity : BaseTabActivity() {
                     }
                 } else {
                     customStrategy.onConfigureTab(tab, position)
-
                 }
             }
-
         }
-
     }
 }

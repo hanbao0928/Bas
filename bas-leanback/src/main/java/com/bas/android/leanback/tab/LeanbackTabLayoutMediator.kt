@@ -20,7 +20,8 @@ class LeanbackTabLayoutMediator(
     private var tabConfigurationStrategy: TabConfigurationStrategy,
     private var autoRefresh: Boolean = true
 ) {
-    private var attached = false
+    internal var attached = false
+        private set
     private var onPageChangeCallback: TabLayoutOnPageChangeListener
     private val onTabSelectedListener: ViewPagerOnTabSelectedListener
     private var pagerAdapterDataSetObserver: PagerAdapterDataSetObserver
@@ -50,7 +51,7 @@ class LeanbackTabLayoutMediator(
         onPageChangeCallback.reset()
         viewPager.addOnPageChangeListener(onPageChangeCallback)
         tabLayout.addOnTabSelectedListener(onTabSelectedListener)
-        setPagerAdapter(viewPager.adapter,autoRefresh)
+        setPagerAdapter(viewPager.adapter, autoRefresh)
         // Now update the scroll position to match the ViewPager's current item
         tabLayout.setScrollPosition(viewPager.currentItem, 0f, true)
     }
@@ -62,7 +63,7 @@ class LeanbackTabLayoutMediator(
     fun detach() {
         tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
         viewPager.removeOnPageChangeListener(onPageChangeCallback)
-        setPagerAdapter(null,false)
+        setPagerAdapter(null, false)
         attached = false
     }
 
@@ -179,7 +180,7 @@ class LeanbackTabLayoutMediator(
         ) {
             if (this@LeanbackTabLayoutMediator.viewPager != viewPager)
                 return
-            setPagerAdapter(newAdapter,autoRefresh)
+            setPagerAdapter(newAdapter, autoRefresh)
         }
     }
 

@@ -9,12 +9,5 @@ import com.bas.android.leanback.tab.TabConfigurationStrategy
 class TextTabActivity : BaseTabActivity() {
 
 
-    override fun createTabConfigurationStrategy(adapter: PagerAdapter): TabConfigurationStrategy {
 
-        val tabTitles = mutableListOf<CharSequence>()
-        for (i in 0 until adapter.count) {
-            tabTitles.add("Tab$i")
-        }
-        return TabConfigurationStrategy.TextStrategy(tabTitles)
-    }
 }
