@@ -2,7 +2,6 @@
 更多介绍请查看文章：[传送门](https://juejin.cn/editor/drafts/7018848252329984037)
 
 本库适用于解决TabLayout和ViewPager在TV开发中的场景（同时支持手机中运行）
-
 本库主要提供`LeanbackTabLayout`和`LeanbackViewPager`两个组件。
 
 `LeanbackTabLayout`提供了如下功能
@@ -131,3 +130,9 @@ fun setupWithViewPager(
 
 ![refresh.jpg](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/930579a65e4e4f1782836e66653f7654~tplv-k3u1fbpfcp-watermark.image?)
 
+## 5.扩展说明
+
+以下是官方`leanback-tab`库中`LeanbackViewPager`的描述语句,给出了在`TV`开发中使用`ViewPager`的建议。
+
+>Key events handling is disabled by default as with the behaviour of viewpager the fragments can change when DPAD keys are pressed and focus is on the content inside the {@link ViewPager}.
+>This is not desirable for a top navigation bar. The fragments should preferably change only when the focused tab changes.

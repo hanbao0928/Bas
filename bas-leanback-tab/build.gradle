@@ -46,6 +46,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-
-    implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
+//官方提供的leanback-tab : https://developer.android.google.cn/training/tv/start/libraries#leanback-tabs-library
+//    implementation "androidx.leanback:leanback-tab:1.1.0-beta01"
 }
