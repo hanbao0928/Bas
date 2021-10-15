@@ -26,7 +26,8 @@ import androidx.viewpager.widget.ViewPager
  * 举个例子，比如[ViewPager]的child view是一个Fragment，包含三个控件，分别在页面内的顶部左侧、顶部右侧和页面中间。[ViewPager]的顶部是一个TabLayout导航，那么当左侧按钮获取焦点时点击遥控器右键，犹豫TabLayout离该按钮更近，根据默认的寻焦规则，TabLayout的tab item view会获取焦点。
  * 这就是默认的情况，而通常这种情况我们并不希望是顶部TabLayout获取焦点，而是[ViewPager]内右侧按钮获取焦点，因此设置[focusOutEnabled]为false，可以阻止按左右键时焦点移出[ViewPager]而只会在ViewPager内部转移焦点。
  */
-class LeanbackViewPager : ViewPager {
+class LeanbackViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    ViewPager(context, attrs) {
 
     private var touchEnabled = false
     private var keyEventEnabled = false
@@ -35,8 +36,13 @@ class LeanbackViewPager : ViewPager {
     // 即任何情况，在[ViewPager]内部点击遥控器左右键只在内部转移焦点。
     private var focusOutEnabled = false
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    init {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackViewPager)
+        touchEnabled = ta.getBoolean(R.styleable.LeanbackViewPager_touchEnabled_lbt, false)
+        keyEventEnabled = ta.getBoolean(R.styleable.LeanbackViewPager_keyEventEnabled_lbt, false)
+        focusOutEnabled = ta.getBoolean(R.styleable.LeanbackViewPager_focusOutEnabled_lbt, false)
+        ta.recycle()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
@@ -59,7 +65,7 @@ class LeanbackViewPager : ViewPager {
         return if (focusOutEnabled || (direction != FOCUS_LEFT && direction != FOCUS_RIGHT)) {
             super.focusSearch(focused, direction)
         } else {
-            FocusFinder.getInstance().findNextFocus(this, focused, direction) ?: focused
+            FocusFinder.getInstance().findNextFocus(this, focused, direction) ?: null
         }
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="focusOutEnabled_lbt" format="boolean"/>
+
+    <declare-styleable name="LeanbackViewPager">
+        <!--是否允许横向边界焦点移出，默认false-->
+        <attr name="focusOutEnabled_lbt"/>
+        <!--是否响应触摸翻页，默认false-->
+        <attr name="touchEnabled_lbt" format="boolean"/>
+        <!--是否响应按键翻页，默认false-->
+        <attr name="keyEventEnabled_lbt" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LeanbackTabLayout">
+        <!--是否允许横向边界焦点移出，默认false-->
+        <attr name="focusOutEnabled_lbt"/>
+        <!--是否启用焦点记忆，默认true-->
+        <attr name="focusMemoryEnabled_lbt" format="boolean"/>
+        <!--是否采用TV交互模式（即通过Tab焦点获取触发Tab选中），默认true-->
+        <attr name="isLeanbackMode_lbt" format="boolean"/>
+    </declare-styleable>
+</resources>

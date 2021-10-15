@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
-import com.bas.core.lang.orDefault
 import com.google.android.material.tabs.TabLayout
 import java.util.*
 
@@ -18,13 +17,18 @@ import java.util.*
  * TV和Phone使用TabLayout的最大区别在于交互上：
  *  Phone上是通过Tab的点击进行ViewPager的翻页
  *  TV上应该是通过Tab的焦点获取进行ViewPager的翻页
+ *
+ *  更多查看ReadMe
  */
-class LeanbackTabLayout : TabLayout {
-
-    private var focusOutEnabled: Boolean = true
-    private var focusMemoryEnabled: Boolean = true
+class LeanbackTabLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = com.google.android.material.R.attr.tabStyle
+) : TabLayout(context, attrs, defStyleAttr) {
 
     private var viewPager: ViewPager? = null
+    private var focusOutEnabled: Boolean = false
+    private var focusMemoryEnabled: Boolean = true
 
     /**
      * 是否支持在TV上运行
@@ -39,13 +43,14 @@ class LeanbackTabLayout : TabLayout {
      */
     private var mediator: LeanbackTabLayoutMediator? = null
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+    init {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackTabLayout)
+        focusOutEnabled = ta.getBoolean(R.styleable.LeanbackTabLayout_focusOutEnabled_lbt, false)
+        focusMemoryEnabled =
+            ta.getBoolean(R.styleable.LeanbackTabLayout_focusMemoryEnabled_lbt, true)
+        isLeanbackMode = ta.getBoolean(R.styleable.LeanbackTabLayout_isLeanbackMode_lbt, true)
+        ta.recycle()
+    }
 
     /**
      * 设置是否是电视上的操作模式
@@ -152,7 +157,13 @@ class LeanbackTabLayout : TabLayout {
 
     /**
      * 根据ViewPager进行初始化；
-     * 调用此方法之前需要ViewPager已设置adapter
+     * @param tabConfigurationStrategy tab配置策略，用于自定义Tab样式；
+     * [TabConfigurationStrategy.TextStrategy]:文本tab策略
+     * [TabConfigurationStrategy.ViewPagerStrategy]:（系统TabLayout与ViewPager联用时的规则相似） 使用ViewPager的adapter提供的getPageTitle方法创建文本Tab策略
+     * [TabConfigurationStrategy.TextIconStrategy]:文本+图标策略
+     * [TabConfigurationStrategy.CustomViewStrategy]：自定义view策略,[TabConfigurationStrategy.CustomViewFactory]
+     * 如果以上策略不能满足需求，可以自定义实现[TabConfigurationStrategy]。
+     * @param autoRefresh [ViewPager.getAdapter]数据改变时是否自动刷新Tab
      */
     fun setupWithViewPager(
         viewPager: ViewPager?,
@@ -180,7 +191,7 @@ class LeanbackTabLayout : TabLayout {
     }
 
     fun isAttachMediator(): Boolean {
-        return mediator?.attached.orDefault()
+        return mediator?.attached ?: false
     }
 
     /**

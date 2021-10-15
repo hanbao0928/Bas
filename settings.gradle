@@ -1,3 +1,4 @@
+include ':bas-leanback-tab'
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
 include ':bas-core-and'

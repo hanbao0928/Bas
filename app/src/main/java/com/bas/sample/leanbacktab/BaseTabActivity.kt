@@ -25,7 +25,6 @@ abstract class BaseTabActivity : AppCompatActivity() {
         binding = LeanbackTabActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         bindAdapter()
-        binding.tabLayout.setFocusOutEnabled(false)
         binding.tabLayout.setupWithViewPager(
             binding.tabViewPager,
             createTabConfigurationStrategy(binding.tabViewPager.adapter)
