@@ -1,5 +1,5 @@
 # 1.简介
-更多介绍请查看文章：[传送门](https://juejin.cn/editor/drafts/7018848252329984037)
+更多介绍请查看文章：[传送门](https://juejin.cn/post/7019107092334116872)
 
 本库适用于解决TabLayout和ViewPager在TV开发中的场景（同时支持手机中运行）
 本库主要提供`LeanbackTabLayout`和`LeanbackViewPager`两个组件。
@@ -30,6 +30,10 @@ tabLayout.setupWithViewPager(
 )
 
 ```
+
+**温馨提示：`LeanbackTabLayout`继承`TabLayout`，支持`TabLayout`的所有功能配置**
+
+
 # 3.API说明
 ## 3.1 `LeanbackViewPager`
 ### 3.1.1 设置启用/禁用`TouchEvent`（默认禁用）
@@ -115,12 +119,14 @@ fun setupWithViewPager(
 ) 
 ```
 
-### 3.2.5 Adapter与Tab的刷新
+### 3.2.6 Adapter与Tab的刷新
 只要`ViewPager`更改了`Adapter`，或者调用了`Adapter`的`notifyDataSetChanged
 `方法通知刷新更新，`TabLayout`将同步更新。
 
+### 3.2.7 优化`requestFocus()`规则
+在`onRequestFocusInDescendants`方法中未消耗焦点请求的情况下，尝试让当前已选择的tab请求焦点，用于优化`requestFocus()`用于预期行为。
 
-### 3.2.6 其他说明
+### 3.3 其他说明
 `TabLayout`与`ViewPager`的联动实现已完全封装到`LeanbackTabLayoutMediator`类中，该类也可以单独使用。
 
 ## 4.粗略Demo截图

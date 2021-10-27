@@ -1,6 +1,7 @@
 package com.bas.android.leanback.tab
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.FocusFinder
@@ -146,6 +147,29 @@ class LeanbackTabLayout @JvmOverloads constructor(
             views.add(this)
         views.add(strategyTab.view)
 
+    }
+
+    /**
+     * When looking for focus in children of a scroll view, need to be a little
+     * more careful not to give focus to something that is scrolled off screen.
+     *
+     * This is more expensive than the default [android.view.ViewGroup]
+     * implementation, otherwise this behavior might have been made the default.
+     */
+    override fun onRequestFocusInDescendants(
+        direction: Int,
+        previouslyFocusedRect: Rect?
+    ): Boolean {
+        //优化child请求焦点规则：调用TabLayout.requestFocus()请求焦点时，在不影响super规则的前提下，
+        //如果未找到合适的child获取焦点，则尝试让已选择的tab获取焦点
+        val handled = super.onRequestFocusInDescendants(direction, previouslyFocusedRect)
+        if (handled || selectedTabPosition < 0)
+            return handled
+        val selectedTab = getTabAt(selectedTabPosition) ?: return handled
+        if (selectedTab.view.canTakeFocus() && !selectedTab.view.isFocused && selectedTab.view.requestFocus()) {
+            return true
+        }
+        return handled
     }
 
     private fun View.canTakeFocus(): Boolean {
@@ -356,7 +380,7 @@ class LeanbackTabLayout @JvmOverloads constructor(
          */
         override fun onFocusChange(v: View?, hasFocus: Boolean) {
 //            if(!hasFocus){
-                duplicateTabViewState(v as? TabView, hasFocus)
+            duplicateTabViewState(v as? TabView, hasFocus)
 //            }
         }
 
