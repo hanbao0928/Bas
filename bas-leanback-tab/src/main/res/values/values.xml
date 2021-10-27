@@ -18,5 +18,8 @@
         <attr name="focusMemoryEnabled_lbt" format="boolean"/>
         <!--是否采用TV交互模式（即通过Tab焦点获取触发Tab选中），默认true-->
         <attr name="isLeanbackMode_lbt" format="boolean"/>
+
+        <!--是否TabView状态发生变化时，同步应用状态到ChildView-->
+        <attr name="duplicateTabViewState_lbt" format="boolean"/>
     </declare-styleable>
 </resources>

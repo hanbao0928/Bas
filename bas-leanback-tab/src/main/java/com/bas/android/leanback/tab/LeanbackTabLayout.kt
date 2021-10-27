@@ -5,9 +5,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.FocusFinder
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.tabs.TabLayout
 import java.util.*
 
@@ -31,6 +34,12 @@ class LeanbackTabLayout @JvmOverloads constructor(
     private var focusMemoryEnabled: Boolean = true
 
     /**
+     * 是否启用TabView选中/取消选中时，将TabView的[View.isActivated]状态传递给包含的所有ChildView
+     */
+    private var duplicateTabViewState: Boolean = false
+    private lateinit var duplicateTabViewStateListener: DuplicateTabViewStateOnTabSelected
+
+    /**
      * 是否支持在TV上运行
      * 默认支持在TV上运行，原因如下：
      * 1、在某些电视上运行通过[com.bas.core.android.util.isTVUIMode]读取到的值为false
@@ -43,13 +52,23 @@ class LeanbackTabLayout @JvmOverloads constructor(
      */
     private var mediator: LeanbackTabLayoutMediator? = null
 
+
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackTabLayout)
         focusOutEnabled = ta.getBoolean(R.styleable.LeanbackTabLayout_focusOutEnabled_lbt, false)
         focusMemoryEnabled =
             ta.getBoolean(R.styleable.LeanbackTabLayout_focusMemoryEnabled_lbt, true)
         isLeanbackMode = ta.getBoolean(R.styleable.LeanbackTabLayout_isLeanbackMode_lbt, true)
+        duplicateTabViewState = ta.getBoolean(
+            R.styleable.LeanbackTabLayout_duplicateTabViewState_lbt,
+            false
+        )
         ta.recycle()
+
+        if (duplicateTabViewState) {
+            duplicateTabViewStateListener = DuplicateTabViewStateOnTabSelected()
+            addOnTabSelectedListener(duplicateTabViewStateListener)
+        }
     }
 
     /**
@@ -76,6 +95,8 @@ class LeanbackTabLayout @JvmOverloads constructor(
      * Find the nearest view in the specified direction that wants to take
      * focus.
      *
+     * 内部寻找焦点
+     *
      * @param focused The view that currently has focus
      * @param direction One of FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, and
      * FOCUS_RIGHT, or 0 for not applicable.
@@ -86,7 +107,7 @@ class LeanbackTabLayout @JvmOverloads constructor(
             || (direction != FOCUS_LEFT && direction != FOCUS_RIGHT)//不是按的左、右键
 //            || (tabMode != MODE_FIXED && canScroll())
         ) {
-            log("focusSearch = super")
+            log("focusSearch = super  focused=$focused direction = $direction")
             return super.focusSearch(focused, direction)
         } else {
             val ss = FocusFinder.getInstance().findNextFocus(this, focused, direction) ?: null
@@ -216,10 +237,21 @@ class LeanbackTabLayout @JvmOverloads constructor(
             view.let {
                 it.isFocusable = true
                 it.isFocusableInTouchMode = true
-                it.onFocusChangeListener = TabFocusChangeListener(
-                    this,
-                    viewPager
-                )
+
+                //用于解决TabView失去焦点但选中时isActivated状态传递给ChildView
+                if (duplicateTabViewState && ::duplicateTabViewStateListener.isInitialized) {
+                    it.onFocusChangeListener = ChainFocusListener(
+                        TabFocusChangeListener(
+                            this,
+                            viewPager
+                        ), duplicateTabViewStateListener
+                    )
+                } else {
+                    it.onFocusChangeListener = TabFocusChangeListener(
+                        this,
+                        viewPager
+                    )
+                }
             }
         } else {
             val listener = view.onFocusChangeListener
@@ -229,10 +261,11 @@ class LeanbackTabLayout @JvmOverloads constructor(
         }
     }
 
-    private class TabFocusChangeListener constructor(
+    private open class TabFocusChangeListener constructor(
         val tabLayout: TabLayout,
         val viewPager: ViewPager?
     ) : OnFocusChangeListener {
+
         override fun onFocusChange(v: View, hasFocus: Boolean) {
             if (!hasFocus)
                 return
@@ -259,6 +292,90 @@ class LeanbackTabLayout @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    /**
+     * TabView选中/取消选中时，将TabView的[View.isActivated]状态传递给包含的所有ChildView
+     */
+    private class DuplicateTabViewStateOnTabSelected : OnTabSelectedListener,
+        OnFocusChangeListener {
+
+        private fun setChildActivatedRecursively(view: View, isActivated: Boolean) {
+            view.isActivated = isActivated
+            if (view is ViewGroup) {
+                view.children.forEach {
+                    setChildActivatedRecursively(it, isActivated)
+                }
+            }
+        }
+
+        private fun duplicateTabViewState(tabView: TabView?, isActivated: Boolean) {
+            tabView?.isActivated = isActivated
+            tabView?.children?.forEach {
+                if (BadgeUtils.USE_COMPAT_PARENT) {
+                    setChildActivatedRecursively(it, isActivated)
+                } else {
+                    it.isActivated = isActivated
+                }
+            }
+        }
+
+        /**
+         * Called when a tab enters the selected state.
+         *
+         * @param tab The tab that was selected
+         */
+        override fun onTabSelected(tab: Tab?) {
+//            duplicateTabViewState(tab?.view, true)
+        }
+
+        /**
+         * Called when a tab exits the selected state.
+         *
+         * @param tab The tab that was unselected
+         */
+        override fun onTabUnselected(tab: Tab?) {
+//            duplicateTabViewState(tab?.view, false)
+        }
+
+        /**
+         * Called when a tab that is already selected is chosen again by the user. Some applications may
+         * use this action to return to the top level of a category.
+         *
+         * @param tab The tab that was reselected.
+         */
+        override fun onTabReselected(tab: Tab?) {
+        }
+
+        /**
+         * 失去焦点的时候也需要让child的active状态设置为false
+         * Called when the focus state of a view has changed.
+         *
+         * @param v The view whose state has changed.
+         * @param hasFocus The new focus state of v.
+         */
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+//            if(!hasFocus){
+                duplicateTabViewState(v as? TabView, hasFocus)
+//            }
+        }
+
+    }
+
+    private class ChainFocusListener(vararg val listeners: OnFocusChangeListener) :
+        OnFocusChangeListener {
+        /**
+         * Called when the focus state of a view has changed.
+         *
+         * @param v The view whose state has changed.
+         * @param hasFocus The new focus state of v.
+         */
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            listeners.forEach {
+                it.onFocusChange(v, hasFocus)
+            }
+        }
+
     }
 
 }

@@ -83,7 +83,13 @@ fun setFocusOutEnabled(enableFocusOut: Boolean) {
 fun setFocusMemoryEnabled(enableFocusMemory: Boolean)
 ```
 
-### 3.2.4 `ViewPager`联动使用场景、自定义`Tab`处理等
+### 3.2.4 TabView的State传递
+有些时候我们需要将Tab对应的TabView持有的状态传递给ChildView，比如isSelected，isActivated，
+以便ChildView更好的做不同的状态；
+对应xml属性：`app:duplicateTabViewState_lbt`，为true开启该功能，默认为false；
+
+
+### 3.2.5 `ViewPager`联动使用场景、自定义`Tab`处理等
 支持系统的`setupWithViewPager`方法
 ```kotlin
 fun setupWithViewPager(viewPager: ViewPager?, autoRefresh: Boolean)
