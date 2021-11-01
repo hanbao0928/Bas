@@ -8,7 +8,7 @@ import android.view.ViewGroup
  *
  * 用于在[android.widget.LinearLayout]、[android.widget.RelativeLayout]等布局中,[android.view.View.bringToFront]调用问题
  */
-class BringToFrontHelper(private val viewGroup: ViewGroup) {
+internal class BringToFrontHelper(private val viewGroup: ViewGroup) {
 
     /**
      * 当前[View.bringToFront]所在的索引

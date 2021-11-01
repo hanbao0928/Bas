@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LeanbackFlexboxLayout">
+        <!--内部包含的childview请求焦点时，是否将当前布局bringToFront，避免被覆盖，默认false-->
+        <attr name="bringToFrontWhenChildRequestFocus_blf" format="boolean"/>
+    </declare-styleable>
+</resources>

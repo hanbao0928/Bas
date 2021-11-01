@@ -3,6 +3,7 @@ package com.bas.android.leanback.flexbox
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import com.google.android.flexbox.FlexboxLayout
 
 /**
@@ -13,40 +14,52 @@ class LeanbackFlexboxLayout @JvmOverloads constructor(
 ) : FlexboxLayout(context, attrs, defStyleAttr) {
 
     private val bringToFrontHelper: BringToFrontHelper = BringToFrontHelper(this)
+
+    //是否处理[bringToFront]带来的问题：调用[bringToFront]的view总是在最后绘制的问题
     private var isBringToFrontEnabled = true
 
+    //内部包含的childview请求焦点时，是否将当前布局bringToFront，避免被覆盖
+    private var bringToFrontWhenChildRequestFocus = false
+
     init {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackFlexboxLayout)
+        bringToFrontWhenChildRequestFocus = ta.getBoolean(
+            R.styleable.LeanbackFlexboxLayout_bringToFrontWhenChildRequestFocus_blf,
+            false
+        )
+        ta.recycle()
         //设置启用Children的绘制顺序：
         // 避免类似LinearLayout、FlexboxLayout等总是在布局末尾绘制调用bringToFront()的Child
         isChildrenDrawingOrderEnabled = true
     }
 
     /**
-     * 是否处理[bringToFront]带来的问题：通过更改绘制顺序
+     * 是否处理[View.bringToFront]带来的问题：通过更改绘制顺序
+     * 默认true
      */
-    fun setBringToFrontCompatEnabled(isEnabled: Boolean) {
+    fun setChildBringToFrontCompatEnabled(isEnabled: Boolean) {
         isBringToFrontEnabled = isEnabled
+    }
+
+    /**
+     * child view 请求焦点时，是否调用[bringToFront],避免当前Group被遮住
+     */
+    fun  setBringToFrontWhenChildRequestFocus(isEnabled: Boolean){
+        bringToFrontWhenChildRequestFocus = isEnabled
+    }
+
+    override fun requestChildFocus(child: View?, focused: View?) {
+        super.requestChildFocus(child, focused)
+        if (!bringToFrontWhenChildRequestFocus || descendantFocusability == ViewGroup.FOCUS_BLOCK_DESCENDANTS) {
+            return
+        }
+        bringToFront()
     }
 
     override fun bringChildToFront(child: View?) {
         bringToFrontHelper.bringChildToFront(child)
     }
 
-    /**
-     * Converts drawing order position to container position. Override this
-     * if you want to change the drawing order of children. By default, it
-     * returns drawingPosition.
-     *
-     *
-     * NOTE: In order for this method to be called, you must enable child ordering
-     * first by calling [.setChildrenDrawingOrderEnabled].
-     *
-     * @param drawingPosition the drawing order position.
-     * @return the container position of a child for this drawing order position.
-     *
-     * @see .setChildrenDrawingOrderEnabled
-     * @see .isChildrenDrawingOrderEnabled
-     */
     override fun getChildDrawingOrder(childCount: Int, drawingPosition: Int): Int {
         return if (isBringToFrontEnabled) {
             bringToFrontHelper.getChildDrawingOrder(childCount, drawingPosition)
