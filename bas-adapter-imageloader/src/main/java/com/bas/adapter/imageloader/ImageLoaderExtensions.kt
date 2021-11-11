@@ -8,7 +8,6 @@ import androidx.annotation.DrawableRes
  * Created by Lucio on 2021/11/4.
  */
 
-
 inline fun ImageView.load(url: String?) {
     ImageLoader.load(this, url)
 }
@@ -17,7 +16,7 @@ inline fun ImageView.load(url: String?, @DrawableRes placeHolder: Int) {
     ImageLoader.load(this, url, placeHolder)
 }
 
-inline fun ImageView.load(url: String?, placeHolder: Drawable) {
+inline fun ImageView.load(url: String?, placeHolder: Drawable?) {
     ImageLoader.load(this, url, placeHolder)
 }
 
@@ -32,8 +31,8 @@ inline fun ImageView.load(
 
 inline fun ImageView.load(
     url: String?,
-    placeHolder: Drawable,
-    errorPlaceHolder: Drawable
+    placeHolder: Drawable?,
+    errorPlaceHolder: Drawable?
 ) {
     ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
 }
@@ -41,14 +40,14 @@ inline fun ImageView.load(
 inline fun ImageView.load(
     url: String?,
     @DrawableRes placeHolder: Int,
-    errorPlaceHolder: Drawable
+    errorPlaceHolder: Drawable?
 ) {
     ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
 }
 
 inline fun ImageView.load(
     url: String?,
-    placeHolder: Drawable,
+    placeHolder: Drawable?,
     @DrawableRes errorPlaceHolder: Int
 ) {
     ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
