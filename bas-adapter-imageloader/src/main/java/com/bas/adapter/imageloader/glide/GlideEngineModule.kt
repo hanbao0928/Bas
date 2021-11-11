@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.bas.adapter.imageloader.ImageLoader
 import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.load.engine.cache.DiskCache
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
@@ -22,11 +21,15 @@ abstract class GlideEngineModule : AppGlideModule() {
 
     protected open fun applyDefaultRequestOptionsConfig(context: Context, builder: GlideBuilder) {
         Log.d("GlideEngineModule", "applyDefaultRequestOptionsConfig")
-        builder.setDefaultRequestOptions(createDefaultRequestOptions())
+        builder.setDefaultRequestOptions(createDefaultRequestOptions().also {
+            if(it != defaultRequestOptions){
+                defaultRequestOptions = it.clone()
+            }
+        })
     }
 
     protected open fun createDefaultRequestOptions(): RequestOptions {
-        return RequestOptionsBas()
+        return defaultRequestOptions
     }
 
     protected open fun applyDiskCacheConfig(context: Context, builder: GlideBuilder) {

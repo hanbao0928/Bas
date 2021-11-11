@@ -13,7 +13,6 @@ import androidx.annotation.WorkerThread
  */
 interface ImageLoaderEngine {
 
-
     /**
      * Clears disk cache.
      * This method should always be called on a background thread, since it is a blocking call.
@@ -40,7 +39,7 @@ interface ImageLoaderEngine {
 
     fun load(imageView: ImageView, url: String?, @DrawableRes placeHolder: Int)
 
-    fun load(imageView: ImageView, url: String?, placeHolder: Drawable)
+    fun load(imageView: ImageView, url: String?,placeHolder: Drawable?)
 
     fun load(
         imageView: ImageView,
@@ -49,19 +48,19 @@ interface ImageLoaderEngine {
         @DrawableRes errorPlaceHolder: Int
     )
 
-    fun load(imageView: ImageView, url: String?, placeHolder: Drawable, errorPlaceHolder: Drawable)
+    fun load(imageView: ImageView, url: String?, placeHolder: Drawable?, errorPlaceHolder: Drawable?)
 
     fun load(
         imageView: ImageView,
         url: String?,
         @DrawableRes placeHolder: Int,
-        errorPlaceHolder: Drawable
+        errorPlaceHolder: Drawable?
     )
 
     fun load(
         imageView: ImageView,
         url: String?,
-        placeHolder: Drawable,
+        placeHolder: Drawable?,
         @DrawableRes errorPlaceHolder: Int
     )
 
@@ -71,7 +70,21 @@ interface ImageLoaderEngine {
     fun loadRounded(
         imageView: ImageView,
         url: String?,
-        roundingRadius:Int
+        roundingRadius: Int
+    )
+
+    fun loadRounded(
+        imageView: ImageView,
+        url: String?,
+        roundingRadius: Int,
+        @DrawableRes placeHolder: Int
+    )
+
+    fun loadRounded(
+        imageView: ImageView,
+        url: String?,
+        roundingRadius: Int,
+        placeHolder: Drawable?
     )
 
     /**
@@ -86,13 +99,34 @@ interface ImageLoaderEngine {
     fun loadRounded(
         imageView: ImageView,
         url: String?,
+        roundingRadius: Int,
         @DrawableRes placeHolder: Int,
-        applyPlaceHolder:Boolean
+        applyPlaceHolder: Boolean
+    )
+
+    fun loadRounded(
+        imageView: ImageView,
+        url: String?,
+        roundingRadius: Int,
+        placeHolder: Drawable?,
+        applyPlaceHolder: Boolean
     )
 
     fun loadCircle(
         imageView: ImageView,
         url: String?
+    )
+
+    fun loadCircle(
+        imageView: ImageView,
+        url: String?,
+        @DrawableRes placeHolder: Int
+    )
+
+    fun loadCircle(
+        imageView: ImageView,
+        url: String?,
+        placeHolder : Drawable?
     )
 
     /**
@@ -108,6 +142,13 @@ interface ImageLoaderEngine {
         imageView: ImageView,
         url: String?,
         @DrawableRes placeHolder: Int,
-        applyPlaceHolder:Boolean
+        applyPlaceHolder: Boolean
+    )
+
+    fun loadCircle(
+        imageView: ImageView,
+        url: String?,
+        placeHolder: Drawable?,
+        applyPlaceHolder: Boolean
     )
 }

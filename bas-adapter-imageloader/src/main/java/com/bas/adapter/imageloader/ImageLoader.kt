@@ -38,7 +38,7 @@ object ImageLoader : ImageLoaderEngine by engine {
     /**
      * 用于建议的默认disk cache 大小
      */
-    const val DEFAULT_DISK_CACHE_SIZE =   250 * 1024 * 1024L
+    const val DEFAULT_DISK_CACHE_SIZE = 250 * 1024 * 1024L
 
     class Config internal constructor() {
 
@@ -48,7 +48,6 @@ object ImageLoader : ImageLoaderEngine by engine {
         @JvmField
         var isDiskCacheEnabled: Boolean = true
 
-
         /**
          * 是否启用memory ache
          */
@@ -56,7 +55,8 @@ object ImageLoader : ImageLoaderEngine by engine {
         var isMemoryCacheEnabled: Boolean = true
 
         /**
-         * disk 缓存目录名字
+         * disk 缓存目录名字,如果为空，则使用对应Engine的默认目录名字；
+         * Glide默认配置的文件目录名为[com.bumptech.glide.load.engine.cache.DiskCache.Factory.DEFAULT_DISK_CACHE_DIR]
          */
         @JvmField
         var diskCacheFolderName: String? = null
