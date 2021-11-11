@@ -17,12 +17,24 @@ import static com.bas.adapter.mediaplayer.KernelType.TX;
 @Retention(RetentionPolicy.SOURCE)
 public @interface KernelType {
 
+    /**
+     * 懒加载，即[ConfigurableVideoView]启动时不加载播放器内核，由调用方指定
+     */
     int LAZY = -1;
 
+    /**
+     * 系统播放器
+     */
     int SYS = 0;
 
+    /**
+     * 腾讯播放器
+     */
     int TX = 1;
 
+    /**
+     * 七牛播放器
+     */
     int QN = 2;
 
 }

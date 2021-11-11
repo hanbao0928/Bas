@@ -28,8 +28,8 @@ class ScalableImageView @JvmOverloads constructor(
     private val mFocusChangedListener = OnFocusChangeListener(::onFocusChanged)
 
     init {
-        isFocusable = true
         isClickable = true
+        isFocusable = Leanback.isLeanbackMode
         isFocusableInTouchMode = Leanback.isLeanbackMode
         onFocusChangeListener = mFocusChangedListener
         val tp = context.obtainStyledAttributes(attrs, R.styleable.ScalableView)

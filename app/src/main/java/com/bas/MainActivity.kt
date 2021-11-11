@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-            it.setDataSource("http://highlight-video.cdn.bcebos.com/video/6s/790fb256-1db3-11ec-8b54-6c92bf3b6b4d.mp4?v_from_s=hkapp-haokan-tucheng")
         }
 
 

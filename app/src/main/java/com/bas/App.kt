@@ -2,6 +2,7 @@ package com.bas
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash
@@ -89,4 +90,5 @@ class App : Application() {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
+
 }

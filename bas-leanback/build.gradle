@@ -42,8 +42,6 @@ dependencies {
     * https://developer.android.google.cn/jetpack/androidx/releases/gridlayout*/
     api "androidx.gridlayout:gridlayout:1.0.0"
 
-//    implementation "androidx.leanback:leanback-tab:1.0.0"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'

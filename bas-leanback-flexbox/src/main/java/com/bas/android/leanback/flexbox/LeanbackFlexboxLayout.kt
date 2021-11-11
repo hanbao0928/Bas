@@ -18,7 +18,7 @@ class LeanbackFlexboxLayout @JvmOverloads constructor(
     //是否处理[bringToFront]带来的问题：调用[bringToFront]的view总是在最后绘制的问题
     private var isBringToFrontEnabled = true
 
-    //内部包含的childview请求焦点时，是否将当前布局bringToFront，避免被覆盖
+    //内部包含的Children请求焦点时，是否将当前布局bringToFront，避免被覆盖
     private var bringToFrontWhenChildRequestFocus = false
 
     init {
@@ -34,7 +34,7 @@ class LeanbackFlexboxLayout @JvmOverloads constructor(
     }
 
     /**
-     * 是否处理[View.bringToFront]带来的问题：通过更改绘制顺序
+     * 是否处理Children调用[View.bringToFront]带来的问题：通过更改绘制顺序
      * 默认true
      */
     fun setChildBringToFrontCompatEnabled(isEnabled: Boolean) {
@@ -44,7 +44,7 @@ class LeanbackFlexboxLayout @JvmOverloads constructor(
     /**
      * child view 请求焦点时，是否调用[bringToFront],避免当前Group被遮住
      */
-    fun  setBringToFrontWhenChildRequestFocus(isEnabled: Boolean){
+    fun setBringToFrontWhenChildRequestFocus(isEnabled: Boolean) {
         bringToFrontWhenChildRequestFocus = isEnabled
     }
 
