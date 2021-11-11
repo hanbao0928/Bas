@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--透明白色-->
+    <!--透明白色：用于主题需要透明白色的地方-->
     <color name="bas_theme_opacity_white_view">@color/white_opacity_10</color>
 
 
