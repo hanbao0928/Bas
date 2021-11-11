@@ -32,14 +32,23 @@ inline fun <reified T> String?.toObjectList(): List<T>? {
     }
 }
 
-inline fun ObjectMapper.applyUTCDateFormat(): ObjectMapper {
+/**
+ * 使用UTC时间格式
+ */
+inline fun ObjectMapper.applyUTCDateTimeFormat(): ObjectMapper {
     return JacksonConverter.applyUTCDateFormat(this)
 }
 
-inline fun GsonBuilder.applyUTCDateFormat(): GsonBuilder {
+/**
+ * 使用UTC时间格式
+ */
+inline fun GsonBuilder.applyUTCDateTimeFormat(): GsonBuilder {
     return GsonConverter.applyUTCDateFormat(this)
 }
 
+/**
+ * 启用[com.bas.core.converter.gson.LocalJsonField]过滤策略
+ */
 inline fun GsonBuilder.applyLocalFieldStrategy(): GsonBuilder {
     return GsonConverter.applyLocalFieldStrategy(this)
 }

@@ -104,7 +104,7 @@ public class GsonConverter implements JsonConverter {
     }
 
     public static GsonBuilder applyUTCDateFormat(GsonBuilder builder){
-        builder.setDateFormat(DateUtils.UTC_DATE_PATTERN);
+        builder.setDateFormat(DateUtils.UTC_DATETIME_PATTERN);
         return builder;
     }
 

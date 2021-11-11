@@ -10,9 +10,8 @@ java {
 }
 
 dependencies {
+    /*注解支持*/
     implementation 'org.jetbrains:annotations:16.0.1'
-
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     /*
     https://github.com/google/gson
@@ -29,16 +28,4 @@ dependencies {
     https://github.com/alibaba/fastjson
     * */
     compileOnly "com.alibaba:fastjson:1.2.10"
-
-    def retrofit_version = "2.6.4"
-    /**
-     *  [Retrofit Converter Gson] 使用Gson作为Retrofit的序列化和反序列化工具
-     *  <proguard>
-     *  https://github.com/square/retrofit/wiki/Converters
-     *  https://github.com/google/gson
-     */
-//    compileOnly "com.squareup.retrofit2:converter-jackson:$retrofit_version"
-//    compileOnly "com.squareup.retrofit2:converter-gson:$retrofit_version"
-//    compileOnly 'org.ligboy.retrofit2:converter-fastjson:2.0.2'
-
 }

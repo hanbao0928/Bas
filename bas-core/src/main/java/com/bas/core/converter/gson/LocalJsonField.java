@@ -2,7 +2,7 @@ package com.bas.core.converter.gson;
 
 /**
  * Created by Lucio on 2021/7/21.
- * api序列化忽略的字段注解
+ * 序列化忽略的字段注解
  * 用法:
  * @LocalJsonField(serialize = false,deserialize = false)
  * String name = ""

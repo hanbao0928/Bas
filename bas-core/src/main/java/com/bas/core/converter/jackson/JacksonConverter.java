@@ -85,7 +85,7 @@ public class JacksonConverter implements JsonConverter {
      */
     public static ObjectMapper applyUTCDateFormat(ObjectMapper om){
         om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
-        om.setDateFormat(DateUtils.getUTCDateFormat());
+        om.setDateFormat(DateUtils.getUTCDateTimeFormat());
         return om;
     }
 }

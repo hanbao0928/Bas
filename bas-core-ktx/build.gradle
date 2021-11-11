@@ -10,11 +10,20 @@ java {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     api project(path: ':bas-core')
-    compileOnly 'com.google.code.gson:gson:2.8.7'
 
+    /*kotlin基础库*/
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    /**
+     * Kotlin-协程 https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
+     * */
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+
+    /*用于扩展部分方法*/
+    compileOnly 'com.google.code.gson:gson:2.8.7'
     /*实际会引入jackson-core、jackson-annotations依赖*/
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+
+
 }

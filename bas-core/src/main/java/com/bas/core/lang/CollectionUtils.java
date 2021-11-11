@@ -18,6 +18,13 @@ public class CollectionUtils {
         return elements == null || elements.isEmpty();
     }
 
+    @Nullable
+    public static <T> T getOrNull(List<T> items, int index) {
+        if (index >= 0 && index <= items.size() - 1)
+            return null;
+        return items.get(index);
+    }
+
     @NotNull
     public static <E> List<E> newList(@NotNull E... obj) {
         ArrayList<E> list = new ArrayList<>();
@@ -27,12 +34,10 @@ public class CollectionUtils {
         return list;
     }
 
-
     /**
      * 如果 other 不为空，则添加到source中
-     *
      * @param source        不允许为null
-     * @param elements         允许为null
+     * @param elements      允许为null
      * @param allowItemNull 是否允许添加的Item为null。
      * @return source
      */

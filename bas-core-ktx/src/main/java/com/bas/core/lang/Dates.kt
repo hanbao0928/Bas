@@ -21,30 +21,7 @@ const val ONE_HOUR_TIME = DateUtils.ONE_HOUR_TIME
  */
 const val ONE_MINUTE_TIME = DateUtils.ONE_MINUTE_TIME
 
-/**
- * utc 时间格式
- */
-const val UTC_DATE_PATTERN = DateUtils.UTC_DATE_PATTERN
-
-/**
- * 国内常用的完整时间格式，yyyy-MM-dd HH:mm:ss
- */
-const val CN_DATE_PATTERN = DateUtils.CN_DATE_PATTERN
-
-val CN_DATE_FORMAT = DateUtils.getCNDateFormat()
-
-
-/**
- * 星期几 格式
- */
-const val DATE_WEEK_FORMAT = DateUtils.WEEK_PATTERN
-
-/**
- * utc时间格式化
- */
-val UTC_DATE_FORMAT by lazy {
-    DateUtils.getUTCDateFormat()
-}
+inline val NOW:Date get() = DateUtils.now()
 
 /**
  * 格式化时间
@@ -54,16 +31,34 @@ inline fun Date?.format(pattern: String): String {
 }
 
 /**
+ * 转换成[DateUtils.CN_DATETIME_PATTERN]时间格式
+ */
+inline val Date?.dateTimeFormatCN: String get() = DateUtils.toCNDateTimeFormat(this)
+
+/**
+ * 转换成日期格式
+ */
+inline val Date?.dateFormatCN: String get() = DateUtils.toCNDateFormat(this)
+
+/**
+ * 转换成时间格式（24hour）
+ */
+inline val Date?.timeFormat24: String get() = DateUtils.toTimeFormat24(this)
+
+inline fun Long.toVariesTimeFormat(secondUnit: String = "秒"): String =
+    DateUtils.toVariesTimeFormat(this, secondUnit)
+
+/**
  * 获取星期几
  */
 inline val Date.week: String
-    get() =DateUtils.getWeek(this)
+    get() = DateUtils.getWeek(this)
 
 /**
  * utc时间格式字符串
  */
-inline val Date.toUtc: String
-    get() = DateUtils.toUTC(this)
+inline val Date.dateTimeFormatUTC: String
+    get() = DateUtils.toUTCDateTimeFormat(this)
 
 ///**
 // * 获取UTC时间
