@@ -1,3 +1,6 @@
+include ':bas-binding-ext'
+include ':bas-adapter-imageloader'
+include ':bas-leanback-flexbox'
 include ':bas-leanback-tab'
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
