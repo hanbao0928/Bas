@@ -12,8 +12,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5Utils {
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final char hexDigitsLower[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigitsLower = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
      * 校验MD5码是否相等
@@ -85,8 +85,7 @@ public class MD5Utils {
      * @param salt    加盐值
      * @return 加密后字符串（32位小写字母+数字）
      */
-    @NotNull
-    public static String MD5Lowercase(@NotNull String message, @NotNull String salt) throws NoSuchAlgorithmException {
+    public static @NotNull String MD5Lowercase(@NotNull String message, @NotNull String salt) throws NoSuchAlgorithmException {
         // 获得MD5摘要算法的 MessageDigest 对象
         MessageDigest md = MessageDigest.getInstance("MD5");
 
@@ -105,8 +104,7 @@ public class MD5Utils {
      * @param salt    加盐值
      * @return 加密后字符串（32位大写字母+数字）
      */
-    @NotNull
-    public static String MD5Uppercase(@NotNull String message, @NotNull String salt) throws NoSuchAlgorithmException {
+    public static @NotNull String MD5Uppercase(@NotNull String message, @NotNull String salt) throws NoSuchAlgorithmException {
         // 获得MD5摘要算法的 MessageDigest 对象
         MessageDigest md = MessageDigest.getInstance("MD5");
         // 使用指定的字节更新摘要
@@ -133,8 +131,7 @@ public class MD5Utils {
      * @return 加密后字符串（32位小写字母+数字）
      * @throws NoSuchAlgorithmException
      */
-    @NotNull
-    public static String MD5(@NotNull String message) throws NoSuchAlgorithmException {
+    public static @NotNull String MD5(@NotNull String message) throws NoSuchAlgorithmException {
         MessageDigest mdTemp = MessageDigest.getInstance("MD5");
         mdTemp.update(message.getBytes(StandardCharsets.UTF_8));
         byte[] digestBytes = mdTemp.digest();

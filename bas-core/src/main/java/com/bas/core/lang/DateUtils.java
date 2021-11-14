@@ -72,7 +72,7 @@ public class DateUtils {
     }
 
     @Contract(" -> new")
-    public static @NotNull Date now(){
+    public static @NotNull Date now() {
         return new Date();
     }
 
@@ -127,15 +127,17 @@ public class DateUtils {
         return format(date, WEEK_PATTERN);
     }
 
-    public static @NotNull String toVariesTimeFormat(long timeMillis){
-        return toVariesTimeFormat(timeMillis,"秒");
+    public static @NotNull String toVariesTimeFormat(long timeMillis) {
+        return toVariesTimeFormat(timeMillis, "秒");
     }
+
     /**
      * 转换成 小时、分钟、秒
      * s[secondUnit]
      * mm:ss
      * HH:mm:ss
      * yyyy-MM-dd HH:mm:ss
+     *
      * @param timeMillis 毫秒
      * @param secondUnit [timeMills]计算结果在秒内时，后面拼接的单位
      * @return

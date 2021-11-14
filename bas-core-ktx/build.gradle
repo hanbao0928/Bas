@@ -10,6 +10,7 @@ java {
 }
 
 dependencies {
+
     api project(path: ':bas-core')
 
     /*kotlin基础库*/
@@ -25,5 +26,10 @@ dependencies {
     /*实际会引入jackson-core、jackson-annotations依赖*/
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
 
+    // for test
+    testImplementation 'junit:junit:4.+'
+    testImplementation "com.google.code.gson:gson:2.8.7"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+    testImplementation "com.alibaba:fastjson:1.2.10"
 
 }

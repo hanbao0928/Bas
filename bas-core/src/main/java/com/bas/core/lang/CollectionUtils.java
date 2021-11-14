@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class CollectionUtils {
 
+    @NotNull
     public static <E> boolean isNullOrEmpty(Collection<E> elements) {
         return elements == null || elements.isEmpty();
     }
@@ -36,6 +37,7 @@ public class CollectionUtils {
 
     /**
      * 如果 other 不为空，则添加到source中
+     *
      * @param source        不允许为null
      * @param elements      允许为null
      * @param allowItemNull 是否允许添加的Item为null。
