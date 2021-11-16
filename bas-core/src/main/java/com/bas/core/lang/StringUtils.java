@@ -40,36 +40,39 @@ public class StringUtils {
         return true;
     }
 
-//    /**
-//     * 两个内容是否不同
-//     *
-//     * @param str1 内容1
-//     * @param str2 内容2
-//     * @return 当str1的内容与str2的内容相同时返回true，其他情况则为false。
-//     */
-//    public static boolean areContentsChanged(@Nullable CharSequence str1, @Nullable CharSequence str2) {
-//        if ((str1 == null) != (str2 == null)) {
-//            //str1和str2中有一个为null，一个不为null，结果必然发生变化
-//            return true;
-//        }
-//
-//        //接下来的逻辑，要嘛两个均为null，要嘛两个均不为null
-//        if (str1 == null) {
-//            //说明两个均为null
-//            return false;
-//        }
-//        //说明两个均不为null的情况
-//        final int length = str1.length();
-//        if (length != str2.length()) {
-//            return true;
-//        }
-//        for (int i = 0; i < length; i++) {
-//            if (str1.charAt(i) != str2.charAt(i)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    /**
+     * 两个内容是否不同
+     *
+     * @param str1 内容1
+     * @param str2 内容2
+     * @return 当str1的内容与str2的内容相同时返回true，其他情况则为false。
+     * @deprecated 该方法逻辑没任何问题，只是方法名不如{@link #areContentsSame(CharSequence, CharSequence)},
+     * 如果{@link #areContentsSame(CharSequence, CharSequence)}逻辑（参照本方法而来）无任何问题，则可以去掉该方法
+     */
+    @Deprecated
+    public static boolean areContentsChanged(@Nullable CharSequence str1, @Nullable CharSequence str2) {
+        if ((str1 == null) != (str2 == null)) {
+            //str1和str2中有一个为null，一个不为null，结果必然发生变化
+            return true;
+        }
+
+        //接下来的逻辑，要嘛两个均为null，要嘛两个均不为null
+        if (str1 == null) {
+            //说明两个均为null
+            return false;
+        }
+        //说明两个均不为null的情况
+        final int length = str1.length();
+        if (length != str2.length()) {
+            return true;
+        }
+        for (int i = 0; i < length; i++) {
+            if (str1.charAt(i) != str2.charAt(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static boolean isNullOrEmpty(@Nullable CharSequence str) {
         return str == null || str.length() == 0;

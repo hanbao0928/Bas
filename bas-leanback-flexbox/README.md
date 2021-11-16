@@ -23,11 +23,17 @@
 即布局层次关系可能是这样子：
 
 ViewGroup
+
     -ViewGroup1（LeanbackFlexboxLayout）
+    
         -ChildView1
+        
         -ChildView2
+        
         ...
+        
     -ViewGroup2
+    
     ...
     
 

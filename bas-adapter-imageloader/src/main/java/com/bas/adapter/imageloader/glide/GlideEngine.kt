@@ -2,15 +2,18 @@ package com.bas.adapter.imageloader.glide
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import com.bas.adapter.imageloader.DEBUG
+import com.bas.adapter.imageloader.ImageLoader
 import com.bas.adapter.imageloader.ImageLoaderEngine
+import com.bas.adapter.imageloader.logw
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 
 /**
  * Created by Lucio on 2021/11/4.
@@ -24,7 +27,72 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
  */
 object GlideEngine : ImageLoaderEngine {
 
-    private const val TAG = "GlideEngine"
+    private val centerCrop = CenterCrop()
+
+    private val circleCrop = CircleCrop()
+
+    private var isDefaultRequestOptionInit = false
+
+    /**
+     * 默认请求参数
+     */
+    lateinit var defaultRequestOptions: RequestOptions
+        private set
+
+    /**
+     * 默认圆形请求参数
+     */
+    lateinit var defaultCircleRequestOptions: RequestOptions
+        private set
+
+    /**
+     * 默认圆角参数
+     */
+    lateinit var defaultRoundedRequestOptions: RequestOptions
+        private set
+
+//    fun setDefaultRequestOptions(options: RequestOptions) {
+//        defaultCircleRequestOptions = options.clone().also {
+//            it.transform(CenterCrop(), CircleCrop())
+//        }
+//    }
+
+
+    private inline fun ensureDefaultRequestOptions() {
+        if (isDefaultRequestOptionInit)
+            return
+        setDefaultRequestOptions(RequestOptionsBas())
+    }
+
+    internal fun setDefaultRequestOptions(options: RequestOptions) {
+        isDefaultRequestOptionInit = true
+        this.defaultRequestOptions = options
+        this.defaultCircleRequestOptions = options.clone().apply {
+            transform(centerCrop, circleCrop)
+        }
+        this.defaultRoundedRequestOptions = options.clone().apply {
+            transform(centerCrop, RoundedCorners(ImageLoader.defaultRoundedImageRadius))
+        }
+    }
+
+    fun Request(imageView: ImageView): RequestManager {
+        ensureDefaultRequestOptions()
+        return Glide.with(imageView)
+            .setDefaultRequestOptions(defaultRequestOptions)
+    }
+
+    fun CircleRequest(imageView: ImageView): RequestManager {
+        ensureDefaultRequestOptions()
+        return Glide.with(imageView)
+            .setDefaultRequestOptions(defaultCircleRequestOptions)
+
+    }
+
+    fun RoundedRequest(imageView: ImageView): RequestManager {
+        ensureDefaultRequestOptions()
+        return Glide.with(imageView)
+            .setDefaultRequestOptions(defaultRoundedRequestOptions)
+    }
 
     /**
      * Clears disk cache.
@@ -50,18 +118,6 @@ object GlideEngine : ImageLoaderEngine {
      */
     override fun clear(view: View) {
         Glide.with(view).clear(view)
-    }
-
-    private val centerCrop = CenterCrop()
-
-    fun Request(imageView: ImageView): RequestManager {
-        return Glide.with(imageView)
-            .setDefaultRequestOptions(defaultRequestOptions)
-    }
-
-    fun CircleRequest(imageView: ImageView): RequestManager {
-        return Glide.with(imageView)
-            .setDefaultRequestOptions(defaultCircleRequestOptions)
     }
 
     override fun load(imageView: ImageView, url: String?) {
@@ -139,10 +195,16 @@ object GlideEngine : ImageLoaderEngine {
      * @param roundingRadius 圆角半径，单位px
      */
     override fun loadRounded(imageView: ImageView, url: String?, roundingRadius: Int) {
-        Request(imageView)
-            .load(url)
-            .transform(centerCrop, RoundedCorners(roundingRadius))
-            .into(imageView)
+        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+            RoundedRequest(imageView)
+                .load(url)
+                .into(imageView)
+        } else {
+            Request(imageView)
+                .load(url)
+                .transform(centerCrop, RoundedCorners(roundingRadius))
+                .into(imageView)
+        }
     }
 
     override fun loadRounded(
@@ -151,11 +213,18 @@ object GlideEngine : ImageLoaderEngine {
         roundingRadius: Int,
         placeHolder: Int
     ) {
-        Request(imageView)
-            .load(url)
-            .placeholder(placeHolder)
-            .transform(centerCrop, RoundedCorners(roundingRadius))
-            .into(imageView)
+        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+            RoundedRequest(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .into(imageView)
+        } else {
+            Request(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .transform(centerCrop, RoundedCorners(roundingRadius))
+                .into(imageView)
+        }
     }
 
     override fun loadRounded(
@@ -164,11 +233,41 @@ object GlideEngine : ImageLoaderEngine {
         roundingRadius: Int,
         placeHolder: Drawable?
     ) {
-        Request(imageView)
-            .load(url)
-            .placeholder(placeHolder)
-            .transform(centerCrop, RoundedCorners(roundingRadius))
-            .into(imageView)
+        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+            RoundedRequest(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .into(imageView)
+        } else {
+            Request(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .transform(centerCrop, RoundedCorners(roundingRadius))
+                .into(imageView)
+        }
+    }
+
+    override fun loadRounded(
+        imageView: ImageView,
+        url: String?,
+        roundingRadius: Int,
+        placeHolder: Drawable?,
+        error: Drawable?
+    ) {
+        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+            RoundedRequest(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .error(error)
+                .into(imageView)
+        } else {
+            Request(imageView)
+                .load(url)
+                .placeholder(placeHolder)
+                .error(error)
+                .transform(centerCrop, RoundedCorners(roundingRadius))
+                .into(imageView)
+        }
     }
 
     /**
@@ -185,7 +284,9 @@ object GlideEngine : ImageLoaderEngine {
         applyPlaceHolder: Boolean
     ) {
         if (applyPlaceHolder) {
-            Log.w(TAG, "在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            if (DEBUG) {
+                logw("在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            }
             val placeHolderLoader = Glide.with(imageView)
                 .load(placeHolder)
                 .transform(centerCrop, RoundedCorners(roundingRadius))
@@ -207,7 +308,9 @@ object GlideEngine : ImageLoaderEngine {
         applyPlaceHolder: Boolean
     ) {
         if (applyPlaceHolder && placeHolder != null) {
-            Log.w(TAG, "在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            if (DEBUG) {
+                logw("在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            }
             val placeHolderLoader = Glide.with(imageView)
                 .load(placeHolder)
                 .transform(centerCrop, RoundedCorners(roundingRadius))
@@ -222,25 +325,22 @@ object GlideEngine : ImageLoaderEngine {
     }
 
     override fun loadCircle(imageView: ImageView, url: String?) {
-        Request(imageView)
+        CircleRequest(imageView)
             .load(url)
-            .transform(centerCrop, CircleCrop())
             .into(imageView)
     }
 
     override fun loadCircle(imageView: ImageView, url: String?, placeHolder: Int) {
-        Request(imageView)
+        CircleRequest(imageView)
             .load(url)
             .placeholder(placeHolder)
-            .transform(centerCrop, CircleCrop())
             .into(imageView)
     }
 
     override fun loadCircle(imageView: ImageView, url: String?, placeHolder: Drawable?) {
-        Request(imageView)
+        CircleRequest(imageView)
             .load(url)
             .placeholder(placeHolder)
-            .transform(centerCrop, CircleCrop())
             .into(imageView)
     }
 
@@ -256,10 +356,12 @@ object GlideEngine : ImageLoaderEngine {
         applyPlaceHolder: Boolean
     ) {
         if (applyPlaceHolder) {
-            Log.w(TAG, "在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            if (DEBUG) {
+                logw("在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆形占位图")
+            }
             val placeHolderLoader = Glide.with(imageView)
                 .load(placeHolder)
-                .transform(centerCrop, CircleCrop())
+                .transform(centerCrop, circleCrop)
             CircleRequest(imageView)
                 .load(url)
                 .thumbnail(placeHolderLoader)
@@ -276,10 +378,12 @@ object GlideEngine : ImageLoaderEngine {
         applyPlaceHolder: Boolean
     ) {
         if (applyPlaceHolder && placeHolder != null) {
-            Log.w(TAG, "在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆角占位图")
+            if (DEBUG) {
+                logw("在应用中包含必须在运行时做变换才能使用的图片资源是很不划算的，建议使用圆形占位图")
+            }
             val placeHolderLoader = Glide.with(imageView)
                 .load(placeHolder)
-                .transform(centerCrop, CircleCrop())
+                .transform(centerCrop, circleCrop)
             CircleRequest(imageView)
                 .load(url)
                 .thumbnail(placeHolderLoader)

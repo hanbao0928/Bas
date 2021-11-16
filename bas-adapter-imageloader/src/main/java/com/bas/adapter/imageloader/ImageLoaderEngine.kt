@@ -87,6 +87,14 @@ interface ImageLoaderEngine {
         placeHolder: Drawable?
     )
 
+    fun loadRounded(
+        imageView: ImageView,
+        url: String?,
+        roundingRadius: Int,
+        placeHolder: Drawable?,
+        error:Drawable?
+    )
+
     /**
      * 加载圆角图片
      * @param applyPlaceHolder 圆角转换是否应用到占位图，如果占位图本身是圆角，则设置该属性为false，避免重新转换占位图。

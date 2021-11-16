@@ -1,4 +1,10 @@
 ##---------------Bas ProGuard
+# for bas-core
+-keep public class com.bas.core.**{
+    public *;
+    protected * ;
+}
+
 # 保持注解属性
 -keepattributes *Annotation*
 
@@ -18,11 +24,6 @@
     static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
 }
 
-# for bas-core
--keep public class com.bas.core.**{
-    public *;
-    protected * ;
-}
 ##---------------Bas ProGuard END
 
 

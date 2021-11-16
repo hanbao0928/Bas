@@ -20,6 +20,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+## for bas-adapter-imageloader
+-keep public class com.bas.adapter.imageloader.**{
+    public *;
+    protected * ;
+}
 
 ##---------------BEGIN: Glide  ----------
 # 来源: https://github.com/bumptech/glide#proguard

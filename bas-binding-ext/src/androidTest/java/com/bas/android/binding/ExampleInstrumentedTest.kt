@@ -1,4 +1,4 @@
-package com.bas.core.android.binding
+package com.bas.android.binding
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

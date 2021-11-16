@@ -2,13 +2,12 @@ package com.bas.adapter.mediaplayer
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.bas.adapter.mediaplayer.qn.QNVideoView
 import com.bas.adapter.mediaplayer.sys.SysVideoView
 import com.bas.adapter.mediaplayer.tencent.TXVideoView
 import com.bas.core.android.util.Logger
-import com.bas.core.android.util.removeSelfFromParent
+import com.bas.core.android.view.extensions.removeSelfFromParent
 import com.bas.core.lang.orDefault
 import com.bas.player.R
 

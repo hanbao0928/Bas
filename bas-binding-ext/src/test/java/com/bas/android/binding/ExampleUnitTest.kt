@@ -1,4 +1,4 @@
-package com.bas.core.android.binding
+package com.bas.android.binding
 
 import org.junit.Test
 

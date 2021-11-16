@@ -1,3 +1,9 @@
+## for bas-adapter-imageloader
+-keep public class com.bas.adapter.imageloader.**{
+    public *;
+    protected * ;
+}
+
 ##---------------BEGIN: Glide  ----------
 # 来源: https://github.com/bumptech/glide#proguard
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -18,8 +24,9 @@
 # target api < 27添加下面混淆规则 来源：http://bumptech.github.io/glide/doc/download-setup.html#proguard
 #-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
 
-# 如果使用了Generate API ，需要 keep 住你的 AppGlideModule 实现：
+
 # https://muyangmin.github.io/glide-docs-cn/doc/configuration.html
 -keep public class  extends com.bumptech.glide.module.AppGlideModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+
 ##---------------END: Glide  ----------

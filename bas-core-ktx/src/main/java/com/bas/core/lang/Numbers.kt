@@ -12,10 +12,10 @@ inline fun Long?.orDefault(def: Long = 0) = this ?: def
 inline fun Double?.orDefault(def: Double = 0.0) = this ?: def
 
 
-inline fun Int?.avoidZeroDividend() = this.orDefault().coerceAtMost(1)
-inline fun Float?.avoidZeroDividend() = this.orDefault().coerceAtMost(1f)
-inline fun Long?.avoidZeroDividend() = this.orDefault().coerceAtMost(1)
-inline fun Double?.avoidZeroDividend() = this.orDefault().coerceAtMost(1.0)
+inline fun Int?.avoidZeroDividend():Int = if (this == null || this == 0) 1 else this
+inline fun Float?.avoidZeroDividend():Float = if (this == null || this == 0f) 1f else this
+inline fun Long?.avoidZeroDividend():Long = if (this == null || this == 0L) 1L else this
+inline fun Double?.avoidZeroDividend():Double = if (this == null || this == 0.0) 1.0 else this
 
 /**
  * 保留一位小数

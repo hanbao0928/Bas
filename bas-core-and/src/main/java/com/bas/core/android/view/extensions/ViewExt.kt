@@ -4,7 +4,7 @@
 
 @file:JvmName("Views")
 
-package com.bas.core.android.util
+package com.bas.core.android.view.extensions
 
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +13,13 @@ inline var View.isVisible: Boolean
     get() = visibility == View.VISIBLE
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
+    }
+
+
+inline var View.isVisibleOrNot: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) View.VISIBLE else View.INVISIBLE
     }
 
 /**
