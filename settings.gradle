@@ -1,3 +1,4 @@
+include ':bas-multidex-compat'
 include ':bas-binding-ext'
 include ':bas-adapter-imageloader'
 include ':bas-leanback-flexbox'
