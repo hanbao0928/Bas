@@ -35,40 +35,39 @@ public class CollectionUtils {
     /**
      * 如果 other 不为空，则添加到source中
      *
-     * @param source        不允许为null
-     * @param elements      允许为null
-     * @param allowItemNull 是否允许添加的Item为null。
+     * @param destination    不允许为null
+     * @param elements       允许为null
+     * @param filterNotNulls 是否允许添加的Item为null。
      * @return source
      */
     @NotNull
-    public static <E> Collection<E> addAllIfNotNull(@NotNull Collection<E> source,
-                                                    @Nullable Collection<E> elements,
-                                                    boolean allowItemNull) {
-        Objects.requireNonNull(source);
+    public static <E> void mergeTo(@NotNull Collection<E> destination,
+                                   @Nullable Collection<E> elements,
+                                   boolean filterNotNulls) {
+        Objects.requireNonNull(destination);
         if (isNullOrEmpty(elements))
-            return source;
-        if (allowItemNull) {
-            source.addAll(elements);
-        } else {
+            return;
+        if (filterNotNulls) {
             for (E item : elements) {
                 if (item != null)
-                    source.add(item);
+                    destination.add(item);
             }
+        } else {
+            destination.addAll(elements);
         }
-        return source;
     }
 
     @NotNull
-    public static <E> Collection<E> addAllIfNotNull(@NotNull Collection<E> source,
-                                                    @Nullable Collection<E> elements) {
-        return addAllIfNotNull(source, elements, true);
+    public static <E> void mergeTo(@NotNull Collection<E> source,
+                                   @Nullable Collection<E> elements) {
+        mergeTo(source, elements, false);
     }
 
     /**
      * 判断两个列表是否相等（顺序和对应的item equal）
      *
      * @param source 源数据集合
-     * @param other 其他数据源
+     * @param other  其他数据源
      * @return 如果{@link source}与@{link other}数据集合中的元素相同，则返回true，其他情况返回false。
      */
     public static <E> boolean areItemsEqual(@Nullable Collection<E> source,

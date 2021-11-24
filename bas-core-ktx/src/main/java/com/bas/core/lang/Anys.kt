@@ -6,10 +6,13 @@ package com.bas.core.lang
 
 inline fun <T> T?.orDefault(initializer: () -> T): T = this ?: initializer()
 
+inline fun <T> T?.orDefault(default:T): T = this ?: default
 
 inline fun <T, R> T.mapAs(transformer: T.() -> R): R {
     return transformer(this)
 }
+
+
 
 
 

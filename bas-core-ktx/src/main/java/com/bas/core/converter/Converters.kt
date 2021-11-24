@@ -19,9 +19,9 @@ inline fun <reified T> String?.toObject(): T? {
     return Converters.toObject(this, T::class.java)
 }
 
-inline fun <reified T> String?.toObjectList(): List<T>? {
+inline fun <reified T> String?.toObjectList(): List<T> {
     if (this.isNullOrEmpty())
-        return null
+        return mutableListOf()
     val convert = Converters.getJsonConverter()
     return if (convert is GsonConverter && convert.isInlineOptimization) {
         //gson不支持泛型方法，所以必须在内联方法中实现；
@@ -29,7 +29,7 @@ inline fun <reified T> String?.toObjectList(): List<T>? {
         convert.gson.fromJson(this, type)
     } else {
         convert.toObjectList(this, T::class.java)
-    }
+    } ?: mutableListOf()
 }
 
 /**
