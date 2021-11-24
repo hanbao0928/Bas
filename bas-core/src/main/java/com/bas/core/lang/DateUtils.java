@@ -1,6 +1,5 @@
 package com.bas.core.lang;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,9 +56,10 @@ public class DateUtils {
     @SuppressWarnings("SimpleDateFormat")
     private static final DateFormat CN_DATETIME_FORMAT = new SimpleDateFormat(CN_DATETIME_PATTERN);
 
-
     private static DateFormat UTC_DATE_FORMAT;
 
+    @SuppressWarnings("SimpleDateFormat")
+    @NotNull
     public static DateFormat getUTCDateTimeFormat() {
         if (UTC_DATE_FORMAT == null) {
             UTC_DATE_FORMAT = new SimpleDateFormat(UTC_DATETIME_PATTERN);
@@ -67,18 +67,24 @@ public class DateUtils {
         return UTC_DATE_FORMAT;
     }
 
+    @NotNull
     public static DateFormat getCNDateTimeFormat() {
         return CN_DATETIME_FORMAT;
     }
 
-    @Contract(" -> new")
     public static @NotNull Date now() {
         return new Date();
     }
 
+    /**
+     * 根据{@code pattern}格式化时间
+     * @param date 日期
+     * @param pattern 格式
+     * @return 格式化后的字符串
+     */
     @SuppressWarnings("SimpleDateFormat")
     @NotNull
-    public static String format(@Nullable Date date, String pattern) {
+    public static String format(@Nullable Date date,@Nullable String pattern) {
         if (StringUtils.isNullOrEmpty(pattern) || date == null) return "";
         if (CN_DATETIME_PATTERN.equals(pattern)) {
             return getCNDateTimeFormat().format(date);
@@ -96,6 +102,7 @@ public class DateUtils {
     public static String toCNDateTimeFormat(@Nullable Date date) {
         return format(date, CN_DATETIME_PATTERN);
     }
+
 
     /**
      * 转换成日期格式
@@ -120,8 +127,8 @@ public class DateUtils {
     /**
      * 获取星期
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return 星期几
      */
     public static @NotNull String getWeek(@Nullable Date date) {
         return format(date, WEEK_PATTERN);
@@ -140,9 +147,10 @@ public class DateUtils {
      *
      * @param timeMillis 毫秒
      * @param secondUnit [timeMills]计算结果在秒内时，后面拼接的单位
-     * @return
+     * @return 格式化之后的时间格式字符串
      */
-    public static @NotNull String toVariesTimeFormat(long timeMillis, String secondUnit) {
+    @SuppressWarnings("DefaultLocale")
+    public static @NotNull String toVariesTimeFormat(long timeMillis, @Nullable String secondUnit) {
         if (timeMillis < ONE_MINUTE_TIME) {
             return timeMillis / 1000 + secondUnit;
         } else if (timeMillis < ONE_HOUR_TIME) {
@@ -159,36 +167,5 @@ public class DateUtils {
         }
     }
 
-//    /**
-//     * 创建UTC日期
-//     *
-//     * @return
-//     */
-//    public static Date createUTCDate() {
-//        // 1、取得本地时间：
-//        Calendar cal = Calendar.getInstance();
-//        // 2、取得时间偏移量：
-//        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
-//        // 3、取得夏令时差：
-//        int dstOffset = cal.get(Calendar.DST_OFFSET);
-//        // 4、从本地时间里扣除这些差量，即可以取得UTC时间：
-//        cal.add(Calendar.MILLISECOND, -(zoneOffset + dstOffset));
-//        return cal.getTime();
-//    }
-//
-//    /**
-//     * UTC日期转换成本地日期
-//     */
-//    public static Date utcDateToLocalDate(Date date) {
-//        // 1、取得本地时间：
-//        Calendar cal = Calendar.getInstance();
-//        // 2、取得时间偏移量：
-//        int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
-//        // 3、取得夏令时差：
-//        int dstOffset = cal.get(Calendar.DST_OFFSET);
-//        cal.setTime(date);
-//        cal.add(Calendar.MILLISECOND, zoneOffset + dstOffset);
-//        return cal.getTime();
-//    }
 
 }

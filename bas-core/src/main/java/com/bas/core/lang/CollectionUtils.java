@@ -14,25 +14,22 @@ import java.util.Objects;
  */
 public class CollectionUtils {
 
-    @NotNull
-    public static <E> boolean isNullOrEmpty(Collection<E> elements) {
+    public static <E> boolean isNullOrEmpty(@Nullable Collection<E> elements) {
         return elements == null || elements.isEmpty();
     }
 
     @Nullable
-    public static <T> T getOrNull(List<T> items, int index) {
-        if (index >= 0 && index <= items.size() - 1)
+    public static <E> E getOrNull(@NotNull List<E> source, int index) {
+        Objects.requireNonNull(source);
+        if (index >= 0 && index <= source.size() - 1)
             return null;
-        return items.get(index);
+        return source.get(index);
     }
 
+    @SafeVarargs
     @NotNull
-    public static <E> List<E> newList(@NotNull E... obj) {
-        ArrayList<E> list = new ArrayList<>();
-        if (obj.length > 0) {
-            list.addAll(Arrays.asList(obj));
-        }
-        return list;
+    public static <E> List<E> newList(@NotNull E... elements) {
+        return new ArrayList<>(Arrays.asList(elements));
     }
 
     /**
@@ -43,22 +40,25 @@ public class CollectionUtils {
      * @param allowItemNull 是否允许添加的Item为null。
      * @return source
      */
+    @NotNull
     public static <E> Collection<E> addAllIfNotNull(@NotNull Collection<E> source,
-                                                    @Nullable Collection<E> elements, boolean allowItemNull) {
+                                                    @Nullable Collection<E> elements,
+                                                    boolean allowItemNull) {
         Objects.requireNonNull(source);
-        if (!isNullOrEmpty(elements)) {
-            if (allowItemNull) {
-                source.addAll(elements);
-            } else {
-                for (E item : elements) {
-                    if (item != null)
-                        source.add(item);
-                }
+        if (isNullOrEmpty(elements))
+            return source;
+        if (allowItemNull) {
+            source.addAll(elements);
+        } else {
+            for (E item : elements) {
+                if (item != null)
+                    source.add(item);
             }
         }
         return source;
     }
 
+    @NotNull
     public static <E> Collection<E> addAllIfNotNull(@NotNull Collection<E> source,
                                                     @Nullable Collection<E> elements) {
         return addAllIfNotNull(source, elements, true);
@@ -67,9 +67,9 @@ public class CollectionUtils {
     /**
      * 判断两个列表是否相等（顺序和对应的item equal）
      *
-     * @param source
-     * @param other
-     * @return
+     * @param source 源数据集合
+     * @param other 其他数据源
+     * @return 如果{@link source}与@{link other}数据集合中的元素相同，则返回true，其他情况返回false。
      */
     public static <E> boolean areItemsEqual(@Nullable Collection<E> source,
                                             @Nullable Collection<E> other) {

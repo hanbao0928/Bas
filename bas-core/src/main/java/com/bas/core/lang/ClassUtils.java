@@ -1,11 +1,13 @@
 package com.bas.core.lang;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by Lucio on 2021/7/22.
  */
 public class ClassUtils {
 
-    public static boolean isClassExists(String className) {
+    public static boolean isClassExists(@NotNull String className) {
         try {
             Class.forName(className);
             return true;

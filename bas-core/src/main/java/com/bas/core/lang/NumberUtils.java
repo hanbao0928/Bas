@@ -12,12 +12,12 @@ public class NumberUtils {
     /**
      * 保留小数点后一位
      */
-    private static DecimalFormat decimalFormat1;
+    private static final DecimalFormat decimalFormat1;
 
     /**
      * 保留小数点后两位
      */
-    private static DecimalFormat decimalFormat2;
+    private static final DecimalFormat decimalFormat2;
 
     static {
         decimalFormat1 = new DecimalFormat("0.0");
@@ -26,54 +26,47 @@ public class NumberUtils {
 
     /**
      * 保留一位小数
-     *
-     * @param value
-     * @return
      */
+    @NotNull
     public static String toDecimal1(double value) {
         return decimalFormat1.format(value);
     }
 
     /**
-     * 保留两位小数
-     *
-     * @param value
-     * @return
-     */
-    public static String toDecimal2(double value) {
-        return decimalFormat2.format(value);
-    }
-
-    /**
      * 保留一位小数
-     *
-     * @param value
-     * @return
      */
+    @NotNull
     public static String toDecimal1(float value) {
         return decimalFormat1.format(value);
     }
 
     /**
      * 保留两位小数
-     *
-     * @param value
-     * @return
      */
+    @NotNull
+    public static String toDecimal2(double value) {
+        return decimalFormat2.format(value);
+    }
+
+    /**
+     * 保留两位小数
+     */
+    @NotNull
     public static String toDecimal2(float value) {
         return decimalFormat2.format(value);
     }
 
     /**
-     * 格式化小树
+     * 格式化小数
      *
-     * @param value        值
+     * @param value           值
      * @param decimalPlaceCnt 小数位
-     * @return
+     * @return 指定小数位数显示的字符串
      */
+    @NotNull
     public static String toDecimal(double value, int decimalPlaceCnt) {
         if (decimalPlaceCnt == 0) {
-            return ((int) value) + "";
+            return String.valueOf((int) value);
         } else if (decimalPlaceCnt == 1) {
             return toDecimal1(value);
         } else if (decimalPlaceCnt == 2) {
@@ -86,23 +79,25 @@ public class NumberUtils {
     /**
      * 格式化小数
      *
-     * @param value        值
+     * @param value           值
      * @param decimalPlaceCnt 小数位
-     * @param fill 填充字符
-     * @param separator 分隔符
-     * @return
+     * @param fill            填充字符
+     * @param separator       分隔符
+     * @return 指定小数位数显示的字符串
      */
-    public static String toDecimal(double value, int decimalPlaceCnt, String fill, String separator) {
+    @NotNull
+    public static String toDecimal(double value, int decimalPlaceCnt,@NotNull String fill,@NotNull String separator) {
         return new DecimalFormat(createDecimalPattern(decimalPlaceCnt, fill, separator)).format(value);
     }
 
     /**
      * 格式化小树
      *
-     * @param value        值
+     * @param value           值
      * @param decimalPlaceCnt 小数位
-     * @return
+     * @return 指定小数位数显示的字符串
      */
+    @NotNull
     public static String toDecimal(float value, int decimalPlaceCnt) {
         if (decimalPlaceCnt == 0) {
             return ((int) value) + "";
@@ -118,13 +113,14 @@ public class NumberUtils {
     /**
      * 格式化小数
      *
-     * @param value        值
+     * @param value           值
      * @param decimalPlaceCnt 小数位
-     * @param fill 填充字符
-     * @param separator 分隔符
-     * @return
+     * @param fill            填充字符
+     * @param separator       分隔符
+     * @return 指定小数位数显示的字符串
      */
-    public static String toDecimal(float value, int decimalPlaceCnt, String fill, String separator) {
+    @NotNull
+    public static String toDecimal(float value, int decimalPlaceCnt, @NotNull String fill, @NotNull String separator) {
         return new DecimalFormat(createDecimalPattern(decimalPlaceCnt, fill, separator)).format(value);
     }
 
@@ -132,9 +128,10 @@ public class NumberUtils {
      * 创建小数格式化样式
      *
      * @param decimalPlace 小数点后位数
-     * @return
+     * @return 格式化模版
      */
-    public static @NotNull String createDecimalPattern(int decimalPlace) {
+    @NotNull
+    public static String createDecimalPattern(int decimalPlace) {
         return createDecimalPattern(decimalPlace, "0", ".");
     }
 
@@ -142,11 +139,12 @@ public class NumberUtils {
      * 创建小数格式化样式
      *
      * @param decimalPlaceCnt 小数位个数
-     * @param fill         填充字符串,比如"0"
-     * @param separator    分隔符，比如"."
-     * @return
+     * @param fill            填充字符串,比如"0"
+     * @param separator       分隔符，比如"."
+     * @return 格式化模版
      */
-    public static @NotNull String createDecimalPattern(int decimalPlaceCnt, String fill, String separator) {
+    @NotNull
+    public static String createDecimalPattern(int decimalPlaceCnt, @NotNull String fill, @NotNull String separator) {
         StringBuilder pattern = new StringBuilder(fill);
         if (decimalPlaceCnt > 0) {
             pattern.append(separator);
@@ -158,23 +156,4 @@ public class NumberUtils {
         return pattern.toString();
     }
 
-//    /**
-//     * 创建Decimal格式化表达式
-//     * @param decimalPlace 小数点后多少位
-//     * @param fill 填充字符；默认用0填充
-//     */
-//    internal fun createDecimalPattern(decimalPlace: Int, fill: String = "0"): String {
-//        var de = decimalPlace
-//        val pattern: StringBuilder = StringBuilder(fill).apply {
-//            if (de > 0) {
-//                append(".")
-//            }
-//        }
-//
-//        while (de > 0) {
-//            de--
-//            pattern.append(fill)
-//        }
-//        return pattern.toString()
-//    }
 }

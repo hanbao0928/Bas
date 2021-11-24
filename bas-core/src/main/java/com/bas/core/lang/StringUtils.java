@@ -11,11 +11,8 @@ import java.util.Objects;
 public class StringUtils {
 
     /**
-     * 内容是否相同
-     *
-     * @param str1
-     * @param str2
-     * @return
+     * 判断两个字符串内容是否相同
+     * @return 如果两者内容相同（同为null或内容相同），则返回true，其他情况返回false
      */
     public static boolean areContentsSame(@Nullable CharSequence str1, @Nullable CharSequence str2) {
         if ((str1 == null) != (str2 == null)) {
@@ -74,39 +71,52 @@ public class StringUtils {
         return false;
     }
 
+    /**
+     * 判断是否为null或内容为空
+     * @return 如果{@code str}为null或内容为空，则返回true，其他情况返回false
+     */
     public static boolean isNullOrEmpty(@Nullable CharSequence str) {
         return str == null || str.length() == 0;
     }
 
+    /**
+     * 为空（=null或内容为空）时返回默认值
+     * @param str 字符串
+     * @param def 默认值
+     * @return {@code str}=null 或 内容为空时，返回{@code def},否则返回{@code str}.
+     */
     @NotNull
     public static String orDefaultIfNullOrEmpty(@Nullable String str, @NotNull String def) {
         Objects.requireNonNull(def);
         return isNullOrEmpty(str) ? def : str;
     }
 
-    public static int toIntOrDefault(String str) {
+    public static int toIntOrDefault(@Nullable String str) {
         return toIntOrDefault(str, 0);
     }
 
-    public static int toIntOrDefault(String str, int def) {
+    public static int toIntOrDefault(@Nullable String str, int def) {
         try {
+            if(StringUtils.isNullOrEmpty(str))
+                return def;
             return Integer.parseInt(str);
         } catch (Exception e) {
             return def;
         }
     }
 
-    public static long toLongOrDefault(String str) {
+    public static long toLongOrDefault(@Nullable String str) {
         return toLongOrDefault(str, 0);
     }
 
-    public static long toLongOrDefault(String str, long def) {
+    public static long toLongOrDefault(@Nullable String str, long def) {
         try {
+            if(StringUtils.isNullOrEmpty(str))
+                return def;
             return Long.parseLong(str);
         } catch (Exception e) {
             return def;
         }
     }
-
 
 }
