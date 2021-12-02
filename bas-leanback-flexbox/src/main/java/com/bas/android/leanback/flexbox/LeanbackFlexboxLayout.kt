@@ -53,7 +53,10 @@ class LeanbackFlexboxLayout @JvmOverloads constructor(
         if (!bringToFrontWhenChildRequestFocus || descendantFocusability == ViewGroup.FOCUS_BLOCK_DESCENDANTS) {
             return
         }
-        bringToFront()
+        if (indexOfChild(child) >= 0) {
+            //为当前child view，bringToFront
+            bringChildToFront(child)
+        }
     }
 
     override fun bringChildToFront(child: View?) {
