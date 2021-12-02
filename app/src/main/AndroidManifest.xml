@@ -31,13 +31,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.leanbacktab.IndexActivity"
+        <activity android:name=".sample.IndexActivity"
             android:exported="true"/>
         <activity android:name=".sample.leanbacktab.TextTabActivity" />
         <activity android:name=".sample.leanbacktab.TextIconTabActivity" />
         <activity android:name=".sample.leanbacktab.CustomTabActivity" />
         <activity android:name=".sample.leanbacktab.MixedTabActivity" />
         <activity android:name=".sample.leanbacktab.DynamicTabActivity" />
+
+        <activity android:name=".sample.leanbacklayout.LeanbackLayoutActivity"/>
+<!--        <service android:name=".OtherProcessService"-->
+<!--            android:exported="false"-->
+<!--            android:process=":otherProcess"/>-->
     </application>
 
 </manifest>

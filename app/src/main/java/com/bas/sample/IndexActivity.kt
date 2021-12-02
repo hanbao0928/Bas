@@ -1,4 +1,4 @@
-package com.bas.sample.leanbacktab
+package com.bas.sample
 
 import android.app.Activity
 import android.content.Intent
@@ -9,6 +9,7 @@ import com.bas.R
 import com.bas.WeatherService
 import com.bas.core.lang.orDefaultIfNullOrEmpty
 import com.bas.databinding.LeanbackTestActivityBinding
+import com.bas.sample.leanbacktab.*
 import java.net.HttpURLConnection
 import java.net.URL
 

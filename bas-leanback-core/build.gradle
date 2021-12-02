@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    api project(path: ':bas-core-and')
 
 /*base*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

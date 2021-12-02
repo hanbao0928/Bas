@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bas.leanback.layout.LeanbackLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <TextView
+        style="@style/LeanbackTestBlockTitle"
+        android:text="全局边界抖动动画：" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button1" />
+
+    <bas.leanback.layout.LeanbackRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button3" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Button4" />
+    </bas.leanback.layout.LeanbackRelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button2" />
+
+
+    <TextView
+        style="@style/LeanbackTestBlockTitle"
+        android:text="体验布局BringToFront" />
+
+    <TextView
+        style="@style/LeanbackTestLabel"
+        android:text="RelativeLayout不需要修改绘制顺序" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.bas.android.leanback.widget.scalable.ScalableTextView
+            android:id="@+id/btn_r_1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#00ffff"
+            android:text="ButtonR1"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:id="@+id/btn_r_4"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_1"
+            android:background="#ffff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img2"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:id="@+id/btn_r_2"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_4"
+            android:background="#00ff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:id="@+id/btn_r_3"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_2"
+            android:background="#ffff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img2"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+    </RelativeLayout>
+
+
+    <TextView
+        style="@style/LeanbackTestLabel"
+        android:text="FrameLayout不需要修改绘制顺序、使用自定义Framelayout并启动焦点记忆：即上一次是谁获取的焦点则下一次获取焦点则就由谁获取" />
+
+    <bas.leanback.layout.LeanbackFrameLayout
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:focusMemoryEnabled_bas="true">
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="#ffff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img2"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_1"
+            android:background="#00ff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+    </bas.leanback.layout.LeanbackFrameLayout>
+
+    <TextView
+        style="@style/LeanbackTestLabel"
+        android:text="常规LinearLayout，bringToFront有问题，需要重写绘制顺序才行" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <com.bas.android.leanback.widget.scalable.ScalableTextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#00ffff"
+            android:text="ButtonR1"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_2"
+            android:background="#ffff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img2"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_1"
+            android:background="#00ff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/LeanbackTestLabel"
+        android:text="自定义LeanbackLinearLayout，无任何问题" />
+
+    <bas.leanback.layout.LeanbackLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <com.bas.android.leanback.widget.scalable.ScalableTextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#00ffff"
+            android:text="ButtonR1"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_2"
+            android:background="#ffff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img2"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+
+        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_1"
+            android:background="#00ff00"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            android:text="ButtonR2"
+            app:bringToFrontOnFocus="true"
+            app:zoomFactor="large" />
+    </bas.leanback.layout.LeanbackLinearLayout>
+</bas.leanback.layout.LeanbackLinearLayout>

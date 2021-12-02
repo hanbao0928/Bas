@@ -125,7 +125,8 @@ public class LeanbackLayoutProcessor extends AbstractProcessor {
                     .superclass(ClassName.get(superPackageName, superClassName))
                     .addSuperinterface(ClassName.get(PACKAGE_NAME, "BringChildToFrontHelper.Callback"))
                     .addField(ClassName.get(PACKAGE_NAME, "LeanbackLayoutHelper"), "layoutHelper", Modifier.PRIVATE, Modifier.FINAL)
-                    .addField(ClassName.get(PACKAGE_NAME, "BringChildToFrontHelper"), "bringChildToFrontHelper", Modifier.PRIVATE, Modifier.FINAL);
+                    .addField(ClassName.get(PACKAGE_NAME, "BringChildToFrontHelper"), "bringChildToFrontHelper", Modifier.PRIVATE, Modifier.FINAL)
+                    .addField(ClassName.get(PACKAGE_NAME + ".memory", "MemoryHelper"), "memoryHelper", Modifier.PRIVATE, Modifier.FINAL);
 
             generateMethods(typeBuilder, clazz);
 
@@ -141,6 +142,52 @@ public class LeanbackLayoutProcessor extends AbstractProcessor {
         bringChildToFront(typeBuilder, clazz);
         getChildDrawingOrder(typeBuilder, clazz);
         requestChildFocus(typeBuilder, clazz);
+        addFocusables(typeBuilder, clazz);
+        onRequestFocusInDescendants(typeBuilder, clazz);
+        onViewRemoved(typeBuilder, clazz);
+    }
+
+    private void onRequestFocusInDescendants(TypeSpec.Builder typeBuilder, String clazz) {
+        MethodSpec onRequestFocusInDescendants = MethodSpec.methodBuilder("onRequestFocusInDescendants")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .addParameter(int.class, "direction")
+                .addParameter(ProcessorUtils.createRectTypeName(true), "previouslyFocusedRect")
+                .addCode(CodeBlock.builder()
+                        .beginControlFlow("if(!memoryHelper.onRequestFocusInDescendants(direction,previouslyFocusedRect))")
+                        .addStatement("return true")
+                        .nextControlFlow("else")
+                        .addStatement("return super.onRequestFocusInDescendants(direction,previouslyFocusedRect)")
+                        .endControlFlow().build())
+                .returns(boolean.class)
+                .build();
+        typeBuilder.addMethod(onRequestFocusInDescendants);
+    }
+
+    private void onViewRemoved(TypeSpec.Builder typeBuilder, String clazz) {
+        MethodSpec onViewRemoved = MethodSpec.methodBuilder("onViewRemoved")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(ProcessorUtils.createViewTypeName(true), "child")
+                .addStatement("super.onViewRemoved(child)")
+                .addStatement("memoryHelper.onViewRemoved(child)")
+                .build();
+        typeBuilder.addMethod(onViewRemoved);
+    }
+
+    private void addFocusables(TypeSpec.Builder typeBuilder, String clazz) {
+        MethodSpec addFocusables = MethodSpec.methodBuilder("addFocusables")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(ProcessorUtils.createArrayList(ProcessorUtils.createViewTypeName()), "views")
+                .addParameter(int.class, "direction")
+                .addParameter(int.class, "focusableMode")
+                .addCode(CodeBlock.builder()
+                        .beginControlFlow("if(!memoryHelper.addFocusables(views,direction,focusableMode))")
+                        .addStatement("super.addFocusables(views,direction,focusableMode)")
+                        .endControlFlow().build())
+                .build();
+        typeBuilder.addMethod(addFocusables);
     }
 
     private void requestChildFocus(TypeSpec.Builder typeBuilder, String clazz) {
@@ -151,6 +198,7 @@ public class LeanbackLayoutProcessor extends AbstractProcessor {
                 .addParameter(ProcessorUtils.createViewTypeName(true), "focused")
                 .addStatement("super.requestChildFocus(child, focused)")
                 .addStatement("bringChildToFrontHelper.requestChildFocus(child, focused)")
+                .addStatement("memoryHelper.requestChildFocus(child, focused)")
                 .build();
         typeBuilder.addMethod(requestChildFocus);
     }
@@ -275,6 +323,7 @@ public class LeanbackLayoutProcessor extends AbstractProcessor {
                 .addStatement("boolean isSupportBringChildToFront = BringChildToFrontHelper.isLayoutSupportBringChildToFront(this)")
                 .addStatement("this.setChildrenDrawingOrderEnabled(!isSupportBringChildToFront)")
                 .addStatement("bringChildToFrontHelper = BringChildToFrontHelper.create(this, this, attrs, defStyleAttr)")
+                .addStatement("memoryHelper = MemoryHelper.create(this,attrs,defStyleAttr)")
                 .build();
     }
 
