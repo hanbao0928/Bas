@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="LeanbackFlexboxLayout">
-        <!--内部包含的childview请求焦点时，是否将当前布局bringToFront，避免被覆盖，默认false-->
-        <attr name="bringToFrontWhenChildRequestFocus_blf" format="boolean"/>
+        <!--默认开启边界动画-->
+        <attr name="borderAnim_bas" />
+        <!--默认不开启-->
+        <attr name="bringChildToFrontWhenRequestFocus_bas" />
+        <!--默认不开启-->
+        <attr name="duplicateChildrenBringToFront_bas"/>
+        <!--默认不开启-->
+        <attr name="focusMemoryEnabled_bas"/>
+        <!--焦点状态类型-->
+        <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
 </resources>

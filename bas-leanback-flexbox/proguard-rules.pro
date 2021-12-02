@@ -19,9 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# for bas-core
--keep public class com.bas.android.leanback.flexbox.**{
-    public *;
-    protected * ;
-}
