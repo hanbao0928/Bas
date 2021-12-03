@@ -11,7 +11,7 @@
     <attr name="bringChildToFrontWhenRequestFocus_bas" format="boolean" />
 
     <!--是否启用焦点记忆，默认true-->
-    <attr name="focusMemoryEnabled_bas" format="boolean" />
+    <attr name="focusMemory_bas" format="boolean" />
 
     <!--焦点记忆类型-->
     <attr name="focusMemoryStateType_bas" format="enum">
@@ -31,7 +31,7 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
@@ -45,7 +45,7 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
@@ -58,7 +58,7 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
@@ -71,7 +71,7 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
@@ -84,18 +84,19 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>
 
 
+
     <declare-styleable name="FocusMemoryView">
-        <attr name="focusMemoryEnabled_bas" />
+        <attr name="focusMemory_bas" />
         <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
 
     <declare-styleable name="LeanbackVerticalGridView">
-        <attr name="focusMemoryEnabled_bas" />
+        <attr name="focusMemory_bas" />
     </declare-styleable>
 </resources>

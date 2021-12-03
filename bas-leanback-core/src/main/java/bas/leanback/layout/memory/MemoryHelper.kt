@@ -16,6 +16,7 @@ import kotlin.properties.Delegates
 
 /**
  * Created by Lucio on 2021/3/31.
+ * 用于处理焦点记忆
  */
 open class MemoryHelper private constructor(
     open val viewGroup: ViewGroup,
@@ -62,7 +63,7 @@ open class MemoryHelper private constructor(
             0
         )
         isMemoryEnabled = ta.getBoolean(
-            R.styleable.FocusMemoryView_focusMemoryEnabled_bas,
+            R.styleable.FocusMemoryView_focusMemory_bas,
             DEFAULT_MEMORY_ENABLED
         )
         memoryState =
@@ -263,9 +264,6 @@ open class MemoryHelper private constructor(
 //            }
 //            return true
 //        }
-//
-//        internal val View.canTakeFocus: Boolean
-//            get() = isFocusable && isVisible && isEnabled
 
 //        /**
 //         * 是否包含自定义的焦点记忆Tag

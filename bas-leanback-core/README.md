@@ -8,7 +8,7 @@
 布局为自动生成，目前提供了如下常规布局常：`LeanbackLinearLayout`、`LeanbackFrameLayout`、`LeanbackRelativeLayout`、`LeanbackConstraintLayout`
 
 #### 2.1.1 边界动画支持
-所有布局默认开启边界动画，即在FocusedView未寻找到下一个焦点时，执行边界动画，目前根据KeyEvent采用x轴或y轴抖动动画，后期可以自定义动画；
+在Focused Child View未寻找到下一个焦点时，是否执行边界动画，目前根据KeyEvent采用x轴或y轴抖动动画，后期可以自定义动画；**默认开启**
 
 可以通过xml中配置如下属性禁止边界动画:·`app:borderAnim_bas="false"`
 ```xml
@@ -19,6 +19,7 @@
   
 #### 2.1.2 ChildView bringToFront优化
 修正ChildView在诸如LinearLayout等布局中调用bringToFront方法时引起的问题；对于本身支持的布局则不做额外处理。
+该方法没有提供xml属性控制开关，可以通过ViewGroup提供的setChildrenDrawingOrderEnabled(false)强制关闭该优化（不建议关闭，该优化不会带来什么性能消耗问题）。
 
 #### 2.1.3 duplicateChildrenBringToFront_bas
 ChildView调用bringToFront方法时，当前布局是否也调用bringToFront，**默认不开启**；
@@ -43,7 +44,7 @@ ChildView调用requestFocus时，是否同时调用ChildView的bringToFront方�
 该属性作用不大，毕竟ChildView主动调用requestFocus时自己应该清楚自己是否应该调用bringToFont方法；
 但该属性在ChildView嵌套的情况下可以避免遮住的问题，类似与2.1.3更多View层级的情况。
 
-#### 2.1.5 focusMemoryEnabled_bas焦点记忆 + focusMemoryStateType_bas焦点记忆类型
+#### 2.1.5 focusMemory_bas焦点记忆 + focusMemoryStateType_bas焦点记忆类型
 是否启用焦点记忆，如果启用焦点记忆，那么当布局重新获取焦点时，会优先之前获取焦点的View得到焦点，
 并根据焦点记忆类型设置获取焦点view的状态为true，其他child view则为false，**默认不开启**；
 focusMemoryStateType_bas焦点记忆类型支持如下三种值：

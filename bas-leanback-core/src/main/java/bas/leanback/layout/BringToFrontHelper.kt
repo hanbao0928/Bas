@@ -12,10 +12,11 @@ import bas.leanback.core.R
 /**
  * Created by Lucio on 2021/10/31.
  *
- * 用于在[android.widget.LinearLayout]、[android.widget.RelativeLayout]等布局中,
- * [android.view.View.bringToFront]调用问题
+ * 用于处理[View.bringToFront]带来的问题：绘制顺序、bringToFront传递、
+ *
+ * 用于在[android.widget.LinearLayout]等布局中,[android.view.View.bringToFront]调用问题
  */
-class BringChildToFrontHelper private constructor(
+class BringToFrontHelper private constructor(
     private val layout: ViewGroup,
     private val callback: Callback,
     attrs: AttributeSet? = null,
@@ -28,7 +29,6 @@ class BringChildToFrontHelper private constructor(
     private var frontChildIndex: Int = NO_POSITION
 
     private val isChildrenDrawingOrderEnabled: Boolean get() = callback.isChildrenDrawingOrderEnabled()
-
     private val bringChildrenToFrontWhenRequestFocus: Boolean
     private val duplicateChildrenBringToFront: Boolean
 
@@ -172,8 +172,8 @@ class BringChildToFrontHelper private constructor(
             callback: Callback,
             attrs: AttributeSet? = null,
             defStyleAttr: Int = 0
-        ): BringChildToFrontHelper {
-            return BringChildToFrontHelper(layout, callback, attrs, defStyleAttr)
+        ): BringToFrontHelper {
+            return BringToFrontHelper(layout, callback, attrs, defStyleAttr)
         }
 
     }

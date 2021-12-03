@@ -1,5 +1,6 @@
 package bas.leanback.layout
 
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -7,15 +8,27 @@ import bas.leanback.core.CallByOwner
 import bas.leanback.core.R
 import bas.leanback.effect.shakeX
 import bas.leanback.effect.shakeY
+import bas.leanback.layout.memory.MemoryHelper
+import java.util.*
 
 /**
  * Created by Lucio on 2021/11/30.
+ * 布局帮助类，处理边界动画等
  */
 class LeanbackLayoutHelper private constructor(
     val layout: ViewGroup,
+    val callback: Callback,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) {
+
+    private val memoryHelper: MemoryHelper = MemoryHelper.create(layout, attrs, defStyleAttr)
+    private val bringToFrontHelper: BringToFrontHelper = BringToFrontHelper.create(
+        layout,
+        callback,
+        attrs,
+        defStyleAttr
+    )
 
     private val borderAnimEnabled: Boolean
 
@@ -26,6 +39,40 @@ class LeanbackLayoutHelper private constructor(
             DEFAULT_BORDER_ANIM_ENABLED
         )
         ta.recycle()
+    }
+
+    @CallByOwner
+    fun bringChildToFront(child: View?) {
+        bringToFrontHelper.bringChildToFront(child)
+    }
+
+    @CallByOwner
+    fun getChildDrawingOrder(childCount: Int, drawingPosition: Int): Int {
+        return bringToFrontHelper.getChildDrawingOrder(childCount, drawingPosition)
+    }
+
+    @CallByOwner
+    fun requestChildFocus(child: View?, focused: View?) {
+        bringToFrontHelper.requestChildFocus(child, focused)
+        memoryHelper.requestChildFocus(child, focused)
+    }
+
+    @CallByOwner
+    fun addFocusables(views: ArrayList<View>?, direction: Int, focusableMode: Int): Boolean {
+        return memoryHelper.addFocusables(views, direction, focusableMode)
+    }
+
+    @CallByOwner
+    fun onRequestFocusInDescendants(
+        direction: Int,
+        previouslyFocusedRect: Rect?
+    ): Boolean {
+        return memoryHelper.onRequestFocusInDescendants(direction, previouslyFocusedRect)
+    }
+
+    @CallByOwner
+    fun onViewRemoved(child: View?) {
+        memoryHelper.onViewRemoved(child)
     }
 
     @CallByOwner
@@ -50,6 +97,9 @@ class LeanbackLayoutHelper private constructor(
         }
     }
 
+    interface Callback : BringToFrontHelper.Callback {
+    }
+
     companion object {
 
         const val DEFAULT_BORDER_ANIM_ENABLED = true
@@ -57,10 +107,11 @@ class LeanbackLayoutHelper private constructor(
         @JvmStatic
         fun create(
             layout: ViewGroup,
+            callback: Callback,
             attrs: AttributeSet? = null,
             defStyleAttr: Int = 0
         ): LeanbackLayoutHelper {
-            return LeanbackLayoutHelper(layout, attrs, defStyleAttr)
+            return LeanbackLayoutHelper(layout, callback, attrs, defStyleAttr)
         }
 
     }
