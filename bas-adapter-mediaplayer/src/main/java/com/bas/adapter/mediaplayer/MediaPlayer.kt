@@ -111,7 +111,7 @@ interface MediaPlayer {
         }
 
         /**
-         *  开始播放
+         *  开始播放:第一帧视频已就绪
          */
         fun onPlayStart() {
         }

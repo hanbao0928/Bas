@@ -50,6 +50,18 @@ class ConfigurableVideoView @JvmOverloads constructor(
             addKernelVideoView(kernelType)
         }
     }
+    
+    fun requireQNPlayer():QNVideoView{
+        return kernelView as QNVideoView
+    }
+    
+    fun requireSysPlayer():SysVideoView{
+        return kernelView as SysVideoView
+    }
+
+    fun requireTXPlayer():TXVideoView{
+        return kernelView as TXVideoView
+    }
 
     //提醒kernel video view不可用
     private fun warnKernelVideoViewValidation(actionName: String) {

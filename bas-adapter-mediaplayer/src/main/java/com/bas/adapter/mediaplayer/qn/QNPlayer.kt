@@ -29,9 +29,10 @@ object QNPlayer {
         }
     }
 
-    fun LiveOption():AVOptions {
+    fun LiveOption(): AVOptions {
         return DefaultAVOptions().apply {
             setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+            setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_SW_DECODE)
         }
     }
 
@@ -39,17 +40,17 @@ object QNPlayer {
      * 创建点播参数
      * @param startPosition 开始播放时间，单位ms
      */
-    fun VideoPlayOptions(startPosition: Int = 0) :AVOptions{
+    fun VideoPlayOptions(startPosition: Int = 0): AVOptions {
         return DefaultAVOptions().apply {
-             //默认的缓存大小，单位是 ms ;默认值是：500
-        setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 2000)
-             //最大的缓存大小，单位是 ms; 默认值是：2000，若设置值小于 KEY_CACHE_BUFFER_DURATION 则不会生效
+            //默认的缓存大小，单位是 ms ;默认值是：500
+            setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 2000)
+            //最大的缓存大小，单位是 ms; 默认值是：2000，若设置值小于 KEY_CACHE_BUFFER_DURATION 则不会生效
             setInteger(AVOptions.KEY_MAX_CACHE_BUFFER_DURATION, 5000)
             //是否开启直播优化，1 为开启，0 为关闭。若开启，视频暂停后再次开始播放时会触发追帧机制
             setInteger(AVOptions.KEY_LIVE_STREAMING, 0)
             // 设置拖动模式，1 位精准模式，即会拖动到时间戳的那一秒；0 为普通模式，会拖动到时间戳最近的关键帧。默认为 0
             setInteger(AVOptions.KEY_SEEK_MODE, 1)
-            if(startPosition > 0){
+            if (startPosition > 0) {
                 setInteger(AVOptions.KEY_START_POSITION, startPosition)
             }
         }

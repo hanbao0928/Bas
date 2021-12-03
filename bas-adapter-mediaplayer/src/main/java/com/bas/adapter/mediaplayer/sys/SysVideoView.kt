@@ -68,7 +68,6 @@ class SysVideoView @JvmOverloads constructor(
                     it.onPlayBufferingEnd()
                 }
             }
-
             SysMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
                 listeners.forEach {
                     it.onPlayStart()
@@ -125,7 +124,8 @@ class SysVideoView @JvmOverloads constructor(
     }
 
     /**
-     * 执行加载状态辅助操作：某些盒子loading状态回调之后，进入播放状态，但是没有任何回调
+     * 执行加载状态辅助操作：某些盒子loading状态回调之后，进入播放状态，
+     * 但是没有任何回调，或者盒子进入缓冲或缓冲结束也不会有任何回调
      */
     private fun performLoadingAssist() {
         cancelLoadingAssist()
@@ -222,6 +222,8 @@ class SysVideoView @JvmOverloads constructor(
      * 释放播放器
      */
     override fun release() {
+        //取消辅助回调
+        cancelLoadingAssist()
         kernelView.stopPlayback()
         //清除所有对外的回调
         listeners.clear()
