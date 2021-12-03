@@ -32,7 +32,7 @@ object QNPlayer {
     fun LiveOption(): AVOptions {
         return DefaultAVOptions().apply {
             setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-            setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_SW_DECODE)
+            setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
         }
     }
 

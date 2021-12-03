@@ -44,7 +44,7 @@ class QNVideoView @JvmOverloads constructor(
         }
     }
 
-    private val internalErrorListener = PLOnErrorListener { what ->
+    private val internalErrorListener = PLOnErrorListener { what,obj ->
         //忽略拖动失败异常
         if (what == PLOnErrorListener.ERROR_CODE_SEEK_FAILED)
             return@PLOnErrorListener true
@@ -54,7 +54,7 @@ class QNVideoView @JvmOverloads constructor(
         true
     }
 
-    private val internalInfoListener = PLOnInfoListener { what, extra ->
+    private val internalInfoListener = PLOnInfoListener { what, extra ,obj->
         when (what) {
             PLOnInfoListener.MEDIA_INFO_BUFFERING_START -> {
                 listeners.forEach {

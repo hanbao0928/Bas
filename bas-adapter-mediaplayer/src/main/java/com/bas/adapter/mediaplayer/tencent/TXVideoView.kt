@@ -1,6 +1,7 @@
 package com.bas.adapter.mediaplayer.tencent
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
@@ -56,6 +57,13 @@ class TXVideoView @JvmOverloads constructor(
         kernelView = TXCloudVideoView(context)
         kernelView.visibility = View.GONE
         kernelView.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION)
+        //判断当前是否为横屏模式
+        if (this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            kernelView.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE)
+        } else {
+            kernelView.setRenderRotation(TXLiveConstants.RENDER_ROTATION_PORTRAIT)
+        }
+
         kernelView.id = R.id.bas_video_view_kernel_id
         addView(kernelView, generateDefaultKernelViewLayoutParams(context, attrs, defStyleAttr))
         kernel = TXVodPlayer(context).apply {
@@ -140,7 +148,7 @@ class TXVideoView @JvmOverloads constructor(
                     it.onPlayError(TXPlayerError(event))
                 }
             }
-            TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL->{
+            TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL -> {
                 //获取加速拉流失败，这是由于您传给liveplayer的加速流地址中没有携带txTime和txSecret签名，或者是签名计算的不对。出现这个错误时，liveplayer会放弃拉取加速流转而拉取 CDN 上的视频流，从而导致延迟很大。
                 //需要注意：只有 RTMP 协议的播放地址才支持低延时加速。
             }
