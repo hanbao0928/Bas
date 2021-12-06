@@ -4,16 +4,19 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import com.bas.adapter.imageloader.*
 import com.bas.adapter.imageloader.DEBUG
-import com.bas.adapter.imageloader.ImageLoader
-import com.bas.adapter.imageloader.ImageLoaderEngine
 import com.bas.adapter.imageloader.logw
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 
 /**
  * Created by Lucio on 2021/11/4.
@@ -134,6 +137,32 @@ object GlideEngine : ImageLoaderEngine {
         Request(imageView)
             .load(url)
             .placeholder(placeHolder)
+//            .listener(object : RequestListener<Drawable> {
+//
+//                override fun onLoadFailed(
+//                    e: GlideException?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    loge("Load failed，url=${url}",e)
+//                    e?.logRootCauses(TAG)
+//                    return false
+//                }
+//
+//
+//                override fun onResourceReady(
+//                    resource: Drawable?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    dataSource: DataSource?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    logi("Load Success，isFirstResource=${isFirstResource} \nurl=${url}")
+//                    return false
+//                }
+//
+//            })
             .into(imageView)
     }
 

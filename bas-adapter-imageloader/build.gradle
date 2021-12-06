@@ -32,9 +32,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
@@ -48,9 +45,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+//    /*用于core library的初始化*/
+//    implementation "androidx.startup:startup-runtime:1.0.0"
+
     def glide_version = "4.11.0"
-    /*用于core library的初始化*/
-    implementation "androidx.startup:startup-runtime:1.0.0"
 
     /**
      *  Glide

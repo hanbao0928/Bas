@@ -19,3 +19,7 @@ internal fun logi(msg: String) {
 internal fun logw(msg: String) {
     Log.w(TAG, msg)
 }
+
+internal fun loge(msg: String, e: Throwable? = null) {
+    Log.e(TAG, msg, e)
+}

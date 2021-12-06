@@ -19,14 +19,14 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+# -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # target api < 27添加下面混淆规则 来源：http://bumptech.github.io/glide/doc/download-setup.html#proguard
 #-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
 
 
 # https://muyangmin.github.io/glide-docs-cn/doc/configuration.html
--keep public class  extends com.bumptech.glide.module.AppGlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
 
 ##---------------END: Glide  ----------
