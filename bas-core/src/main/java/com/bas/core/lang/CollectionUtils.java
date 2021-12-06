@@ -11,6 +11,7 @@ import java.util.Objects;
 
 /**
  * Created by Lucio on 2021/7/21.
+ * 集合工具类
  */
 public class CollectionUtils {
 
