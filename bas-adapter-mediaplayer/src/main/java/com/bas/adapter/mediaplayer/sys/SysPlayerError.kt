@@ -1,9 +1,9 @@
 package com.bas.adapter.mediaplayer.sys
 
 import android.media.MediaPlayer
+import bas.android.core.basCtx
+import bas.android.core.util.isNetworkConnected
 import com.bas.adapter.mediaplayer.MediaPlayerError
-import com.bas.core.android.basCtx
-import com.bas.core.android.util.isNetworkConnected
 import com.bas.core.lang.orDefaultIfNullOrEmpty
 
 /**

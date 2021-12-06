@@ -10,8 +10,8 @@ import androidx.annotation.RequiresApi
 import com.bas.adapter.mediaplayer.BaseVideoView
 import com.bas.adapter.mediaplayer.KernelViewFactory
 import com.bas.adapter.mediaplayer.MediaPlayer
-import com.bas.core.android.util.Logger
-import com.bas.core.android.util.layoutInflater
+import bas.android.core.util.Logger
+import bas.android.core.util.layoutInflater
 import com.bas.player.R
 import java.util.concurrent.CopyOnWriteArrayList
 import android.media.MediaPlayer as SysMediaPlayer

@@ -1,12 +1,12 @@
 package com.bas.adapter.mediaplayer
 
 import android.content.Context
+import bas.android.core.basCtx
 import com.bas.adapter.mediaplayer.qn.QNVideoView
 import com.bas.adapter.mediaplayer.sys.SysVideoView
 import com.bas.adapter.mediaplayer.tencent.TXVideoView
-import com.bas.core.android.basCtx
-import com.bas.core.android.util.Logger
-import com.bas.core.android.util.isTVUIMode
+import bas.android.core.util.Logger
+import bas.android.core.util.isTVUIMode
 
 /**
  * Created by Lucio on 2021/9/27.

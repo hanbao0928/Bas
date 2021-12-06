@@ -1,8 +1,8 @@
 package com.bas.adapter.mediaplayer.tencent
 
+import bas.android.core.basCtx
+import bas.android.core.util.isNetworkConnected
 import com.bas.adapter.mediaplayer.MediaPlayerError
-import com.bas.core.android.basCtx
-import com.bas.core.android.util.isNetworkConnected
 import com.tencent.rtmp.TXLiveConstants
 
 /**

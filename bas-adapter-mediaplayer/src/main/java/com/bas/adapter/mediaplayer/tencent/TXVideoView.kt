@@ -8,7 +8,7 @@ import android.view.View
 import androidx.annotation.IntRange
 import com.bas.adapter.mediaplayer.BaseVideoView
 import com.bas.adapter.mediaplayer.MediaPlayer
-import com.bas.core.android.util.Logger
+import bas.android.core.util.Logger
 import com.bas.core.converter.toJson
 import com.bas.core.lang.annotation.Compat
 import com.bas.core.lang.annotation.CompatNote
