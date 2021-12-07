@@ -33,45 +33,12 @@
     <attr name="cornerSizeBottomLeft_bas" format="dimension|reference" />
 
 
-    <declare-styleable name="ShimmerShadowLayout">
-
-
-
-        <!--放大系数-->
-        <attr name="mScale" format="float|reference" />
-
-        <!--是否调整层级只针对在mIsParent为false时-->
-        <attr name="mBringToFront" format="boolean|reference" />
-        <!--是否有弹簧效果-->
-        <attr name="mIsBounceInterpolator" format="boolean|reference" />
-        <!--是否是item根控件,true 不会自动开始动画-->
-        <attr name="mIsParent" format="boolean|reference" />
-
-
-        <!--是否有外发光 默认有-->
-        <attr name="mIsShadow" format="boolean|reference" />
-        <!--是否使用边框线 默认有-->
-        <attr name="mIsBorder" format="boolean|reference" />
-
-        <attr name="shimmerColor_bas" />
-        <!--外发光距离 必须大于0 {@link BlurMaskFilter}-->
-        <attr name="shadowWidth_bas" />
-        <!--外发光颜色-->
-        <attr name="shadowColor_bas" />
-        <!--边框颜色-->
-        <attr name="strokeColor_bas" />
-        <!--边框线宽度-->
-        <attr name="strokeWidth_bas" />
-
-        <attr name="cornerSize_bas" />
-        <attr name="cornerSizeTopLeft_bas" />
-        <attr name="cornerSizeTopRight_bas" />
-        <attr name="cornerSizeBottomRight_bas" />
-        <attr name="cornerSizeBottomLeft_bas" />
-    </declare-styleable>
-
     <declare-styleable name="EffectFrameLayout">
+        <!--放大系数-->
+        <attr name="scaleFactor_bas" format="float|reference" />
         <attr name="scaleDuration_bas" />
+        <!--缩放动画是否使用弹簧效果-->
+        <attr name="useBounceOnScale_bas" format="boolean|reference" />
 
         <attr name="shimmer_bas" />
         <attr name="shimmerColor_bas" />
@@ -90,6 +57,10 @@
         <attr name="cornerSizeBottomRight_bas" />
         <attr name="cornerSizeBottomLeft_bas" />
 
+        <attr name="bringToFrontOnFocus_bas"/>
+
+        <!--是否是item根控件,true 不会自动开始动画-->
+        <attr name="mIsParent" format="boolean|reference" />
 
     </declare-styleable>
 

@@ -36,6 +36,8 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     //缩放动画时间
     val scaleAnimDuration: Long
 
+    //是否是圆角形状
+    val isRoundedShape: Boolean
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.EffectFrameLayout)
@@ -86,6 +88,9 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
             cornerSizeBottomRight, cornerSizeBottomRight,
             cornerSizeBottomLeft, cornerSizeBottomLeft
         )
+        isRoundedShape =
+            cornerSizeTopLeft != 0f || cornerSizeTopRight != 0f || cornerSizeBottomRight != 0f || cornerSizeBottomLeft != 0f
+
         ta.recycle()
     }
 

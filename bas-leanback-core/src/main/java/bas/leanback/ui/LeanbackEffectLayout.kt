@@ -18,31 +18,32 @@ import bas.leanback.core.R
 import java.util.*
 
 
-class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
-
-    private var mIsBounceInterpolator = true
-    private var mBringToFront = true
-    private var mIsParent = false
-    private var mScale = 1.05f
-    private var mShimmerLinearGradient: LinearGradient? = null
-    private var mShimmerGradientMatrix: Matrix? = null
-    private var mShimmerPaint: Paint? = null
-    private val shimmerPath: Path = Path()
-    private val frameRectF: RectF = RectF()
-    private var mShimmerTranslate = 0f
-    private var mShimmerAnimating = false
-    private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
-    private var mAnimatorSet: AnimatorSet? = null
-    private var shadowView: LeanbackEffectView? = null
-
-    private var mIsBorder = false
-
-    //是否是圆角形状
-    private var isRoundedShape = false
-    private var mRefreshRectF: RectF? = null
-    private var mIsDrawn = false
+class LeanbackEffectLayout : FrameLayout{
 
     private var params: EffectParams
+
+    private val shimmerPath: Path = Path()
+    private val shimmerPaint: Paint = Paint()
+    private var shimmerLinearGradient: LinearGradient? = null
+    private var shimmerGradientMatrix: Matrix = Matrix()
+    private var shimmerTranslate = 0f
+
+    private var refreshRectF: RectF = RectF()
+    private var dispatchDrawFlag = false
+
+    private var isShimmerTranslating: Boolean = false
+    private var effectView: LeanbackEffectView? = null
+
+    //缩放倍数
+    private var scaleFactor:Float = 1.1f
+    //缩放是否使用弹簧效果
+    private var useBounceOnScale = true
+    //获取焦点时是否调用bringToFront
+    private val bringToFrontOnFocus :Boolean
+
+    private val frameRectF: RectF = RectF()
+    private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
+    private var mAnimatorSet: AnimatorSet? = null
 
     @JvmOverloads
     constructor(
@@ -52,21 +53,13 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
     ) : super(context, attrs, defStyleAttr) {
         setWillNotDraw(false)
         params = EffectParams(context, attrs)
-        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.ShimmerShadowLayout, 0, 0)
-        mBringToFront = ta.getBoolean(R.styleable.ShimmerShadowLayout_mBringToFront, false)
-        mIsBounceInterpolator =
-            ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsBounceInterpolator, true)
-        mIsParent = ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsParent, false)
-        mScale = ta.getFloat(R.styleable.ShimmerShadowLayout_mScale, 1.05f)
-        mIsBorder = ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsBorder, true)
+        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.EffectFrameLayout, 0, 0)
+        bringToFrontOnFocus = ta.getBoolean(R.styleable.EffectFrameLayout_bringToFrontOnFocus_bas, false)
+        useBounceOnScale =
+            ta.getBoolean(R.styleable.EffectFrameLayout_useBounceOnScale_bas, true)
+        scaleFactor = ta.getFloat(R.styleable.EffectFrameLayout_scaleFactor_bas, 1.05f)
         ta.recycle()
-        if (!mIsParent) {
-            onFocusChangeListener = this
-        }
-        mShimmerPaint = Paint()
-        mShimmerGradientMatrix = Matrix()
-        isRoundedShape =
-            params.cornerSizeTopLeft != 0f || params.cornerSizeTopRight != 0f || params.cornerSizeBottomRight != 0f || params.cornerSizeBottomLeft != 0f
+
     }
 
     override fun isInEditMode(): Boolean {
@@ -75,30 +68,14 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
 
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(width, height, oldw, oldh)
-        if (shadowView == null) {
-            shadowView = LeanbackEffectView(params, context)
-            val layoutParams = LayoutParams(width, height)
-            addView(shadowView, layoutParams)
+        if (effectView == null) {
+            //等布局大小确定之后，添加同等大小的效果View：实现阴影、边框、呼吸灯
+            effectView = LeanbackEffectView(params, context)
+            addView(effectView, LayoutParams(width, height))
         }
-
-        frameRectF.set(
-            paddingLeft + params.shadowWidth + params.strokeWidth / 2,
-            paddingTop + params.shadowWidth + params.strokeWidth / 2,
-            width - paddingRight - params.shadowWidth - params.strokeWidth / 2,
-            height - paddingBottom - params.shadowWidth - params.strokeWidth / 2
-        )
-
-        shimmerPath.reset()
-
-        //必须使用这种方式，否则在某些情况下会出现中间有个阴影色的色块
-        if (params.cornerSizeTopLeft != 0f || params.cornerSizeTopRight != 0f || params.cornerSizeBottomLeft != 0f || params.cornerSizeBottomRight != 0f) {
-            shimmerPath.addRoundRect(frameRectF, params.cornerRadius, Path.Direction.CW)
-        } else {
-            shimmerPath.addRoundRect(frameRectF, 0f, 0f, Path.Direction.CW)
-        }
-
-        if ((height != oldw || height != oldh) && isRoundedShape) {
-            mRefreshRectF = RectF(
+        updateShimmerParamsOnSizeChanged(width, height, oldw, oldh)
+        if ((height != oldw || height != oldh) && params.isRoundedShape) {
+            refreshRectF.set(
                 paddingLeft.toFloat(),
                 paddingTop.toFloat(),
                 (width - paddingRight).toFloat(),
@@ -107,30 +84,65 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
         }
     }
 
+    private fun updateShimmerParamsOnSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
+        if (!params.shimmerEnabled)
+            return
+        shimmerPath.reset()
+        frameRectF.set(
+            paddingLeft + params.shadowWidth + params.strokeWidth / 2,
+            paddingTop + params.shadowWidth + params.strokeWidth / 2,
+            width - paddingRight - params.shadowWidth - params.strokeWidth / 2,
+            height - paddingBottom - params.shadowWidth - params.strokeWidth / 2
+        )
+        //必须使用这种方式，否则在某些情况下会出现中间有个阴影色的色块
+        if (params.isRoundedShape) {
+            shimmerPath.addRoundRect(frameRectF, params.cornerRadius, Path.Direction.CW)
+        } else {
+            shimmerPath.addRoundRect(frameRectF, 0f, 0f, Path.Direction.CW)
+        }
+
+        shimmerLinearGradient = LinearGradient(
+            0f,
+            0f,
+            frameRectF.width(),
+            frameRectF.height(),
+            intArrayOf(
+                0x00FFFFFF,
+                reduceColorAlphaValueToZero(params.shimmerColor),
+                params.shimmerColor,
+                reduceColorAlphaValueToZero(params.shimmerColor),
+                0x00FFFFFF
+            ),
+            floatArrayOf(0f, 0.2f, 0.5f, 0.8f, 1f),
+            Shader.TileMode.CLAMP
+        )
+        shimmerPaint.shader = shimmerLinearGradient
+    }
+
     override fun dispatchDraw(canvas: Canvas) {
-        if (mIsDrawn || !isRoundedShape) {
+        if (dispatchDrawFlag || !params.isRoundedShape) {
             super.dispatchDraw(canvas)
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.saveLayer(mRefreshRectF, null)
+                canvas.saveLayer(refreshRectF, null)
             } else {
-                canvas.saveLayer(mRefreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
             }
             super.dispatchDraw(canvas)
             canvas.restore()
         }
-        onDrawShimmer(canvas)
+        drawShimmer(canvas)
     }
 
     override fun draw(canvas: Canvas) {
-        if (!isRoundedShape) {
+        if (!params.isRoundedShape) {
             super.draw(canvas)
         } else {
-            mIsDrawn = true
+            dispatchDrawFlag = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.saveLayer(mRefreshRectF, null)
+                canvas.saveLayer(refreshRectF, null)
             } else {
-                canvas.saveLayer(mRefreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
             }
             super.draw(canvas)
             canvas.restore()
@@ -142,43 +154,39 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
         super.onDetachedFromWindow()
     }
 
-    /**
-     * 绘制闪光
-     *
-     * @param canvas
-     */
-    protected fun onDrawShimmer(canvas: Canvas) {
-        if (mShimmerAnimating) {
-            canvas.save()
-            val shimmerTranslateX = frameRectF!!.width() * mShimmerTranslate
-            val shimmerTranslateY = frameRectF!!.height() * mShimmerTranslate
-            mShimmerGradientMatrix!!.setTranslate(shimmerTranslateX, shimmerTranslateY)
-            mShimmerLinearGradient!!.setLocalMatrix(mShimmerGradientMatrix)
-            canvas.drawPath(shimmerPath!!, mShimmerPaint!!)
-            canvas.restore()
-        }
+    private fun drawShimmer(canvas: Canvas) {
+        //如果没有启用闪光动画，或者闪光动画没有开始，则不绘制
+        if (!params.shimmerEnabled || !isShimmerTranslating)
+            return
+        canvas.save()
+        val shimmerTranslateX = frameRectF.width() * this.shimmerTranslate
+        val shimmerTranslateY = frameRectF.height() * this.shimmerTranslate
+        shimmerGradientMatrix.setTranslate(shimmerTranslateX, shimmerTranslateY)
+        shimmerLinearGradient!!.setLocalMatrix(shimmerGradientMatrix)
+        canvas.drawPath(shimmerPath, shimmerPaint)
+        canvas.restore()
     }
 
     private fun setShimmerAnimating(shimmerAnimating: Boolean) {
-        mShimmerAnimating = shimmerAnimating
-        if (mShimmerAnimating) {
-            mShimmerLinearGradient = LinearGradient(
-                0f,
-                0f,
-                frameRectF.width(),
-                frameRectF.height(),
-                intArrayOf(
-                    0x00FFFFFF,
-                    reduceColorAlphaValueToZero(params.shimmerColor),
-                    params.shimmerColor,
-                    reduceColorAlphaValueToZero(params.shimmerColor),
-                    0x00FFFFFF
-                ),
-                floatArrayOf(0f, 0.2f, 0.5f, 0.8f, 1f),
-                Shader.TileMode.CLAMP
-            )
-            mShimmerPaint!!.shader = mShimmerLinearGradient
-        }
+        isShimmerTranslating = shimmerAnimating
+//        if (params.shimmerEnabled && shimmerAnimating) {
+//            shimmerLinearGradient = LinearGradient(
+//                0f,
+//                0f,
+//                frameRectF.width(),
+//                frameRectF.height(),
+//                intArrayOf(
+//                    0x00FFFFFF,
+//                    reduceColorAlphaValueToZero(params.shimmerColor),
+//                    params.shimmerColor,
+//                    reduceColorAlphaValueToZero(params.shimmerColor),
+//                    0x00FFFFFF
+//                ),
+//                floatArrayOf(0f, 0.2f, 0.5f, 0.8f, 1f),
+//                Shader.TileMode.CLAMP
+//            )
+//            shimmerPaint.shader = shimmerLinearGradient
+//        }
     }
 
     private fun reduceColorAlphaValueToZero(actualColor: Int): Int {
@@ -205,9 +213,7 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
         if (null != mAnimatorSet) {
             mAnimatorSet!!.cancel()
         }
-        if (shadowView != null) {
-            shadowView!!.start()
-        }
+        effectView?.start()
         createAnimatorSet(true)
         mAnimatorSet!!.start()
         isSelected = true
@@ -221,9 +227,7 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
             mAnimatorSet!!.cancel()
         }
         createAnimatorSet(false)
-        if (shadowView != null) {
-            shadowView!!.stop()
-        }
+        effectView?.stop()
         mAnimatorSet!!.start()
         isSelected = false
     }
@@ -231,8 +235,8 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
     private fun createAnimatorSet(isStart: Boolean) {
         val together: MutableList<Animator> = ArrayList()
         if (isStart) {
-            together.add(getScaleXAnimator(mScale))
-            together.add(getScaleYAnimator(mScale))
+            together.add(getScaleXAnimator(scaleFactor))
+            together.add(getScaleYAnimator(scaleFactor))
         } else {
             together.add(getScaleXAnimator(1.0f))
             together.add(getScaleYAnimator(1.0f))
@@ -250,7 +254,7 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
         val scaleXObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleX", scale)
                 .setDuration(params.scaleAnimDuration)
-        if (mIsBounceInterpolator) {
+        if (useBounceOnScale) {
             scaleXObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleXObjectAnimator
@@ -260,7 +264,7 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
         val scaleYObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleY", scale)
                 .setDuration(params.scaleAnimDuration)
-        if (mIsBounceInterpolator) {
+        if (useBounceOnScale) {
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleYObjectAnimator
@@ -286,24 +290,23 @@ class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
             })
             return mShimmerAnimator
         }
-    protected var shimmerTranslate: Float
-        protected get() = mShimmerTranslate
-        protected set(shimmerTranslate) {
-            if (params.shimmerEnabled && mShimmerTranslate != shimmerTranslate) {
-                mShimmerTranslate = shimmerTranslate
-                ViewCompat.postInvalidateOnAnimation(this)
-            }
-        }
 
-    override fun onFocusChange(v: View, hasFocus: Boolean) {
-        if (hasFocus) {
-            if (mBringToFront) {
-                v.bringToFront()
+    fun setShimmerTranslate(translate: Float) {
+        if (params.shimmerEnabled && this.shimmerTranslate != translate) {
+            this.shimmerTranslate = translate
+            ViewCompat.postInvalidateOnAnimation(this)
+        }
+    }
+
+    override fun onFocusChanged(gainFocus: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect)
+        isSelected = gainFocus
+        if (gainFocus) {
+            if (bringToFrontOnFocus) {
+                bringToFront()
             }
-            v.isSelected = true
             startAnimation()
         } else {
-            v.isSelected = false
             stopAnimation()
         }
     }
