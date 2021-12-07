@@ -5,7 +5,7 @@
     <attr name="borderAnim_bas" format="boolean" />
 
     <!--children调用bringToFront时，当前布局是否也调用bringToFront，避免被覆盖，默认false-->
-    <attr name="duplicateChildrenBringToFront_bas" format="boolean"/>
+    <attr name="duplicateChildrenBringToFront_bas" format="boolean" />
 
     <!--children请求焦点时，是否将child bringToFront，如果children自己调用bringToFront，则不用开启该功能-->
     <attr name="bringChildToFrontWhenRequestFocus_bas" format="boolean" />
@@ -29,11 +29,11 @@
         <!--默认不开启-->
         <attr name="bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="duplicateChildrenBringToFront_bas" />
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="focusMemory_bas" />
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
 
     <!--提供其他布局同样属性的定义，用于xml设置属性时能够出现提示-->
@@ -43,11 +43,11 @@
         <!--默认不开启-->
         <attr name="bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="duplicateChildrenBringToFront_bas" />
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="focusMemory_bas" />
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
 
     <declare-styleable name="LeanbackRelativeLayout">
@@ -56,11 +56,11 @@
         <!--默认不开启-->
         <attr name="bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="duplicateChildrenBringToFront_bas" />
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="focusMemory_bas" />
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
 
     <declare-styleable name="LeanbackFrameLayout">
@@ -69,11 +69,11 @@
         <!--默认不开启-->
         <attr name="bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="duplicateChildrenBringToFront_bas" />
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="focusMemory_bas" />
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
 
     <declare-styleable name="LeanbackConstraintLayout">
@@ -82,13 +82,12 @@
         <!--默认不开启-->
         <attr name="bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="duplicateChildrenBringToFront_bas" />
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="focusMemory_bas" />
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="focusMemoryStateType_bas" />
     </declare-styleable>
-
 
 
     <declare-styleable name="FocusMemoryView">

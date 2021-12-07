@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--缩放动画时间-->
+    <attr name="scaleDuration_bas" format="integer|reference" />
+
+    <!--是否使用闪光动画-->
+    <attr name="shimmerAnim_bas" format="boolean|reference" />
+
+    <!--是否使用呼吸灯效果，默认开启-->
+    <attr name="breatheAnim_bas" format="boolean|reference" />
+
+    <!--呼吸灯周期-->
+    <attr name="breatheDuration_bas" format="integer|reference" />
+
+
+    <!--是否使用边框效果-->
+    <attr name="border_effect_bas" format="boolean" />
+    <!--是否使用闪光效果-->
+    <attr name="shimmer_effect_bas" format="boolean" />
+
+    <!--是否使用呼吸灯动画-->
+    <attr name="breathing_anim_bas" format="boolean" />
+
+    <!--闪光颜色，默认-->
+    <attr name="shimmerColor_bas" format="color|reference" />
+
+    <!--边框颜色-->
+    <attr name="strokeColor_bas" format="color|reference" />
+    <!--边框大小-->
+    <attr name="strokeWidth_bas" format="dimension|reference" />
+    <!--阴影颜色-->
+    <attr name="shadowColor_bas" format="color|reference" />
+    <!--阴影大小-->
+    <attr name="shadowWidth_bas" format="dimension|reference" />
+    <!--圆角半径：如果是正方形，并且半径 = width/2 则就是圆形-->
+    <attr name="cornerSize_bas" format="dimension|reference" />
+    <attr name="cornerSizeTopLeft_bas" format="dimension|reference" />
+    <attr name="cornerSizeTopRight_bas" format="dimension|reference" />
+    <attr name="cornerSizeBottomRight_bas" format="dimension|reference" />
+    <attr name="cornerSizeBottomLeft_bas" format="dimension|reference" />
+    <!--    &lt;!&ndash;边框偏移位置：即内容布局与border之间的距离&ndash;&gt;-->
+    <!--    <attr name="border_offset_bas" format="dimension"/>-->
+    <declare-styleable name="ShimmerShadowLayout">
+
+        <attr name="scaleDuration_bas"/>
+
+        <!--放大系数-->
+        <attr name="mScale" format="float|reference" />
+        <attr name="shimmerAnim_bas"  />
+        <!--是否调整层级只针对在mIsParent为false时-->
+        <attr name="mBringToFront" format="boolean|reference" />
+        <!--是否有弹簧效果-->
+        <attr name="mIsBounceInterpolator" format="boolean|reference" />
+        <!--是否是item根控件,true 不会自动开始动画-->
+        <attr name="mIsParent" format="boolean|reference" />
+
+        <attr name="breatheAnim_bas"/>
+        <attr name="breatheDuration_bas"  />
+
+        <!--是否有外发光 默认有-->
+        <attr name="mIsShadow" format="boolean|reference" />
+        <!--是否使用边框线 默认有-->
+        <attr name="mIsBorder" format="boolean|reference" />
+
+        <attr name="shimmerColor_bas"  />
+        <!--外发光距离 必须大于0 {@link BlurMaskFilter}-->
+        <attr name="shadowWidth_bas" />
+        <!--外发光颜色-->
+        <attr name="shadowColor_bas" />
+        <!--边框颜色-->
+        <attr name="strokeColor_bas" />
+        <!--边框线宽度-->
+        <attr name="strokeWidth_bas" />
+
+        <attr name="cornerSize_bas" />
+        <attr name="cornerSizeTopLeft_bas" />
+        <attr name="cornerSizeTopRight_bas" />
+        <attr name="cornerSizeBottomRight_bas" />
+        <attr name="cornerSizeBottomLeft_bas" />
+    </declare-styleable>
+
+    <declare-styleable name="EffectLayout">
+        <attr name="border_effect_bas" />
+        <attr name="shimmer_effect_bas" />
+        <attr name="shimmerColor_bas" />
+        <attr name="breathing_anim_bas" />
+        <!--        <attr name="border_offset_bas"/>-->
+
+        <attr name="cornerSize_bas"  />
+        <attr name="cornerSizeTopLeft_bas"  />
+        <attr name="cornerSizeTopRight_bas"  />
+        <attr name="cornerSizeBottomRight_bas"  />
+        <attr name="cornerSizeBottomLeft_bas"  />
+    </declare-styleable>
+    <declare-styleable name="LeanbackView">
+        <attr name="border_effect_bas" />
+        <attr name="shimmer_effect_bas" />
+        <attr name="shimmerColor_bas" />
+        <attr name="breathing_anim_bas" />
+        <!--        <attr name="border_offset_bas"/>-->
+
+        <attr name="strokeColor_bas" />
+        <attr name="strokeWidth_bas" />
+        <attr name="shadowColor_bas" />
+        <attr name="shadowWidth_bas" />
+        <attr name="cornerSize_bas"  />
+        <attr name="cornerSizeTopLeft_bas"  />
+        <attr name="cornerSizeTopRight_bas"  />
+        <attr name="cornerSizeBottomRight_bas"  />
+        <attr name="cornerSizeBottomLeft_bas"  />
+    </declare-styleable>
+
+
+</resources>
