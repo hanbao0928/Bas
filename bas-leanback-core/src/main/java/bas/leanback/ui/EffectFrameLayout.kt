@@ -8,7 +8,6 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
@@ -19,8 +18,7 @@ import bas.leanback.core.R
 import java.util.*
 
 
-class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
-
+class EffectFrameLayout : FrameLayout, View.OnFocusChangeListener {
 
     private var mIsBounceInterpolator = true
     private var mBringToFront = true
@@ -35,9 +33,8 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     private var mShimmerAnimating = false
     private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
     private var mAnimatorSet: AnimatorSet? = null
-    private var shadowView: BreatheShadowView? = null
+    private var shadowView: LeanbackEffectView? = null
 
-    private var mIsShadow = true
     private var mIsBorder = false
 
     //是否是圆角形状
@@ -45,7 +42,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     private var mRefreshRectF: RectF? = null
     private var mIsDrawn = false
 
-    private var effectParams: EffectParams
+    private var params: EffectParams
 
     @JvmOverloads
     constructor(
@@ -54,28 +51,22 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
         defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr) {
         setWillNotDraw(false)
-        effectParams = EffectParams(context, attrs)
-        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.ShimmerShadowLayout, 0, 0)
-        try {
-            mBringToFront = a.getBoolean(R.styleable.ShimmerShadowLayout_mBringToFront, false)
-            mIsBounceInterpolator =
-                a.getBoolean(R.styleable.ShimmerShadowLayout_mIsBounceInterpolator, true)
-            mIsParent = a.getBoolean(R.styleable.ShimmerShadowLayout_mIsParent, false)
-            mScale = a.getFloat(R.styleable.ShimmerShadowLayout_mScale, 1.05f)
-            mIsShadow = a.getBoolean(R.styleable.ShimmerShadowLayout_mIsShadow, true)
-            mIsBorder = a.getBoolean(R.styleable.ShimmerShadowLayout_mIsBorder, true)
-        } finally {
-            a.recycle()
-        }
+        params = EffectParams(context, attrs)
+        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.ShimmerShadowLayout, 0, 0)
+        mBringToFront = ta.getBoolean(R.styleable.ShimmerShadowLayout_mBringToFront, false)
+        mIsBounceInterpolator =
+            ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsBounceInterpolator, true)
+        mIsParent = ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsParent, false)
+        mScale = ta.getFloat(R.styleable.ShimmerShadowLayout_mScale, 1.05f)
+        mIsBorder = ta.getBoolean(R.styleable.ShimmerShadowLayout_mIsBorder, true)
+        ta.recycle()
         if (!mIsParent) {
             onFocusChangeListener = this
         }
-        //关闭硬件加速
-//        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mShimmerPaint = Paint()
         mShimmerGradientMatrix = Matrix()
         isRoundedShape =
-            effectParams.cornerSizeTopLeft != 0f || effectParams.cornerSizeTopRight != 0f || effectParams.cornerSizeBottomRight != 0f || effectParams.cornerSizeBottomLeft != 0f
+            params.cornerSizeTopLeft != 0f || params.cornerSizeTopRight != 0f || params.cornerSizeBottomRight != 0f || params.cornerSizeBottomLeft != 0f
     }
 
     override fun isInEditMode(): Boolean {
@@ -85,22 +76,26 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(width, height, oldw, oldh)
         if (shadowView == null) {
-            shadowView = BreatheShadowView(effectParams, context)
-            shadowView!!.setBorder(mIsBorder)
-            shadowView!!.setShadow(mIsShadow)
+            shadowView = LeanbackEffectView(params, context)
             val layoutParams = LayoutParams(width, height)
             addView(shadowView, layoutParams)
         }
 
         frameRectF.set(
-            paddingLeft + effectParams.shadowWidth + effectParams.strokeWidth / 2,
-            paddingTop + effectParams.shadowWidth + effectParams.strokeWidth / 2,
-            width - paddingRight - effectParams.shadowWidth - effectParams.strokeWidth / 2,
-            height - paddingBottom - effectParams.shadowWidth - effectParams.strokeWidth / 2
+            paddingLeft + params.shadowWidth + params.strokeWidth / 2,
+            paddingTop + params.shadowWidth + params.strokeWidth / 2,
+            width - paddingRight - params.shadowWidth - params.strokeWidth / 2,
+            height - paddingBottom - params.shadowWidth - params.strokeWidth / 2
         )
 
         shimmerPath.reset()
-        shimmerPath.addRoundRect(frameRectF, effectParams.cornerRadius, Path.Direction.CW)
+
+        //必须使用这种方式，否则在某些情况下会出现中间有个阴影色的色块
+        if (params.cornerSizeTopLeft != 0f || params.cornerSizeTopRight != 0f || params.cornerSizeBottomLeft != 0f || params.cornerSizeBottomRight != 0f) {
+            shimmerPath.addRoundRect(frameRectF, params.cornerRadius, Path.Direction.CW)
+        } else {
+            shimmerPath.addRoundRect(frameRectF, 0f, 0f, Path.Direction.CW)
+        }
 
         if ((height != oldw || height != oldh) && isRoundedShape) {
             mRefreshRectF = RectF(
@@ -174,9 +169,9 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
                 frameRectF.height(),
                 intArrayOf(
                     0x00FFFFFF,
-                    reduceColorAlphaValueToZero(effectParams.shimmerColor),
-                    effectParams.shimmerColor,
-                    reduceColorAlphaValueToZero(effectParams.shimmerColor),
+                    reduceColorAlphaValueToZero(params.shimmerColor),
+                    params.shimmerColor,
+                    reduceColorAlphaValueToZero(params.shimmerColor),
                     0x00FFFFFF
                 ),
                 floatArrayOf(0f, 0.2f, 0.5f, 0.8f, 1f),
@@ -243,7 +238,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
             together.add(getScaleYAnimator(1.0f))
         }
         val sequentially: MutableList<Animator> = ArrayList()
-        if (effectParams.shimmerAnimEnabled && isStart) {
+        if (params.shimmerEnabled && isStart) {
             sequentially.add(shimmerAnimator)
         }
         mAnimatorSet = AnimatorSet()
@@ -254,7 +249,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     private fun getScaleXAnimator(scale: Float): ObjectAnimator {
         val scaleXObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleX", scale)
-                .setDuration(effectParams.scaleAnimDuration)
+                .setDuration(params.scaleAnimDuration)
         if (mIsBounceInterpolator) {
             scaleXObjectAnimator.interpolator = BounceInterpolator()
         }
@@ -264,7 +259,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     private fun getScaleYAnimator(scale: Float): ObjectAnimator {
         val scaleYObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleY", scale)
-                .setDuration(effectParams.scaleAnimDuration)
+                .setDuration(params.scaleAnimDuration)
         if (mIsBounceInterpolator) {
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
@@ -279,7 +274,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
             val max = if (width >= height) width else height
             val duration = if (max > screenWidth / 3) screenWidth / 3 else max
             mShimmerAnimator.duration = (duration * 3).toLong()
-            mShimmerAnimator.startDelay = effectParams.shimmerDelay
+            mShimmerAnimator.startDelay = params.shimmerDelay
             mShimmerAnimator.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationStart(animation: Animator) {
                     setShimmerAnimating(true)
@@ -294,7 +289,7 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
     protected var shimmerTranslate: Float
         protected get() = mShimmerTranslate
         protected set(shimmerTranslate) {
-            if (effectParams.shimmerAnimEnabled && mShimmerTranslate != shimmerTranslate) {
+            if (params.shimmerEnabled && mShimmerTranslate != shimmerTranslate) {
                 mShimmerTranslate = shimmerTranslate
                 ViewCompat.postInvalidateOnAnimation(this)
             }
@@ -311,14 +306,6 @@ class ShimmerShadowLayout : FrameLayout, View.OnFocusChangeListener {
             v.isSelected = false
             stopAnimation()
         }
-    }
-
-    private fun pt2px(value: Float): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_PT,
-            value,
-            resources.displayMetrics
-        ) + 0.5f
     }
 
 }
