@@ -22,6 +22,9 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     val breatheDuration: Long
 
     val strokeWidth: Float
+
+    //一半stroke大小：通常stroke的绘制是从线中间开始计算的
+    val strokeWidthHalf: Float
     val strokeColor: Int
 
     val shadowWidth: Float
@@ -40,46 +43,47 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     val isRoundedShape: Boolean
 
     init {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.EffectFrameLayout)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout)
         shimmerEnabled =
-            ta.getBoolean(R.styleable.EffectFrameLayout_shimmer_bas, DEFAULT_SHIMMER_ENABLED)
+            ta.getBoolean(R.styleable.LeanbackEffectLayout_shimmer_bas, DEFAULT_SHIMMER_ENABLED)
         shimmerColor =
-            ta.getColor(R.styleable.EffectFrameLayout_shimmerColor_bas, DEFAULT_SHIMMER_COLOR)
+            ta.getColor(R.styleable.LeanbackEffectLayout_shimmerColor_bas, DEFAULT_SHIMMER_COLOR)
 
         scaleAnimDuration =
-            ta.getInt(R.styleable.EffectFrameLayout_scaleDuration_bas, DEFAULT_SCALE_DURATION)
+            ta.getInt(R.styleable.LeanbackEffectLayout_scaleDuration_bas, DEFAULT_SCALE_DURATION)
                 .toLong()
         shimmerDelay = scaleAnimDuration + 100
 
         breatheEnabled =
-            ta.getBoolean(R.styleable.EffectFrameLayout_breathe_bas, DEFAULT_BREATHE_ENABLED)
+            ta.getBoolean(R.styleable.LeanbackEffectLayout_breathe_bas, DEFAULT_BREATHE_ENABLED)
         breatheDuration =
-            ta.getInteger(R.styleable.EffectFrameLayout_breatheDuration_bas, BREATHE_DURATION)
+            ta.getInteger(R.styleable.LeanbackEffectLayout_breatheDuration_bas, BREATHE_DURATION)
                 .toLong()
 
         strokeWidth = ta.getDimension(
-            R.styleable.EffectFrameLayout_strokeWidth_bas,
+            R.styleable.LeanbackEffectLayout_strokeWidth_bas,
             0f
         )
-        strokeColor = ta.getColor(R.styleable.EffectFrameLayout_strokeColor_bas, 0)
+        strokeWidthHalf = strokeWidth / 2
+        strokeColor = ta.getColor(R.styleable.LeanbackEffectLayout_strokeColor_bas, 0)
 
         shadowWidth = ta.getDimension(
-            R.styleable.EffectFrameLayout_shadowWidth_bas,
+            R.styleable.LeanbackEffectLayout_shadowWidth_bas,
             0f
         )
-        shadowColor = ta.getColor(R.styleable.EffectFrameLayout_shadowColor_bas, 0)
+        shadowColor = ta.getColor(R.styleable.LeanbackEffectLayout_shadowColor_bas, 0)
 
-        val cornerSize = ta.getDimension(R.styleable.EffectFrameLayout_cornerSize_bas, 0f)
+        val cornerSize = ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSize_bas, 0f)
         cornerSizeTopLeft =
-            ta.getDimension(R.styleable.EffectFrameLayout_cornerSizeTopLeft_bas, cornerSize)
+            ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSizeTopLeft_bas, cornerSize)
         cornerSizeTopRight =
-            ta.getDimension(R.styleable.EffectFrameLayout_cornerSizeTopRight_bas, cornerSize)
+            ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSizeTopRight_bas, cornerSize)
         cornerSizeBottomLeft = ta.getDimension(
-            R.styleable.EffectFrameLayout_cornerSizeBottomLeft_bas,
+            R.styleable.LeanbackEffectLayout_cornerSizeBottomLeft_bas,
             cornerSize
         )
         cornerSizeBottomRight = ta.getDimension(
-            R.styleable.EffectFrameLayout_cornerSizeBottomRight_bas,
+            R.styleable.LeanbackEffectLayout_cornerSizeBottomRight_bas,
             cornerSize
         )
         cornerRadius = floatArrayOf(

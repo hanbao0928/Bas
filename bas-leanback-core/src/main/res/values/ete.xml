@@ -33,7 +33,7 @@
     <attr name="cornerSizeBottomLeft_bas" format="dimension|reference" />
 
 
-    <declare-styleable name="EffectFrameLayout">
+    <declare-styleable name="LeanbackEffectLayout">
         <!--放大系数-->
         <attr name="scaleFactor_bas" format="float|reference" />
         <attr name="scaleDuration_bas" />

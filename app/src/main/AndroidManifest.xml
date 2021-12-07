@@ -40,6 +40,8 @@
         <activity android:name=".sample.leanbacktab.DynamicTabActivity" />
 
         <activity android:name=".sample.leanbacklayout.LeanbackLayoutActivity"/>
+
+        <activity android:name=".sample.effectlayout.EffectLayoutActivity"/>
 <!--        <service android:name=".OtherProcessService"-->
 <!--            android:exported="false"-->
 <!--            android:process=":otherProcess"/>-->

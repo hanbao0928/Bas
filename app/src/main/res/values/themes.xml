@@ -28,4 +28,23 @@
         <item name="android:layout_marginTop">4dp</item>
     </style>
 
+
+
+    <dimen name="test_rounding_radius">16dp</dimen>
+    <!--ShapeableImageView 圆角-->
+    <style name="RoundedImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/test_rounding_radius</item>
+    </style>
+
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Test2Image">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/test_rounding_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/test_rounding_radius</item>
+    </style>
 </resources>

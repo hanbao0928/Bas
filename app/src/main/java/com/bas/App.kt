@@ -1,16 +1,8 @@
 package com.bas
 
 import android.content.Context
-import android.content.Intent
-import android.os.Handler
-import com.bas.android.leanback.flexbox.LeanbackFlexboxLayout
+import bas.android.core.app.BasApplication
 import com.bas.android.multidex.MultiDexCompat
-import com.bas.core.android.app.BasApplication
-import com.bas.core.android.util.Logger
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.io.File
 
 /**
  * Created by Lucio on 2021/9/24.

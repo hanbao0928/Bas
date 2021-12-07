@@ -8,7 +8,6 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -18,7 +17,7 @@ import bas.leanback.core.R
 import java.util.*
 
 
-class LeanbackEffectLayout : FrameLayout{
+class LeanbackEffectLayout : FrameLayout {
 
     private var params: EffectParams
 
@@ -35,11 +34,13 @@ class LeanbackEffectLayout : FrameLayout{
     private var effectView: LeanbackEffectView? = null
 
     //缩放倍数
-    private var scaleFactor:Float = 1.1f
+    private var scaleFactor: Float = 1.1f
+
     //缩放是否使用弹簧效果
     private var useBounceOnScale = true
+
     //获取焦点时是否调用bringToFront
-    private val bringToFrontOnFocus :Boolean
+    private val bringToFrontOnFocus: Boolean
 
     private val frameRectF: RectF = RectF()
     private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
@@ -53,11 +54,12 @@ class LeanbackEffectLayout : FrameLayout{
     ) : super(context, attrs, defStyleAttr) {
         setWillNotDraw(false)
         params = EffectParams(context, attrs)
-        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.EffectFrameLayout, 0, 0)
-        bringToFrontOnFocus = ta.getBoolean(R.styleable.EffectFrameLayout_bringToFrontOnFocus_bas, false)
+        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout, 0, 0)
+        bringToFrontOnFocus =
+            ta.getBoolean(R.styleable.LeanbackEffectLayout_bringToFrontOnFocus_bas, false)
         useBounceOnScale =
-            ta.getBoolean(R.styleable.EffectFrameLayout_useBounceOnScale_bas, true)
-        scaleFactor = ta.getFloat(R.styleable.EffectFrameLayout_scaleFactor_bas, 1.05f)
+            ta.getBoolean(R.styleable.LeanbackEffectLayout_useBounceOnScale_bas, true)
+        scaleFactor = ta.getFloat(R.styleable.LeanbackEffectLayout_scaleFactor_bas, 1.05f)
         ta.recycle()
 
     }
@@ -87,13 +89,18 @@ class LeanbackEffectLayout : FrameLayout{
     private fun updateShimmerParamsOnSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         if (!params.shimmerEnabled)
             return
+
+        val newLeft = paddingLeft + params.shadowWidth + params.strokeWidth
+        val newTop = paddingTop + params.shadowWidth + params.strokeWidth
+        val newRight = width - paddingRight - params.shadowWidth - params.strokeWidth
+        val newBottom = height - paddingBottom - params.shadowWidth - params.strokeWidth
+        //rectf 没有发生变化。直接返回
+        if (newLeft == frameRectF.left && newTop == frameRectF.top && newRight == frameRectF.right && newBottom == frameRectF.bottom)
+            return
+
         shimmerPath.reset()
-        frameRectF.set(
-            paddingLeft + params.shadowWidth + params.strokeWidth / 2,
-            paddingTop + params.shadowWidth + params.strokeWidth / 2,
-            width - paddingRight - params.shadowWidth - params.strokeWidth / 2,
-            height - paddingBottom - params.shadowWidth - params.strokeWidth / 2
-        )
+        frameRectF.set(newLeft,newTop,newRight,newBottom)
+
         //必须使用这种方式，否则在某些情况下会出现中间有个阴影色的色块
         if (params.isRoundedShape) {
             shimmerPath.addRoundRect(frameRectF, params.cornerRadius, Path.Direction.CW)
