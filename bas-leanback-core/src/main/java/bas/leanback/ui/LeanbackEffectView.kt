@@ -50,13 +50,14 @@ internal class LeanbackEffectView @JvmOverloads constructor(
         // 需禁用硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null)
 
-        if(shadowEnabled){
-            this.shadowPaint.maskFilter = BlurMaskFilter(params.shadowWidth, BlurMaskFilter.Blur.OUTER)
+        if (shadowEnabled) {
+            this.shadowPaint.maskFilter =
+                BlurMaskFilter(params.shadowWidth, BlurMaskFilter.Blur.OUTER)
             this.shadowPaint.strokeWidth = 1f
             this.shadowPaint.color = params.shadowColor
         }
 
-        if(strokeEnabled){
+        if (strokeEnabled) {
             this.strokePaint.color = params.strokeColor
             this.strokePaint.strokeWidth = params.strokeWidth
             this.strokePaint.style = Paint.Style.STROKE
@@ -66,8 +67,8 @@ internal class LeanbackEffectView @JvmOverloads constructor(
         visibility = GONE
     }
 
-    private val shadowEnabled:Boolean get() = params.shadowWidth > 0
-    private val strokeEnabled:Boolean get() = params.strokeWidth > 0
+    private val shadowEnabled: Boolean get() = params.shadowWidth > 0
+    private val strokeEnabled: Boolean get() = params.strokeWidth > 0
 
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(width, height, oldw, oldh)
@@ -102,7 +103,8 @@ internal class LeanbackEffectView @JvmOverloads constructor(
             return
 
         //如果带有圆角，避免圆角处与stroke之间有间隙，因此用整个stroke宽度作为偏移，否则只需用半个
-        val offset = params.strokeWidthHalf//if(params.isRoundedShape) params.strokeWidth else params.strokeWidthHalf
+        val offset =
+            params.strokeWidthHalf//if(params.isRoundedShape) params.strokeWidth else params.strokeWidthHalf
 
         val newLeft = params.shadowWidth + offset
         val newTop = params.shadowWidth + offset
@@ -140,7 +142,8 @@ internal class LeanbackEffectView @JvmOverloads constructor(
     fun start() {
         visibility = VISIBLE
         if (params.breatheEnabled) {
-            breatheAnim.cancel()
+            if (breatheAnim.isStarted)
+                breatheAnim.cancel()
             breatheAnim.start()
         } else {
             alpha = 1f
@@ -151,6 +154,8 @@ internal class LeanbackEffectView @JvmOverloads constructor(
         visibility = GONE
         if (params.breatheEnabled) {
             breatheAnim.cancel()
+        } else {
+            breatheAnim.end()
         }
     }
 

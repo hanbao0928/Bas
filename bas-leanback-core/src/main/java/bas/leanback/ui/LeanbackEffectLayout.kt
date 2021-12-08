@@ -39,8 +39,17 @@ class LeanbackEffectLayout @JvmOverloads constructor(
     private var effectView: LeanbackEffectView? = null
 
     private val frameRectF: RectF = RectF()
+
+    //用于在启动动画前检测当前布局
     private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
-    private var mAnimatorSet: AnimatorSet? = null
+
+    private var animOnFocus: Animator? = null
+    private var animOnUnfocus: Animator? = null
+
+    init {
+        setWillNotDraw(false)
+        params = EffectParams(context, attrs)
+    }
 
     override fun isInEditMode(): Boolean {
         return true
@@ -192,7 +201,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         val shimmerTranslateX = frameRectF.width() * this.shimmerTranslate
         val shimmerTranslateY = frameRectF.height() * this.shimmerTranslate
         shimmerGradientMatrix.setTranslate(shimmerTranslateX, shimmerTranslateY)
-        shimmerLinearGradient!!.setLocalMatrix(shimmerGradientMatrix)
+        shimmerLinearGradient?.setLocalMatrix(shimmerGradientMatrix)
         canvas.drawPath(shimmerPath, shimmerPaint)
         canvas.restore()
     }
@@ -206,54 +215,97 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         )
     }
 
-    fun startAnimation() {
+    //是否使用焦点动画
+    private val focusAnimEnabled get() = params.scaleEnabled || params.shimmerEnabled
+
+    private fun startAnimationOnFocused() {
         if (width == 0) {
-            startAnimationPreDrawListener = object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    viewTreeObserver.removeOnPreDrawListener(this)
-                    startAnimation()
-                    return true
-                }
+            startAnimationPreDrawListener = ViewTreeObserver.OnPreDrawListener {
+                clearPreDrawListener()
+                startAnimationOnFocused()
+                true
             }
             viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
             return
         }
-        if (null != mAnimatorSet) {
-            mAnimatorSet!!.cancel()
-        }
+
+        startScaleAndShimmerAnim()
         effectView?.start()
-        createAnimatorSet(true)
-        mAnimatorSet!!.start()
     }
 
-    fun stopAnimation() {
+    private fun startScaleAndShimmerAnim() {
+        if (!focusAnimEnabled) {
+            animOnFocus?.end()
+            return
+        }
+
+        if(animOnFocus ==null){
+            createFocusAnimator()?.let {
+                animOnFocus = it
+                it.start()
+            }
+        }
+    }
+
+    private fun stopScaleAndShimmerAnim(){
+        if (!focusAnimEnabled) {
+            animOnUnfocus?.end()
+            return
+        }
+
+        if(animOnUnfocus == null){
+            createUnfocusAnimator()?.let {
+                animOnUnfocus = it
+                it.start()
+            }
+        }
+    }
+
+    private fun createUnfocusAnimator():Animator?{
+        if(!params.scaleEnabled)
+            return null
+        return AnimatorSet().also {
+            it.playTogether(
+                getScaleXAnimator(1f),
+                getScaleYAnimator(1f)
+            )
+        }
+    }
+
+    private fun createFocusAnimator(): Animator?{
+        if (params.scaleEnabled && params.shimmerEnabled) {
+            return AnimatorSet().also {
+                it.playTogether(
+                    getScaleXAnimator(params.scaleFactor),
+                    getScaleYAnimator(params.scaleFactor)
+                )
+                it.playSequentially(shimmerAnimator)
+            }
+        } else if (params.scaleEnabled) {
+            return AnimatorSet().also {
+                it.playTogether(
+                    getScaleXAnimator(params.scaleFactor),
+                    getScaleYAnimator(params.scaleFactor)
+                )
+            }
+        } else if (params.shimmerEnabled) {
+            return shimmerAnimator
+        } else {
+            return null
+        }
+    }
+
+    private fun clearPreDrawListener() {
         if (startAnimationPreDrawListener != null) {
             viewTreeObserver.removeOnPreDrawListener(startAnimationPreDrawListener)
         }
-        if (null != mAnimatorSet) {
-            mAnimatorSet!!.cancel()
-        }
-        createAnimatorSet(false)
-        effectView?.stop()
-        mAnimatorSet!!.start()
+        startAnimationPreDrawListener = null
     }
 
-    private fun createAnimatorSet(isStart: Boolean) {
-        val together: MutableList<Animator> = ArrayList()
-        if (isStart) {
-            together.add(getScaleXAnimator(params.scaleFactor))
-            together.add(getScaleYAnimator(params.scaleFactor))
-        } else {
-            together.add(getScaleXAnimator(1.0f))
-            together.add(getScaleYAnimator(1.0f))
-        }
-        val sequentially: MutableList<Animator> = ArrayList()
-        if (params.shimmerEnabled && isStart) {
-            sequentially.add(shimmerAnimator)
-        }
-        mAnimatorSet = AnimatorSet()
-        mAnimatorSet!!.playTogether(together)
-        mAnimatorSet!!.playSequentially(sequentially)
+    private fun stopAnimation() {
+        clearPreDrawListener()
+        stopScaleAndShimmerAnim()
+        effectView?.stop()
     }
 
     private fun getScaleXAnimator(scale: Float): ObjectAnimator {
@@ -283,15 +335,10 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             if (params.bringToFrontOnFocus) {
                 bringToFront()
             }
-            startAnimation()
+            startAnimationOnFocused()
         } else {
             stopAnimation()
         }
-    }
-
-    init {
-        setWillNotDraw(false)
-        params = EffectParams(context, attrs)
     }
 
 }
