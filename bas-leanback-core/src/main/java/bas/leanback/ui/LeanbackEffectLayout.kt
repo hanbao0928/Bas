@@ -1,9 +1,6 @@
 package bas.leanback.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.*
 import android.content.Context
 import android.graphics.*
 import android.os.Build
@@ -13,7 +10,7 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
-import bas.leanback.core.R
+import bas.leanback.core.loge
 import java.util.*
 
 
@@ -29,12 +26,16 @@ class LeanbackEffectLayout @JvmOverloads constructor(
     private val shimmerPaint: Paint = Paint()
     private var shimmerLinearGradient: LinearGradient? = null
     private var shimmerGradientMatrix: Matrix = Matrix()
+
+    //shimmer 当前偏移量
     private var shimmerTranslate = 0f
+    private val shimmerAnimator: Animator = ShimmerAnimator()
+
+    //shimmer 动画启动标志
+    private var isShimmerTranslating: Boolean = false
 
     private var refreshRectF: RectF = RectF()
     private var dispatchDrawFlag = false
-
-    private var isShimmerTranslating: Boolean = false
     private var effectView: LeanbackEffectView? = null
 
     private val frameRectF: RectF = RectF()
@@ -76,7 +77,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             return
 
         shimmerPath.reset()
-        frameRectF.set(newLeft,newTop,newRight,newBottom)
+        frameRectF.set(newLeft, newTop, newRight, newBottom)
 
         //必须使用这种方式，否则在某些情况下会出现中间有个阴影色的色块
         if (params.isRoundedShape) {
@@ -101,6 +102,51 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             Shader.TileMode.CLAMP
         )
         shimmerPaint.shader = shimmerLinearGradient
+
+        val screenWidth = resources.displayMetrics.widthPixels
+        val max = if (width >= height) width else height
+        val duration = if (max > screenWidth / 3) screenWidth / 3 else max
+        shimmerAnimator.duration = (duration * 3).toLong()
+        shimmerAnimator.startDelay = params.shimmerDelay
+    }
+
+    private fun ShimmerAnimator(): Animator {
+        return ValueAnimator.ofFloat(-1f, 1f).apply {
+            interpolator = DecelerateInterpolator(1f)
+            addUpdateListener {
+                try {
+                    if (!params.shimmerEnabled) {
+                        it.cancel()
+                        return@addUpdateListener
+                    }
+                    val value = it.animatedValue as Float
+                    setShimmerTranslate(value)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    loge("[EffectLayout]:Shimmer动画异常", e)
+                }
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(animation: Animator) {
+                    isShimmerTranslating = true
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    isShimmerTranslating = false
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    isShimmerTranslating = false
+                }
+            })
+        }
+    }
+
+    private fun setShimmerTranslate(translate: Float) {
+        if (params.shimmerEnabled && this.shimmerTranslate != translate) {
+            this.shimmerTranslate = translate
+            ViewCompat.postInvalidateOnAnimation(this)
+        }
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -149,28 +195,6 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         shimmerLinearGradient!!.setLocalMatrix(shimmerGradientMatrix)
         canvas.drawPath(shimmerPath, shimmerPaint)
         canvas.restore()
-    }
-
-    private fun setShimmerAnimating(shimmerAnimating: Boolean) {
-        isShimmerTranslating = shimmerAnimating
-//        if (params.shimmerEnabled && shimmerAnimating) {
-//            shimmerLinearGradient = LinearGradient(
-//                0f,
-//                0f,
-//                frameRectF.width(),
-//                frameRectF.height(),
-//                intArrayOf(
-//                    0x00FFFFFF,
-//                    reduceColorAlphaValueToZero(params.shimmerColor),
-//                    params.shimmerColor,
-//                    reduceColorAlphaValueToZero(params.shimmerColor),
-//                    0x00FFFFFF
-//                ),
-//                floatArrayOf(0f, 0.2f, 0.5f, 0.8f, 1f),
-//                Shader.TileMode.CLAMP
-//            )
-//            shimmerPaint.shader = shimmerLinearGradient
-//        }
     }
 
     private fun reduceColorAlphaValueToZero(actualColor: Int): Int {
@@ -250,34 +274,6 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleYObjectAnimator
-    }
-
-    private val shimmerAnimator: ObjectAnimator
-        private get() {
-            val mShimmerAnimator = ObjectAnimator.ofFloat(this, "shimmerTranslate", -1f, 1f)
-            mShimmerAnimator.interpolator = DecelerateInterpolator(1f)
-            val screenWidth = resources.displayMetrics.widthPixels
-            val max = if (width >= height) width else height
-            val duration = if (max > screenWidth / 3) screenWidth / 3 else max
-            mShimmerAnimator.duration = (duration * 3).toLong()
-            mShimmerAnimator.startDelay = params.shimmerDelay
-            mShimmerAnimator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(animation: Animator) {
-                    setShimmerAnimating(true)
-                }
-
-                override fun onAnimationEnd(animation: Animator) {
-                    setShimmerAnimating(false)
-                }
-            })
-            return mShimmerAnimator
-        }
-
-    fun setShimmerTranslate(translate: Float) {
-        if (params.shimmerEnabled && this.shimmerTranslate != translate) {
-            this.shimmerTranslate = translate
-            ViewCompat.postInvalidateOnAnimation(this)
-        }
     }
 
     override fun onFocusChanged(gainFocus: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
