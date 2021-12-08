@@ -13,7 +13,7 @@ import java.util.*
 
 /**
  * Created by Lucio on 2021/11/30.
- * 布局帮助类，处理边界动画等
+ * 布局帮助类，处理边界动画、焦点记忆、bringToFront等
  */
 class LeanbackLayoutHelper private constructor(
     val layout: ViewGroup,

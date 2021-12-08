@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--是否使用缩放动画-->
+    <attr name="scale_bas" format="integer|reference" />
     <!--缩放动画时间-->
     <attr name="scaleDuration_bas" format="integer|reference" />
+    <!--缩放系数-->
+    <attr name="scaleFactor_bas" format="integer|reference" />
+    <!--缩放是否使用弹簧效果-->
+    <attr name="useBounceOnScale_bas" format="boolean|reference" />
 
     <!--是否使用闪光动画-->
     <attr name="shimmer_bas" format="boolean|reference" />
@@ -16,12 +22,12 @@
 
     <!--边框颜色-->
     <attr name="strokeColor_bas" format="color|reference" />
-    <!--边框大小-->
+    <!--边框大小：小于或等于0则没有边框效果-->
     <attr name="strokeWidth_bas" format="dimension|reference" />
 
     <!--阴影颜色-->
     <attr name="shadowColor_bas" format="color|reference" />
-    <!--阴影大小-->
+    <!--阴影大小：小于或等于0则没有阴影效果-->
     <attr name="shadowWidth_bas" format="dimension|reference" />
 
     <!--圆角半径(统一设置四个角，可以通过后面属性单独设置某个角)：如果是正方形，并且半径 = width/2 则就是圆形-->
@@ -34,11 +40,12 @@
 
 
     <declare-styleable name="LeanbackEffectLayout">
+        <attr name="scale_bas"/>
         <!--放大系数-->
-        <attr name="scaleFactor_bas" format="float|reference" />
+        <attr name="scaleFactor_bas" />
         <attr name="scaleDuration_bas" />
         <!--缩放动画是否使用弹簧效果-->
-        <attr name="useBounceOnScale_bas" format="boolean|reference" />
+        <attr name="useBounceOnScale_bas" />
 
         <attr name="shimmer_bas" />
         <attr name="shimmerColor_bas" />

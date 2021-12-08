@@ -17,7 +17,11 @@ import bas.leanback.core.R
 import java.util.*
 
 
-class LeanbackEffectLayout : FrameLayout {
+class LeanbackEffectLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var params: EffectParams
 
@@ -33,36 +37,9 @@ class LeanbackEffectLayout : FrameLayout {
     private var isShimmerTranslating: Boolean = false
     private var effectView: LeanbackEffectView? = null
 
-    //缩放倍数
-    private var scaleFactor: Float = 1.1f
-
-    //缩放是否使用弹簧效果
-    private var useBounceOnScale = true
-
-    //获取焦点时是否调用bringToFront
-    private val bringToFrontOnFocus: Boolean
-
     private val frameRectF: RectF = RectF()
     private var startAnimationPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
     private var mAnimatorSet: AnimatorSet? = null
-
-    @JvmOverloads
-    constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
-    ) : super(context, attrs, defStyleAttr) {
-        setWillNotDraw(false)
-        params = EffectParams(context, attrs)
-        val ta = context.theme.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout, 0, 0)
-        bringToFrontOnFocus =
-            ta.getBoolean(R.styleable.LeanbackEffectLayout_bringToFrontOnFocus_bas, false)
-        useBounceOnScale =
-            ta.getBoolean(R.styleable.LeanbackEffectLayout_useBounceOnScale_bas, true)
-        scaleFactor = ta.getFloat(R.styleable.LeanbackEffectLayout_scaleFactor_bas, 1.05f)
-        ta.recycle()
-
-    }
 
     override fun isInEditMode(): Boolean {
         return true
@@ -223,7 +200,6 @@ class LeanbackEffectLayout : FrameLayout {
         effectView?.start()
         createAnimatorSet(true)
         mAnimatorSet!!.start()
-        isSelected = true
     }
 
     fun stopAnimation() {
@@ -236,14 +212,13 @@ class LeanbackEffectLayout : FrameLayout {
         createAnimatorSet(false)
         effectView?.stop()
         mAnimatorSet!!.start()
-        isSelected = false
     }
 
     private fun createAnimatorSet(isStart: Boolean) {
         val together: MutableList<Animator> = ArrayList()
         if (isStart) {
-            together.add(getScaleXAnimator(scaleFactor))
-            together.add(getScaleYAnimator(scaleFactor))
+            together.add(getScaleXAnimator(params.scaleFactor))
+            together.add(getScaleYAnimator(params.scaleFactor))
         } else {
             together.add(getScaleXAnimator(1.0f))
             together.add(getScaleYAnimator(1.0f))
@@ -261,7 +236,7 @@ class LeanbackEffectLayout : FrameLayout {
         val scaleXObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleX", scale)
                 .setDuration(params.scaleAnimDuration)
-        if (useBounceOnScale) {
+        if (params.useBounceOnScale) {
             scaleXObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleXObjectAnimator
@@ -271,7 +246,7 @@ class LeanbackEffectLayout : FrameLayout {
         val scaleYObjectAnimator =
             ObjectAnimator.ofFloat(this, "scaleY", scale)
                 .setDuration(params.scaleAnimDuration)
-        if (useBounceOnScale) {
+        if (params.useBounceOnScale) {
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleYObjectAnimator
@@ -309,13 +284,18 @@ class LeanbackEffectLayout : FrameLayout {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect)
         isSelected = gainFocus
         if (gainFocus) {
-            if (bringToFrontOnFocus) {
+            if (params.bringToFrontOnFocus) {
                 bringToFront()
             }
             startAnimation()
         } else {
             stopAnimation()
         }
+    }
+
+    init {
+        setWillNotDraw(false)
+        params = EffectParams(context, attrs)
     }
 
 }

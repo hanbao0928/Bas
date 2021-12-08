@@ -36,11 +36,22 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     val cornerSizeBottomRight: Float
     val cornerRadius: FloatArray
 
+    val scaleEnabled: Boolean
+
+    //缩放倍数
+    var scaleFactor: Float
+
+    //缩放是否使用弹簧效果
+    var useBounceOnScale: Boolean
+
     //缩放动画时间
     val scaleAnimDuration: Long
 
     //是否是圆角形状
     val isRoundedShape: Boolean
+
+    //获取焦点时是否调用bringToFront
+    val bringToFrontOnFocus: Boolean
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout)
@@ -53,6 +64,15 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
             ta.getInt(R.styleable.LeanbackEffectLayout_scaleDuration_bas, DEFAULT_SCALE_DURATION)
                 .toLong()
         shimmerDelay = scaleAnimDuration + 100
+        scaleEnabled =
+            ta.getBoolean(R.styleable.LeanbackEffectLayout_scale_bas, DEFAULT_SCALE_ENABLED)
+        scaleFactor =
+            ta.getFloat(R.styleable.LeanbackEffectLayout_scaleFactor_bas, DEFAULT_SCALE_FACTOR)
+        useBounceOnScale =
+            ta.getBoolean(
+                R.styleable.LeanbackEffectLayout_useBounceOnScale_bas,
+                DEFAULT_USE_BOUNCE_ON_SCALE
+            )
 
         breatheEnabled =
             ta.getBoolean(R.styleable.LeanbackEffectLayout_breathe_bas, DEFAULT_BREATHE_ENABLED)
@@ -72,6 +92,12 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
             0f
         )
         shadowColor = ta.getColor(R.styleable.LeanbackEffectLayout_shadowColor_bas, 0)
+
+        bringToFrontOnFocus =
+            ta.getBoolean(
+                R.styleable.LeanbackEffectLayout_bringToFrontOnFocus_bas,
+                DEFAULT_BRING_TO_FRONT
+            )
 
         val cornerSize = ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSize_bas, 0f)
         cornerSizeTopLeft =
@@ -100,7 +126,10 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
 
     companion object {
 
+        const val DEFAULT_SCALE_ENABLED = true
         const val DEFAULT_SCALE_DURATION = 300
+        const val DEFAULT_SCALE_FACTOR = 1.1f
+        const val DEFAULT_USE_BOUNCE_ON_SCALE = false
 
         const val DEFAULT_SHIMMER_ENABLED = true
 
@@ -109,6 +138,8 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         const val DEFAULT_BREATHE_ENABLED = true
 
         const val BREATHE_DURATION = 4000
+
+        const val DEFAULT_BRING_TO_FRONT = false
     }
 
 }
