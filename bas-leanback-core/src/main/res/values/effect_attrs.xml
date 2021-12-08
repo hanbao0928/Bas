@@ -31,6 +31,7 @@
     <attr name="shadowWidth_bas" format="dimension|reference" />
 
     <!--圆角半径(统一设置四个角，可以通过后面属性单独设置某个角)：如果是正方形，并且半径 = width/2 则就是圆形-->
+    <!--如果设置圆形效果，并设置了childrenOffsetMargin_bas，则cornerSizexxxxx的值应该加上childrenOffsetMargin_bas设置的值-->
     <attr name="cornerSize_bas" format="dimension|reference" />
     <!---->
     <attr name="cornerSizeTopLeft_bas" format="dimension|reference" />
@@ -40,7 +41,13 @@
 
 
     <declare-styleable name="LeanbackEffectLayout">
-        <attr name="scale_bas"/>
+        <!--是否校准Children Margin：由于边框和阴影实际是在Layout内部绘制的，
+        会覆盖在Children之上，因此应该在Children之间增加margin才会使效果正常，如果用户需要自定义margin，可以关闭开关
+        否则会默认在children四周增加间距-->
+        <attr name="adjustChildrenMargin_bas" format="boolean" />
+        <!--children 与边框之间的margin距离-->
+        <attr name="childrenOffsetMargin_bas" format="dimension|reference" />
+        <attr name="scale_bas" />
         <!--放大系数-->
         <attr name="scaleFactor_bas" />
         <attr name="scaleDuration_bas" />
@@ -64,10 +71,7 @@
         <attr name="cornerSizeBottomRight_bas" />
         <attr name="cornerSizeBottomLeft_bas" />
 
-        <attr name="bringToFrontOnFocus_bas"/>
-
-        <!--是否是item根控件,true 不会自动开始动画-->
-        <attr name="mIsParent" format="boolean|reference" />
+        <attr name="bringToFrontOnFocus_bas" />
 
     </declare-styleable>
 

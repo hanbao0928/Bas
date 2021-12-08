@@ -53,6 +53,11 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     //获取焦点时是否调用bringToFront
     val bringToFrontOnFocus: Boolean
 
+    //是否校准children margin，默认true：除非您知道该含义，否则别关闭该开关
+    val adjustChildrenMargin:Boolean
+
+    val childrenOffsetMargin:Float
+
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout)
         shimmerEnabled =
@@ -99,6 +104,11 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
                 DEFAULT_BRING_TO_FRONT
             )
 
+        adjustChildrenMargin = ta.getBoolean(R.styleable.LeanbackEffectLayout_adjustChildrenMargin_bas,
+            DEFAULT_ADJUST_CHILDREN_MARGIN)
+
+        childrenOffsetMargin = ta.getDimension(R.styleable.LeanbackEffectLayout_childrenOffsetMargin_bas,0f)
+
         val cornerSize = ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSize_bas, 0f)
         cornerSizeTopLeft =
             ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSizeTopLeft_bas, cornerSize)
@@ -140,6 +150,9 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         const val BREATHE_DURATION = 4000
 
         const val DEFAULT_BRING_TO_FRONT = false
+
+
+        const val DEFAULT_ADJUST_CHILDREN_MARGIN = true
     }
 
 }

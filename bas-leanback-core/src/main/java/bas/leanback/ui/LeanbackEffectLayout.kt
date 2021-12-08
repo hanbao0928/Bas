@@ -5,11 +5,15 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
 import bas.leanback.core.loge
 import java.util.*
 
@@ -55,12 +59,45 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         return true
     }
 
+    private fun logd(msg: String) {
+        Log.d("EffectLayout@${this.hashCode()}", msg)
+    }
+
+
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(width, height, oldw, oldh)
+        logd("onSizeChanged($width,$height,$oldw,$oldh)")
+
+        if (width == oldw && height == oldh) {
+            logd("onSizeChanged 未发生改变")
+
+            return
+        }
+
         if (effectView == null) {
             //等布局大小确定之后，添加同等大小的效果View：实现阴影、边框、呼吸灯
             effectView = LeanbackEffectView(params, context)
             addView(effectView, LayoutParams(width, height))
+            logd("创建Effect View并添加")
+        } else {
+            val effectViewIndex = indexOfChild(effectView)
+            if (effectViewIndex < 0) {
+                logd("未添加Effect View，重新添加")
+                (effectView!!.parent as? ViewGroup)?.removeView(effectView)
+                addView(effectView, LayoutParams(width, height))
+            } else {
+                if (effectView?.width != width && effectView?.height != height) {
+                    effectView?.updateLayoutParams<ViewGroup.LayoutParams> {
+                        this.width = width
+                        this.height = height
+                    }
+                    logd("Effect Size不同，修正")
+                }
+                if (effectViewIndex != childCount - 1) {
+                    logd("Effect View未在末尾，bringToFront")
+                    effectView?.bringToFront()
+                }
+            }
         }
         updateShimmerParamsOnSizeChanged(width, height, oldw, oldh)
         if ((height != oldw || height != oldh) && params.isRoundedShape) {
@@ -189,6 +226,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
+        logd("onDetachedFromWindow")
         stopAnimation()
         super.onDetachedFromWindow()
     }
@@ -228,7 +266,6 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
             return
         }
-
         startScaleAndShimmerAnim()
         effectView?.start()
     }
@@ -239,7 +276,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
             return
         }
 
-        if(animOnFocus ==null){
+        if (animOnFocus == null) {
             createFocusAnimator()?.let {
                 animOnFocus = it
                 it.start()
@@ -247,13 +284,13 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         }
     }
 
-    private fun stopScaleAndShimmerAnim(){
+    private fun stopScaleAndShimmerAnim() {
         if (!focusAnimEnabled) {
             animOnUnfocus?.end()
             return
         }
 
-        if(animOnUnfocus == null){
+        if (animOnUnfocus == null) {
             createUnfocusAnimator()?.let {
                 animOnUnfocus = it
                 it.start()
@@ -261,8 +298,8 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         }
     }
 
-    private fun createUnfocusAnimator():Animator?{
-        if(!params.scaleEnabled)
+    private fun createUnfocusAnimator(): Animator? {
+        if (!params.scaleEnabled)
             return null
         return AnimatorSet().also {
             it.playTogether(
@@ -272,7 +309,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         }
     }
 
-    private fun createFocusAnimator(): Animator?{
+    private fun createFocusAnimator(): Animator? {
         if (params.scaleEnabled && params.shimmerEnabled) {
             return AnimatorSet().also {
                 it.playTogether(
@@ -332,13 +369,87 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect)
         isSelected = gainFocus
         if (gainFocus) {
-            if (params.bringToFrontOnFocus) {
-                bringToFront()
-            }
-            startAnimationOnFocused()
+            onGainFocus()
         } else {
             stopAnimation()
         }
     }
 
+    //获取焦点
+    private fun onGainFocus() {
+        if (params.bringToFrontOnFocus) {
+            bringToFront()
+        }
+        ensureEffectViewOnGainFocus()
+        startAnimationOnFocused()
+    }
+
+    private fun ensureEffectViewOnGainFocus() {
+        //没有effect效果，不处理
+        if (params.strokeWidth <= 0 && params.shadowWidth <= 0)
+            return
+        val effectView = this.effectView
+
+        val effectViewIndex = indexOfChild(effectView)
+        if (effectViewIndex < 0) {
+            logd("未添加Effect View，重新添加")
+            (effectView!!.parent as? ViewGroup)?.removeView(effectView)
+            addView(effectView, LayoutParams(width, height))
+        } else {
+            if (effectView?.width != width && effectView?.height != height) {
+                effectView?.updateLayoutParams<ViewGroup.LayoutParams> {
+                    this.width = this@LeanbackEffectLayout.width
+                    this.height = this@LeanbackEffectLayout.height
+                }
+                logd("Effect Size不同，修正")
+            }
+            if (effectViewIndex != childCount - 1) {
+                logd("Effect View未在末尾，bringToFront")
+                effectView?.bringToFront()
+            }
+        }
+    }
+
+    /**
+     * Called when a new child is added to this ViewGroup. Overrides should always
+     * call super.onViewAdded.
+     *
+     * @param child the added child view
+     */
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        child?.let {
+            adjustChildMargin(it)
+        }
+    }
+
+    private fun adjustChildMargin(child: View){
+        if (!params.adjustChildrenMargin || child == effectView)
+            return
+
+        val adjustMargin = (params.strokeWidth + params.shadowWidth + params.childrenOffsetMargin).toInt()
+        if (adjustMargin <= 0)//不需要调整
+            return
+
+        val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
+        if (hasAdjusted)//已调整过
+            return
+
+
+        val lp = child.layoutParams as? MarginLayoutParams ?: return
+        child.updateLayoutParams<MarginLayoutParams> {
+            lp.leftMargin += adjustMargin
+            lp.topMargin += adjustMargin
+            lp.rightMargin += adjustMargin
+            lp.bottomMargin += adjustMargin
+            //增加调整标记
+            child.setTag(params.hashCode(), true)
+        }
+    }
+
+    fun removeEffectView() {
+        effectView?.let {
+            removeView(it)
+        }
+    }
 }
