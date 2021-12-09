@@ -1,7 +1,6 @@
 package com.bas.sample.effectlayout
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
@@ -13,7 +12,6 @@ import com.bas.R
  * Created by Lucio on 2021/12/1.
  */
 class EffectLayoutActivity:AppCompatActivity(R.layout.activity_effect_layout) {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -52,6 +52,15 @@ public class ProcessorUtils {
         }
     }
 
+    public static TypeName createCanvasTypeName(boolean nullable) {
+        ClassName viewClass = ClassName.get("android.graphics", "Canvas");
+        if (nullable) {
+            return viewClass.annotated(nullableAnnotation);
+        } else {
+            return viewClass.annotated(nonNullAnnotation);
+        }
+    }
+
     public static TypeName createArrayList(TypeName typeName) {
         return ParameterizedTypeName.get(ClassName.get(ArrayList.class), typeName);
     }

@@ -12,5 +12,5 @@ import bas.leanback.layout.annotation.LeanbackLayout;
  * Created by Lucio on 2021/11/30.
  */
 @LeanbackLayout({LinearLayout.class, RelativeLayout.class, FrameLayout.class, ConstraintLayout.class})
-public class LeanbackLayoutInject {
+class LeanbackLayoutInject {
 }

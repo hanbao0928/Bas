@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * Created by Lucio on 2021/11/29.
- * 在TV上进行布局的控件（针对ViewGroup）：LinearLayout、ConstraintLayout等
+ * 在TV上进行操作的控件（ViewGroup&View）
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface LeanbackLayout {
+public @interface EffectLayout {
     Class<? extends ViewGroup>[] value() default {};
 }
