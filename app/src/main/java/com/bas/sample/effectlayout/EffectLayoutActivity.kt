@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import bas.android.core.util.dp
-import bas.leanback.ui.LeanbackEffectLayout
+import bas.leanback.layout.EffectFrameLayout
 import com.bas.R
 
 /**
@@ -30,8 +30,11 @@ class EffectLayoutActivity:AppCompatActivity(R.layout.activity_effect_layout) {
     fun onBtnClick(view:View){
         when(view.id){
             R.id.test_remove->{
-                val v1 = findViewById<LeanbackEffectLayout>(R.id.square)
-                v1.removeEffectView()
+                val v1 = findViewById<EffectFrameLayout>(R.id.square)
+                if(v1.childCount > 1){
+                    v1.removeViewAt(v1.childCount - 1)
+                }
+
             }
             R.id.test_front->{
                 findViewById<View>(R.id.circle1_image).bringToFront()

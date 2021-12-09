@@ -11,13 +11,12 @@ import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import bas.leanback.core.CallByOwner
 import bas.leanback.core.loge
-import bas.leanback.ui.EffectParams
-import bas.leanback.ui.LeanbackEffectView
 import com.bas.core.converter.toJson
 
 /**
@@ -44,7 +43,9 @@ class EffectLayoutDelegate(
         private fun createMarginAdjuster(params: EffectParams, layout: ViewGroup): AbstractMarginAdjuster {
             if (layout is ConstraintLayout) {
                 return ConstraintMarginAdjuster(params, layout)
-            } else {
+            } else if(layout is RelativeLayout){
+                return RelativeAdjuster(params, layout)
+            }else {
                 return MarginAdjuster(params, layout)
             }
         }
@@ -66,7 +67,7 @@ class EffectLayoutDelegate(
 
     private var refreshRectF: RectF = RectF()
     private var dispatchDrawFlag = false
-    private var effectView: LeanbackEffectView? = null
+    private var effectView: EffectView? = null
 
     private val frameRectF: RectF = RectF()
 
@@ -102,7 +103,7 @@ class EffectLayoutDelegate(
 
         if (effectView == null) {
             //等布局大小确定之后，添加同等大小的效果View：实现阴影、边框、呼吸灯
-            effectView = LeanbackEffectView(params, layout.context)
+            effectView = EffectView(params, layout.context)
             layout.addView(effectView, FrameLayout.LayoutParams(w, h))
             logd("创建Effect View并添加")
         } else {
@@ -506,6 +507,33 @@ class EffectLayoutDelegate(
 
             val lp = child.layoutParams as? ViewGroup.MarginLayoutParams ?: return
             child.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                lp.leftMargin += adjustMargin
+                lp.topMargin += adjustMargin
+                lp.rightMargin += adjustMargin
+                lp.bottomMargin += adjustMargin
+                //增加调整标记
+                child.setTag(params.hashCode(), true)
+            }
+        }
+    }
+
+    internal class RelativeAdjuster(params: EffectParams, layout: ViewGroup) :
+        AbstractMarginAdjuster(params, layout) {
+        override fun adjustChildMargin(child: View) {
+
+            val adjustMargin =
+                (params.strokeWidth + params.shadowWidth + params.childrenOffsetMargin).toInt()
+            if (adjustMargin <= 0)//不需要调整
+                return
+
+            val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
+            if (hasAdjusted)//已调整过
+                return
+
+
+            val lp = child.layoutParams as? RelativeLayout.LayoutParams ?: return
+            child.updateLayoutParams<RelativeLayout.LayoutParams> {
+                //暂时粗暴调整
                 lp.leftMargin += adjustMargin
                 lp.topMargin += adjustMargin
                 lp.rightMargin += adjustMargin

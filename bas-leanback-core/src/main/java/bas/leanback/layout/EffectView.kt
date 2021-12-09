@@ -1,4 +1,4 @@
-package bas.leanback.ui
+package bas.leanback.layout
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -14,7 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
  * user by pj567
  * date on 2019/12/16.
  */
-internal class LeanbackEffectView @JvmOverloads constructor(
+internal class EffectView @JvmOverloads constructor(
     val params: EffectParams,
     context: Context?,
     attrs: AttributeSet? = null,

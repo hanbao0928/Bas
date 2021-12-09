@@ -1,4 +1,4 @@
-package bas.leanback.ui
+package bas.leanback.layout
 
 import android.content.Context
 import android.util.AttributeSet
@@ -105,7 +105,8 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
             )
 
         adjustChildrenMargin = ta.getBoolean(R.styleable.LeanbackEffectLayout_adjustChildrenMargin_bas,
-            DEFAULT_ADJUST_CHILDREN_MARGIN)
+            DEFAULT_ADJUST_CHILDREN_MARGIN
+        )
 
         childrenOffsetMargin = ta.getDimension(R.styleable.LeanbackEffectLayout_childrenOffsetMargin_bas,0f)
 
