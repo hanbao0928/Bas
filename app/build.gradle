@@ -97,5 +97,5 @@ dependencies {
 //    implementation 'com.shuyu:gsyVideoPlayer-arm64:8.1.0'
 //    implementation 'com.shuyu:gsyVideoPlayer-x64:8.1.0'
 //    implementation 'com.shuyu:gsyVideoPlayer-x86:8.1.0'
-
+    implementation "com.google.code.gson:gson:2.8.7"
 }

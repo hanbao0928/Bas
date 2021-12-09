@@ -9,28 +9,28 @@
         android:layout_width="1px"
         android:layout_height="12dp"
         android:background="#ff0000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <bas.leanback.ui.LeanbackEffectLayout
+        android:id="@+id/square"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:layout_constraintRight_toLeftOf="@id/center"
-        android:layout_marginRight="24dp"
-        app:strokeColor_bas="#ff5813"
-        app:strokeWidth_bas="3dp"
+        app:shadowColor_bas="#af1ac3"
         app:shadowWidth_bas="6dp"
-        app:shadowColor_bas="#af1ac3">
+        app:strokeColor_bas="#ff5813"
+        app:strokeWidth_bas="3dp">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="320dp"
-            android:layout_margin="9dp"
             android:scaleType="centerCrop"
             android:src="@drawable/test_img" />
     </bas.leanback.ui.LeanbackEffectLayout>
@@ -39,69 +39,70 @@
         android:id="@+id/circle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
         android:layout_marginBottom="20dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:layout_constraintLeft_toRightOf="@id/center"
+        app:cornerSize_bas="58dp"
         app:layout_constraintBottom_toBottomOf="@id/center"
-        android:layout_marginLeft="24dp"
-        app:strokeWidth_bas="4dp"
-        app:strokeColor_bas="#5900be60"
+        app:layout_constraintLeft_toRightOf="@id/center"
+        app:shadowColor_bas="#5900be60"
         app:shadowWidth_bas="20dp"
-        app:cornerSize_bas="40dp"
-        app:shadowColor_bas="#5900be60">
+        app:strokeColor_bas="#5900be60"
+        app:childrenOffsetMargin_bas="18dp"
+        app:strokeWidth_bas="4dp">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/circle1_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:shapeAppearance="@style/CircleImage"
             android:scaleType="centerCrop"
-            android:layout_margin="24dp"
-            android:src="@drawable/test_img" />
+            android:src="@drawable/test_img"
+            app:shapeAppearance="@style/CircleImage" />
     </bas.leanback.ui.LeanbackEffectLayout>
 
     <TextView
-        app:layout_constraintLeft_toLeftOf="@id/circle1"
-        app:layout_constraintRight_toRightOf="@id/circle1"
-        app:layout_constraintBottom_toTopOf="@id/circle1"
-        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ems="20"
-        android:text="circle+stroke+shadow+shimmer+breathe"/>
+        android:text="circle+stroke+shadow+shimmer+breathe"
+        app:layout_constraintBottom_toTopOf="@id/circle1"
+        app:layout_constraintLeft_toLeftOf="@id/circle1"
+        app:layout_constraintRight_toRightOf="@id/circle1" />
 
     <bas.leanback.ui.LeanbackEffectLayout
         android:id="@+id/circle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
         android:layout_marginBottom="20dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:layout_constraintLeft_toRightOf="@id/circle1"
+        app:cornerSize_bas="40dp"
         app:layout_constraintBottom_toBottomOf="@id/center"
-        android:layout_marginLeft="24dp"
-        app:strokeWidth_bas="3dp"
+        app:layout_constraintLeft_toRightOf="@id/circle1"
         app:strokeColor_bas="#5900be60"
-        app:cornerSize_bas="40dp">
+        app:strokeWidth_bas="3dp">
+
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:shapeAppearance="@style/CircleImage"
             android:scaleType="centerCrop"
-            android:layout_margin="3dp"
-            android:src="@drawable/test_img" />
+            android:src="@drawable/test_img"
+            app:shapeAppearance="@style/CircleImage" />
     </bas.leanback.ui.LeanbackEffectLayout>
 
 
     <TextView
-        app:layout_constraintLeft_toLeftOf="@id/circle2"
-        app:layout_constraintRight_toRightOf="@id/circle2"
-        app:layout_constraintTop_toBottomOf="@id/circle2"
-        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ems="20"
-        android:text="circle+stroke+shimmer+breathe"/>
+        android:text="circle+stroke+shimmer+breathe"
+        app:layout_constraintLeft_toLeftOf="@id/circle2"
+        app:layout_constraintRight_toRightOf="@id/circle2"
+        app:layout_constraintTop_toBottomOf="@id/circle2" />
 
     <bas.leanback.ui.LeanbackEffectLayout
         android:id="@+id/rounded1"
@@ -110,34 +111,35 @@
         android:layout_marginTop="24dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        app:bringToFrontOnFocus_bas="true"
+        app:cornerSize_bas="@dimen/test_rounding_radius"
         app:layout_constraintRight_toLeftOf="@id/center"
         app:layout_constraintTop_toBottomOf="@id/center"
-        app:cornerSize_bas="@dimen/test_rounding_radius"
-        app:strokeWidth_bas="3dp"
-        app:strokeColor_bas="#5900be60"
+        app:shadowColor_bas="#5900be60"
         app:shadowWidth_bas="20dp"
-        app:shadowColor_bas="#5900be60">
+        app:strokeColor_bas="#5900be60"
+        app:strokeWidth_bas="3dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearance="@style/RoundedImage"
+            android:id="@+id/circle2_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:layout_margin="23dp"
-            android:src="@drawable/test_img" />
+            android:src="@drawable/test_img"
+            app:shapeAppearance="@style/RoundedImage" />
 
 
     </bas.leanback.ui.LeanbackEffectLayout>
 
     <TextView
-        app:layout_constraintLeft_toLeftOf="@id/rounded1"
-        app:layout_constraintRight_toRightOf="@id/rounded1"
-        app:layout_constraintTop_toBottomOf="@id/rounded1"
-        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ems="20"
-        android:text="rounded+stroke+shadow+shimmer+breathe"/>
+        android:text="rounded+stroke+shadow+shimmer+breathe"
+        app:layout_constraintLeft_toLeftOf="@id/rounded1"
+        app:layout_constraintRight_toRightOf="@id/rounded1"
+        app:layout_constraintTop_toBottomOf="@id/rounded1" />
 
     <bas.leanback.ui.LeanbackEffectLayout
         android:id="@+id/rounded2"
@@ -146,32 +148,31 @@
         android:layout_marginTop="24dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        app:cornerSize_bas="@dimen/test_rounding_radius"
         app:layout_constraintRight_toLeftOf="@id/rounded1"
         app:layout_constraintTop_toBottomOf="@id/center"
-        app:cornerSize_bas="@dimen/test_rounding_radius"
-        app:shadowWidth_bas="20dp"
-        app:shadowColor_bas="#5900be60">
+        app:shadowColor_bas="#5900be60"
+        app:shadowWidth_bas="20dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearance="@style/RoundedImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:layout_margin="20dp"
-            android:src="@drawable/test_img" />
+            android:src="@drawable/test_img"
+            app:shapeAppearance="@style/RoundedImage" />
 
 
     </bas.leanback.ui.LeanbackEffectLayout>
 
     <TextView
-        app:layout_constraintLeft_toLeftOf="@id/rounded1"
-        app:layout_constraintRight_toRightOf="@id/rounded1"
-        app:layout_constraintTop_toBottomOf="@id/rounded1"
-        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ems="20"
-        android:text="rounded+shadow+shimmer+breathe"/>
+        android:text="rounded+shadow+shimmer+breathe"
+        app:layout_constraintLeft_toLeftOf="@id/rounded1"
+        app:layout_constraintRight_toRightOf="@id/rounded1"
+        app:layout_constraintTop_toBottomOf="@id/rounded1" />
 
     <bas.leanback.ui.LeanbackEffectLayout
         android:layout_width="wrap_content"
@@ -179,22 +180,49 @@
         android:layout_marginTop="24dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        app:cornerSizeBottomRight_bas="@dimen/test_rounding_radius"
+        app:cornerSizeTopLeft_bas="@dimen/test_rounding_radius"
         app:layout_constraintLeft_toRightOf="@id/center"
         app:layout_constraintTop_toBottomOf="@id/center"
-        app:cornerSizeTopLeft_bas="@dimen/test_rounding_radius"
-        app:cornerSizeBottomRight_bas="@dimen/test_rounding_radius"
-        app:strokeWidth_bas="4dp"
-        app:strokeColor_bas="#5900be60"
+        app:shadowColor_bas="#5900be60"
         app:shadowWidth_bas="20dp"
-        app:shadowColor_bas="#5900be60">
+        app:strokeColor_bas="#5900be60"
+        app:strokeWidth_bas="4dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            app:shapeAppearance="@style/Test2Image"
-            android:layout_margin="24dp"
-            android:src="@drawable/test_img" />
+            android:src="@drawable/test_img"
+            app:shapeAppearance="@style/Test2Image" />
     </bas.leanback.ui.LeanbackEffectLayout>
+
+    <bas.leanback.layout.LeanbackLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/test_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试第一个View移除EffectView"
+            android:onClick="onBtnClick"/>
+
+        <Button
+            android:id="@+id/test_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试第二个View ImageBringToFront"
+            android:onClick="onBtnClick"/>
+
+        <Button
+            android:id="@+id/test_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试第三个View 修改大小"
+            android:onClick="onBtnClick"/>
+    </bas.leanback.layout.LeanbackLinearLayout>
+
 
 </bas.leanback.layout.LeanbackConstraintLayout>

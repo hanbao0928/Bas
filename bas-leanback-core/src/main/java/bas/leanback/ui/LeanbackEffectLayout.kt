@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import bas.leanback.core.loge
+import com.bas.core.converter.toJson
 import java.util.*
 
 
@@ -53,6 +54,7 @@ class LeanbackEffectLayout @JvmOverloads constructor(
     init {
         setWillNotDraw(false)
         params = EffectParams(context, attrs)
+        logd(params.toJson().orEmpty())
     }
 
     override fun isInEditMode(): Boolean {
@@ -274,13 +276,16 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         if (!focusAnimEnabled) {
             animOnFocus?.end()
             return
+        }else{
+            animOnFocus?.cancel()
         }
-
         if (animOnFocus == null) {
             createFocusAnimator()?.let {
                 animOnFocus = it
                 it.start()
             }
+        }else{
+            animOnFocus?.start()
         }
     }
 
@@ -288,6 +293,8 @@ class LeanbackEffectLayout @JvmOverloads constructor(
         if (!focusAnimEnabled) {
             animOnUnfocus?.end()
             return
+        }else{
+            animOnUnfocus?.cancel()
         }
 
         if (animOnUnfocus == null) {
@@ -295,6 +302,8 @@ class LeanbackEffectLayout @JvmOverloads constructor(
                 animOnUnfocus = it
                 it.start()
             }
+        }else{
+            animOnUnfocus?.start()
         }
     }
 

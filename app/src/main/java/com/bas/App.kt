@@ -2,6 +2,7 @@ package com.bas
 
 import android.content.Context
 import bas.android.core.app.BasApplication
+import bas.android.core.initBasCore
 import com.bas.android.multidex.MultiDexCompat
 
 /**
@@ -10,6 +11,7 @@ import com.bas.android.multidex.MultiDexCompat
 class App : BasApplication() {
 
     override fun onCreateMainProcess(processName: String) {
+        initBasCore(this)
     }
 
     /**
