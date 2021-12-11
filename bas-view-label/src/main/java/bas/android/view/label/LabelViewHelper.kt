@@ -3,224 +3,378 @@ package bas.android.view.label
 import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
+import androidx.annotation.IntRange
+import androidx.annotation.Px
+import kotlin.math.*
 
 class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr: Int = 0) {
 
-    var location: Int
-        private set
-    var text: String?
-        private set
+    var location: Int = DEFAULT_LOCATION
+        set(@Location value) {
+            if (field == value)
+                return
+            if (value < LEFT_TOP || value > LEFT_BOTTOM)
+                throw IllegalArgumentException("不正确的location参数，只支持LEFT_TOP、RIGHT_TOP、RIGHT_BOTTOM、LEFT_BOTTOM")
+            field = value
+            view.invalidate()
+        }
 
-    var textSize: Int
-        private set
+    var distance: Int = dp(DEFAULT_DISTANCE)
+        set(@Px value) {
+            if (field == value)
+                return
+            field = value
+            view.invalidate()
+        }
 
-
-    private var distance: Int
+    var backgroundColor: Int = DEFAULT_BACKGROUND_COLOR
+        set(@ColorInt value) {
+            if (field == value)
+                return
+            field = value
+            textRectPaint.color = value
+            view.invalidate()
+        }
 
     //文本上下padding
-    private var padding: Int
-
-    var backgroundColor: Int
-        private set
-
-    var textStyle: Int
-        private set
-
-    var textColor: Int
-        private set
+    var padding: Int = dp(DEFAULT_PADDING)
+        set(@Px value) {
+            if (field == value)
+                return
+            field = value
+            resetTextHeight()
+            view.invalidate()
+        }
 
     /*边框*/
-    private var strokeWidth: Int
+    var strokeWidth: Int = 0
+        set(@Px value) {
+            if (field == value)
+                return
+            field = value
+            this.strokePaint.strokeWidth = value.toFloat()
+            view.invalidate()
+        }
 
     /*边框颜色*/
-    var strokeColor: Int
-        private set
+    var strokeColor: Int = DEFAULT_STROKE_COLOR
+        set(@ColorInt value) {
+            if (field == value)
+                return
+            field = value
+            this.strokePaint.color = value
+            view.invalidate()
+        }
 
+    var text: String? = null
+        set(value) {
+            if (field == value)
+                return
+            field = value
+            view.invalidate()
+        }
 
-    private var textRectHeight: Int = 0
+    var textSize: Int = sp(DEFAULT_TEXT_SIZE)
+        set(@Px value) {
+            if (field == value)
+                return
+            field = value
+            this.textPaint.textSize = value.toFloat()
+            resetTextHeight()
+            view.invalidate()
+        }
 
+    var textColor: Int = DEFAULT_TEXT_COLOR
+        set(@ColorInt value) {
+            if (field == value)
+                return
+            field = value
+            this.textPaint.color = value
+            view.invalidate()
+        }
 
-    private var height: Int
+    var textStyle: Int = DEFAULT_TEXT_STYLE
+        set(@TextStyle value) {
+            if (field == value)
+                return
+            field = value
+            this.textPaint.typeface = Typeface.defaultFromStyle(value)
+            view.invalidate()
+        }
 
+    var yAxisDegree: Int = DEFAULT_YAXIS_DEGREE
+        set(@IntRange(from = 0, to = 90) value) {
+            if (field == value)
+                return
+
+            field = value
+            degreeSin = sin(Math.toRadians(value.toDouble())).toFloat()
+            degreeCos = cos(Math.toRadians(value.toDouble())).toFloat()
+            view.invalidate()
+        }
 
     //是否可见
-    var isVisible: Boolean
-        private set
-
+    var isVisible: Boolean = true
+        set(value) {
+            if (field == value)
+                return
+            field = value
+            view.invalidate()
+        }
 
     private val textRectPaint: Paint = Paint().apply {
-//        isDither = true
-//        isAntiAlias = true
+        isDither = true
+        isAntiAlias = true
         style = Paint.Style.FILL
     }
 
     private val textPaint: Paint = TextPaint().apply {
-//        isDither = true
+        isDither = true
         isAntiAlias = true
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.SQUARE
     }
 
     private val strokePaint: Paint = Paint().apply {
-//        isDither = true
-//        isAntiAlias = true
+        isDither = true
+        isAntiAlias = true
         style = Paint.Style.STROKE
     }
 
-    private val textPath: Path
+    /*整个文本框高度：文本+上下padding*/
+    private var textRectHeight: Int = 0
 
-    // simulator
-    private val rectPath: Path
-    private val textBound: Rect
+    /*文本基线*/
+    private var textBaseline: Float = 0f
+
+    /*文本绘制路径*/
+    private val textPath: Path = Path()
+
+    /*文本路径长度*/
+    private var textPathSideLength: Int = 0
+
+    /*背景绘制路径*/
+    private val rectPath: Path = Path()
+
+    /*过渡容器，存储文本测量数据*/
+    private val textBound: Rect = Rect()
+
+    //斜边高度：顶点到文本框外边之间的距离
+    private var outerDistance: Int = 0
+
+    /*角度正弦值*/
+    private var degreeSin: Float = 1f
+
+    /*角度余弦值*/
+    private var degreeCos: Float = 1f
 
     init {
         val ta =
             view.context.obtainStyledAttributes(attrs, R.styleable.LabelView, defStyleAttr, 0)
-
-        location = ta.getInteger(R.styleable.LabelView_label_location, LEFT_TOP)
-
-        distance = ta.getDimensionPixelSize(
-            R.styleable.LabelView_label_distance,
-            dp(DEFAULT_DISTANCE)
-        )
-
+        location = ta.getInteger(R.styleable.LabelView_label_location, location)
+        distance = ta.getDimensionPixelSize(R.styleable.LabelView_label_distance, distance)
+        backgroundColor = ta.getColor(R.styleable.LabelView_label_backgroundColor, backgroundColor)
+        padding = ta.getDimensionPixelSize(R.styleable.LabelView_label_padding, padding)
+        strokeWidth = ta.getDimensionPixelSize(R.styleable.LabelView_label_strokeWidth, strokeWidth)
+        strokeColor = ta.getColor(R.styleable.LabelView_label_strokeColor, strokeColor)
         text = ta.getString(R.styleable.LabelView_label_text)
-        textSize = ta.getDimensionPixelSize(
-            R.styleable.LabelView_label_textSize,
-            sp(DEFAULT_TEXT_SIZE)
-        )
+        textSize = ta.getDimensionPixelSize(R.styleable.LabelView_label_textSize, textSize)
+        textColor = ta.getColor(R.styleable.LabelView_label_textColor, textColor)
+        textStyle = ta.getInt(R.styleable.LabelView_label_textStyle, textStyle)
+        yAxisDegree = ta.getInt(R.styleable.LabelView_label_yAxisDegree, yAxisDegree)
+        isVisible = ta.getBoolean(R.styleable.LabelView_label_visible, isVisible)
+        ta.recycle()
+        initDynamicParams()
+    }
 
-        textStyle = ta.getInt(
-            R.styleable.LabelView_label_textStyle, DEFAULT_TEXT_STYLE
-        )
-        textColor = ta.getColor(
-            R.styleable.LabelView_label_textColor,
-            DEFAULT_TEXT_COLOR
-        )
-
-        padding = ta.getDimensionPixelSize(
-            R.styleable.LabelView_label_distance,
-            dp(DEFAULT_PADDING)
-        )
+    private fun initDynamicParams() {
+        textRectPaint.color = backgroundColor
 
         textPaint.textSize = textSize.toFloat()
         textPaint.color = textColor
         textPaint.typeface = Typeface.defaultFromStyle(this.textStyle)
-        resetTextHeight()
-
-        backgroundColor = ta.getColor(
-            R.styleable.LabelView_label_backgroundColor,
-            DEFAULT_BACKGROUND_COLOR
-        )
-        textRectPaint.color = backgroundColor
-
-
-        height = ta.getDimensionPixelSize(
-            R.styleable.LabelView_label_height, dp(DEFAULT_HEIGHT.toFloat())
-        )
-        strokeWidth = ta.getDimensionPixelSize(R.styleable.LabelView_label_strokeWidth, 0)
-
-        strokeColor =
-            ta.getColor(R.styleable.LabelView_label_strokeColor, DEFAULT_STROKE_COLOR)
-
-        isVisible = true
-
-        ta.recycle()
-
-        if (strokeWidth > 0) {
-            textRectPaint.strokeWidth = strokeWidth.toFloat()
-            textRectPaint.color
-        }
-
         strokePaint.color = strokeColor
         strokePaint.strokeWidth = strokeWidth.toFloat()
 
-        rectPath = Path()
-        textPath = Path()
-        textBound = Rect()
+        //一定要在设置文本大小之后再设置
+        resetTextHeight()
+
+        degreeSin = sin(Math.toRadians(yAxisDegree.toDouble())).toFloat()
+        degreeCos = cos(Math.toRadians(yAxisDegree.toDouble())).toFloat()
+
     }
 
+    /** 确定View宽度大小  */
+    fun measureWidth(widthMeasureSpec: Int): Int {
+        var result: Int
+        val specMode = View.MeasureSpec.getMode(widthMeasureSpec)
+        val specSize = View.MeasureSpec.getSize(widthMeasureSpec)
+        when (specMode) {
+            View.MeasureSpec.EXACTLY -> {
+                //大小确定直接使用
+                result = specSize
+            }
+            View.MeasureSpec.AT_MOST -> {
+                /*外层三角形横边长度*/
+                val suggestWidth = (outerDistance * 4) / sqrt(2f)
+                val sideLength = (outerDistance / degreeCos).toInt()
+                result = min(suggestWidth.toInt(), specSize)
+                result = max(sideLength, result)
 
-    fun onDraw(canvas: Canvas, measuredWidth: Int, measuredHeight: Int) {
+            }
+            else -> {
+                result = View.getDefaultSize(view.minimumWidth, widthMeasureSpec)
+            }
+        }
+        return result
+    }
+
+    /** 确定View宽度大小  */
+    fun measureHeight(heightMeasureSpec: Int): Int {
+        var result: Int
+        val specMode = View.MeasureSpec.getMode(heightMeasureSpec)
+        val specSize = View.MeasureSpec.getSize(heightMeasureSpec)
+        when (specMode) {
+            View.MeasureSpec.EXACTLY -> {
+                //大小确定直接使用
+                result = specSize
+            }
+            View.MeasureSpec.AT_MOST -> {
+                val suggestHeight = (outerDistance * 4) / sqrt(2f)
+                /*外层三角形横边长度*/
+                val sideLength = (outerDistance / degreeSin).toInt()
+                result = min(suggestHeight.toInt(), specSize)
+                result = max(sideLength, result)
+            }
+            else -> {
+                result = View.getDefaultSize(view.minimumWidth, heightMeasureSpec)
+            }
+        }
+        return result
+    }
+
+    fun onDraw(canvas: Canvas) {
         val content = this.text
         if (!isVisible || content.isNullOrEmpty()) {
             return
         }
-
-        val actualDistance = (distance + height / 2).toFloat()
-        updatePath(measuredWidth, measuredHeight)
-
-
+        /*绘制背景*/
         canvas.drawPath(rectPath, textRectPaint)
-        if(this.strokeWidth > 0){
+        /*绘制边框*/
+        if (this.strokeWidth > 0) {
             canvas.drawPath(rectPath, strokePaint)
         }
+
         textPaint.getTextBounds(content, 0, content.length, textBound)
-        var begin_w_offset = 1.4142135f * actualDistance / 2 - textBound.width() / 2
-        if (begin_w_offset < 0) begin_w_offset = 0f
+        Log.i(
+            "drawTextOnPath",
+            "onDraw: textPathSideLength=${textPathSideLength} textBound.width()=${textBound.width()}"
+        )
+        var pathXOffset = (textPathSideLength - textBound.width()) / 2f
+        if (pathXOffset < 0) pathXOffset = 0f
+        Log.i("drawTextOnPath", "pathXOffset:$pathXOffset")
         canvas.drawTextOnPath(
-            this.text!!,
-            textPath,
-            begin_w_offset,
-            (textBound.height() / 2).toFloat(),
+            content, textPath,
+            pathXOffset,//begin_w_offset,
+            0f,//(textBound.height() / 2).toFloat() + textBaseline,
             textPaint
         )
     }
 
-    private fun updatePath(measuredWidth: Int, measuredHeight: Int) {
+    fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        if (w == oldw && h == oldh)
+            return
         rectPath.reset()
         textPath.reset()
-        height = textRectHeight
-        val startPosX = (measuredWidth - distance - height).toFloat()
-        val endPosX = measuredWidth.toFloat()
-        val startPosY = (measuredHeight - distance - height).toFloat()
-        val endPosY = measuredHeight.toFloat()
-        val middle = (height / 2).toFloat()
+
+        /*小三角形横边长度*/
+        val innerXSideLength = distance / degreeCos
+        /*小三角形竖边长度*/
+        val innerYSideLength = distance / degreeSin
+
+        /*外层三角形横边长度*/
+        val outerXSideLength = outerDistance / degreeCos
+        /*外层三角形竖边长度*/
+        val outerYSideLength = outerDistance / degreeSin
+
+        /*X轴和Y轴的偏移量*/
+        var xAxisOffset = 0
+        var yAxisOffset = 0
+        /*X轴和Y轴计算量方向：正1表示位置正向增大，负一表示点往坐标系反方向移动*/
+        var xAxisDirection = 1
+        var yAxisDirection = 1
+        var textPathDirection = 1
+
         when (location) {
             RIGHT_TOP -> {
-                rectPath.moveTo(startPosX, 0f)
-                rectPath.lineTo(startPosX + height, 0f)
-                rectPath.lineTo(endPosX, distance.toFloat())
-                rectPath.lineTo(endPosX, (distance + height).toFloat())
-                rectPath.close()
-                textPath.moveTo(startPosX + middle, 0f)
-                textPath.lineTo(endPosX, distance + middle)
-                textPath.close()
+                xAxisOffset = w
+                yAxisOffset = 0
+                xAxisDirection = -1
+                yAxisDirection = 1
+                textPathDirection = -1
             }
             LEFT_BOTTOM -> {
-                rectPath.moveTo(0f, startPosY)
-                rectPath.lineTo((distance + height).toFloat(), endPosY)
-                rectPath.lineTo(distance.toFloat(), endPosY)
-                rectPath.lineTo(0f, startPosY + height)
-                rectPath.close()
-                textPath.moveTo(0f, startPosY + middle)
-                textPath.lineTo(distance + middle, endPosY)
-                textPath.close()
+                xAxisOffset = 0
+                yAxisOffset = h
+                xAxisDirection = 1
+                yAxisDirection = -1
+                textPathDirection = 1
             }
             RIGHT_BOTTOM -> {
-                rectPath.moveTo(startPosX, endPosY)
-                rectPath.lineTo(measuredWidth.toFloat(), startPosY)
-                rectPath.lineTo(measuredWidth.toFloat(), startPosY + height)
-                rectPath.lineTo(startPosX + height, endPosY)
-                rectPath.close()
-                textPath.moveTo(startPosX + middle, endPosY)
-                textPath.lineTo(endPosX, startPosY + middle)
-                textPath.close()
+                xAxisOffset = w
+                yAxisOffset = h
+                xAxisDirection = -1
+                yAxisDirection = -1
+                textPathDirection = -1
             }
             else -> {
-                rectPath.moveTo(0f, distance.toFloat())
-                rectPath.lineTo(distance.toFloat(), 0f)
-                rectPath.lineTo((distance + height).toFloat(), 0f)
-                rectPath.lineTo(0f, (distance + height).toFloat())
-                rectPath.close()
-
-                textPath.moveTo(0f, distance + middle)
-                textPath.lineTo(distance + middle, 0f)
-                textPath.close()
+                xAxisOffset = 0
+                yAxisOffset = 0
+                xAxisDirection = 1
+                yAxisDirection = 1
+                textPathDirection = 1
             }
         }
+
+        rectPath.moveTo(xAxisOffset.toFloat(), yAxisOffset + innerYSideLength * yAxisDirection)
+        rectPath.lineTo(xAxisOffset.toFloat(), yAxisOffset + outerYSideLength * yAxisDirection)
+        rectPath.lineTo(xAxisOffset + outerXSideLength * xAxisDirection, yAxisOffset.toFloat())
+        rectPath.lineTo(xAxisOffset + innerXSideLength * xAxisDirection, yAxisOffset.toFloat())
+        rectPath.close()
+
+        /*文本绘制距离顶点的距离：注意baseline的方向，下面的应该是贴近短边，上面的是贴近长边*/
+        val textDistance = distance + textRectHeight / 2 + textBaseline * yAxisDirection
+        val textPathXSideLength = textDistance / degreeCos
+        val textPathYSideLength = textDistance / degreeSin
+
+        val textStartX = xAxisOffset.toFloat()
+        val textStartY = yAxisOffset + textPathYSideLength * yAxisDirection
+        val textEndX = xAxisOffset + textPathXSideLength * xAxisDirection
+        val textEndY = yAxisOffset.toFloat()
+
+        if (textPathDirection < 0) {
+            textPath.moveTo(textEndX, textEndY)
+            textPath.lineTo(textStartX, textStartY)
+        } else {
+            textPath.moveTo(textStartX, textStartY)
+            textPath.lineTo(textEndX, textEndY)
+        }
+        textPath.close()
+
+        textPathSideLength = (textPathXSideLength / degreeSin).toInt()
+    }
+
+    //重置文本高度
+    private fun resetTextHeight() {
+        val fontMetrics = textPaint.fontMetrics
+        val textHeight: Float = fontMetrics.bottom - fontMetrics.top
+        textRectHeight = (textHeight + padding * 2).toInt()
+        textBaseline = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom
+        outerDistance = distance + textRectHeight
     }
 
     private fun dp(dip: Float): Int {
@@ -231,119 +385,48 @@ class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr:
         return (value * view.resources.displayMetrics.scaledDensity + 0.5f).toInt()
     }
 
-    fun setLabelHeight(view: View, height: Int) {
-        if (this.height != dp(height.toFloat())) {
-            this.height = dp(height.toFloat())
-            view.invalidate()
-        }
-    }
+    /**
+     * 标签位置
+     * @see LEFT_TOP 左上角
+     * @see RIGHT_TOP 右上角
+     * @see RIGHT_BOTTOM 右下角
+     * @see LEFT_BOTTOM 左下角
+     */
+    @Retention(AnnotationRetention.SOURCE)
+    @IntDef(value = [LEFT_TOP, RIGHT_TOP, RIGHT_BOTTOM, LEFT_BOTTOM])
+    annotation class Location
 
-
-
-    fun setLabelVisual(view: View, visual: Boolean) {
-        if (isVisible != visual) {
-            isVisible = visual
-            view.invalidate()
-        }
-    }
-
-    fun setLabelOrientation(view: View, orientation: Int) {
-        if (location != orientation && orientation <= 4 && orientation >= 1) {
-            location = orientation
-            view.invalidate()
-        }
-    }
-
-
-
-    fun setStrokeColor( strokeColor: Int) {
-        if (this.strokeColor == strokeColor)
-            return
-        this.strokeColor = strokeColor
-        this.strokePaint.color = strokeColor
-        view.invalidate()
-    }
-
-    fun setStrokeWidth(strokeWidthPx: Int) {
-        if (this.strokeWidth == strokeWidthPx)
-            return
-        this.strokeWidth = strokeWidthPx
-        this.strokePaint.strokeWidth = strokeWidth.toFloat()
-        view.invalidate()
-    }
-
-    fun setText(text: String?) {
-        if (this.text == text)
-            return
-        this.text = text
-        view.invalidate()
-    }
-
-    fun setTextColor(textColor: Int) {
-        if (this.textColor == textColor)
-            return
-        this.textColor = textColor
-        view.invalidate()
-    }
-
-    fun setTextSize(textSize: Int) {
-        if (this.textSize == textSize)
-            return
-        this.textSize = textSize
-        this.textPaint.textSize = textSize.toFloat()
-        resetTextHeight()
-        view.invalidate()
-    }
-
-    fun setDistance(distancePx: Int) {
-        if (this.distance == distancePx)
-            return
-        this.distance = distancePx
-        view.invalidate()
-    }
-
-    fun setBackgroundColor(backgroundColor: Int) {
-        if (this.backgroundColor == backgroundColor)
-            return
-        this.backgroundColor = backgroundColor
-        textRectPaint.color = backgroundColor
-        view.invalidate()
-    }
-
-    //重置文本高度
-    private fun resetTextHeight() {
-        val textHeight: Float = textPaint.descent() - textPaint.ascent()
-        textRectHeight = (textHeight + padding * 2).toInt()
-    }
+    @IntDef(value = [Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, Typeface.BOLD_ITALIC])
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class TextStyle
 
     companion object {
-
-
-        private const val DEFAULT_HEIGHT = 20
-
-
         private const val LEFT_TOP = 0
         private const val RIGHT_TOP = 1
         private const val RIGHT_BOTTOM = 2
         private const val LEFT_BOTTOM = 3
 
-        private const val DEFAULT_TEXT_COLOR = Color.BLACK
-        private const val DEFAULT_DISTANCE = 40f
-        private const val DEFAULT_TEXT_SIZE = 14f
-        private const val DEFAULT_TEXT_STYLE = Typeface.NORMAL
+        /*默认位置*/
+        private const val DEFAULT_LOCATION = LEFT_TOP
 
+        /*默认距离20dp*/
+        private const val DEFAULT_DISTANCE = 20f
 
+        /*默认背景色*/
         private const val DEFAULT_BACKGROUND_COLOR = -0x60d83240
-        private const val DEFAULT_STROKE_COLOR = Color.BLACK
+
+        /*默认文本颜色*/
+        private const val DEFAULT_TEXT_COLOR = Color.BLACK
 
         /*默认文本上下padding dp*/
-        private const val DEFAULT_PADDING = 3.5f
+        private const val DEFAULT_PADDING = 2f
+        private const val DEFAULT_TEXT_SIZE = 12f
+        private const val DEFAULT_TEXT_STYLE = Typeface.BOLD
+        private const val DEFAULT_STROKE_COLOR = Color.BLACK
+
+        /*与Y轴的夹角默认度数*/
+        private const val DEFAULT_YAXIS_DEGREE = 45
     }
 
-    @Retention(AnnotationRetention.SOURCE)
-    @IntDef(LEFT_TOP, RIGHT_TOP, RIGHT_BOTTOM, LEFT_BOTTOM)
-    annotation class Location {
-
-    }
 
 }

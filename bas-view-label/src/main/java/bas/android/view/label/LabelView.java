@@ -3,6 +3,7 @@ package bas.android.view.label;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
@@ -10,26 +11,28 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.appcompat.widget.AppCompatImageView;
 
-public class LabelImageView extends AppCompatImageView {
+public class LabelView extends View {
 
     LabelViewHelper labelHelper;
 
-    public LabelImageView(Context context) {
+    public LabelView(Context context) {
         this(context, null);
     }
 
-    public LabelImageView(Context context, AttributeSet attrs) {
+    public LabelView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LabelImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LabelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         labelHelper = new LabelViewHelper(this, attrs, defStyleAttr);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int width = labelHelper.measureWidth(widthMeasureSpec);
+        int height =  labelHelper.measureHeight(heightMeasureSpec);
+        setMeasuredDimension(width,height);
     }
 
     @Override
