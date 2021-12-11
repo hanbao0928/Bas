@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--不能使用android:空间的属性，避免作为TextView嵌套使用的问题-->
+    <attr name="label_text" format="string" />
+    <attr name="label_textColor" format="reference|color" />
+    <attr name="label_textSize" format="dimension" />
+    <attr name="label_textStyle">
+        <flag name="normal" value="0" />
+        <flag name="bold" value="1" />
+        <flag name="italic" value="2" />
+    </attr>
+    <!--标签文本上下padding-->
+    <attr name="label_padding" format="dimension" />
+
+    <!--标签位置-->
+    <attr name="label_location" format="enum">
+        <enum name="LEFT_TOP" value="0" />
+        <enum name="RIGHT_TOP" value="1" />
+        <enum name="RIGHT_BOTTOM" value="2" />
+        <enum name="LEFT_BOTTOM" value="3" />
+    </attr>
+    <attr name="label_distance" format="dimension" />
+
+    <!--标签背景色-->
+    <attr name="label_backgroundColor" format="color" />
+
+    <attr name="label_strokeWidth" format="dimension" />
+
+    <attr name="label_strokeColor" format="color" />
+
+    <declare-styleable name="LabelImageView">
+        <attr name="label_text" />
+        <attr name="label_textColor" />
+        <attr name="label_textSize" />
+        <attr name="label_textStyle" />
+        <attr name="label_padding" />
+        <attr name="label_location" />
+        <attr name="label_backgroundColor" />
+        <attr name="label_strokeWidth" />
+        <attr name="label_strokeColor" />
+        <attr name="label_distance" />
+    </declare-styleable>
+
+    <declare-styleable name="LabelView">
+        <attr name="label_text" />
+        <attr name="label_textColor" />
+        <attr name="label_textSize" />
+        <attr name="label_textStyle" />
+        <attr name="label_padding" />
+        <attr name="label_location" />
+        <attr name="label_backgroundColor" />
+        <attr name="label_strokeWidth" />
+        <attr name="label_strokeColor" />
+        <attr name="label_distance" />
+
+        <!--背景是否铺满-->
+        <attr name="label_backgroundPaved" format="boolean" />
+
+        <!--旋转度数-->
+        <attr name="label_degree" format="integer" />
+
+        <attr name="android:textStyle" />
+
+
+        <attr name="label_height" format="dimension" />
+
+    </declare-styleable>
+
+
+    <attr name="label_visual" format="boolean" />
+    <attr name="label_orientation" format="enum">
+        <enum name="LEFT_TOP" value="1" />
+        <enum name="RIGHT_TOP" value="2" />
+        <enum name="LEFT_BOTTOM" value="3" />
+        <enum name="RIGHT_BOTTOM" value="4" />
+    </attr>
+</resources>
