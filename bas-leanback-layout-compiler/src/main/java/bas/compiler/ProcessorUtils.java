@@ -22,6 +22,21 @@ public class ProcessorUtils {
             ClassName.get("androidx.annotation", "NonNull")
     ).build();
 
+    public static final AnnotationSpec pxAnnotation = AnnotationSpec.builder(
+            ClassName.get("androidx.annotation", "Px")
+    ).build();
+
+    public static final AnnotationSpec colorIntAnnotation = AnnotationSpec.builder(
+            ClassName.get("androidx.annotation", "ColorInt")
+    ).build();
+
+    public static final AnnotationSpec createIntRangeAnnotation(int from, int to) {
+        return AnnotationSpec.builder(ClassName.get("androidx.annotation", "IntRange"))
+                .addMember("from", String.valueOf(from))
+                .addMember("to", String.valueOf(to)).build();
+    }
+
+
     public static ClassName createContext() {
         return ClassName.get("android.content", "Context");
     }
@@ -49,6 +64,15 @@ public class ProcessorUtils {
             return viewClass.annotated(nullableAnnotation);
         } else {
             return viewClass.annotated(nonNullAnnotation);
+        }
+    }
+
+    public static TypeName createString(boolean nullable) {
+        TypeName tn = TypeName.get(String.class);
+        if (nullable) {
+            return tn.annotated(nullableAnnotation);
+        } else {
+            return tn.annotated(nonNullAnnotation);
         }
     }
 

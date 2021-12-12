@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bas.R
 import com.bas.sample.effectlayout.EffectLayoutActivity
+import com.bas.sample.label.LabelLayoutActivity
 import com.bas.sample.leanbacklayout.LeanbackLayoutActivity
 
 /**
@@ -22,6 +23,9 @@ class LauncherActivity() : AppCompatActivity(R.layout.launcher_activity) {
             }
             R.id.effect_layout_test_btn->{
                 this.startActivity(Intent(this, EffectLayoutActivity::class.java))
+            }
+            R.id.label_test_btn->{
+                this.startActivity(Intent(this, LabelLayoutActivity::class.java))
             }
         }
     }

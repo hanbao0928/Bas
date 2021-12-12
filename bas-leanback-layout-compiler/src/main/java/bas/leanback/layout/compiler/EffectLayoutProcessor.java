@@ -146,7 +146,7 @@ public class EffectLayoutProcessor extends BaseProcessor {
     private void onSizeChanged(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec onSizeChanged = MethodSpec.methodBuilder("onSizeChanged")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PROTECTED)
                 .addParameter(int.class, "w")
                 .addParameter(int.class, "h")
                 .addParameter(int.class, "oldw")
@@ -160,7 +160,7 @@ public class EffectLayoutProcessor extends BaseProcessor {
     private void dispatchDraw(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec dispatchDraw = MethodSpec.methodBuilder("dispatchDraw")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PROTECTED)
                 .addParameter(ProcessorUtils.createCanvasTypeName(true), "canvas")
                 .addStatement("effectDelegate.dispatchDraw(canvas)")
                 .build();
@@ -180,7 +180,7 @@ public class EffectLayoutProcessor extends BaseProcessor {
     private void onFocusChanged(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec onFocusChanged = MethodSpec.methodBuilder("onFocusChanged")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PROTECTED)
                 .addParameter(boolean.class, "gainFocus")
                 .addParameter(int.class, "direction")
                 .addParameter(ProcessorUtils.createRectTypeName(true), "previouslyFocusedRect")

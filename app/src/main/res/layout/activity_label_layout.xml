@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <bas.android.view.label.LabelView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/test_img"
+            app:label_distance="40dp"
+            app:label_padding="6dp"
+            app:label_strokeColor="#ff5813"
+            app:label_strokeWidth="2dp"
+            app:label_text="中欧人"
+            app:label_textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="默认情况：普通文本、45度、左上角、间距20dp、文本Padding（2dp）" />
+
+        <bas.android.view.label.AppCompatImageLabelView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            app:label_text="Default" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="红色文本、加粗、60度夹角、右上角、30dp间距、padding（1dp）、10sp" />
+
+        <bas.android.view.label.ShapeableImageLabelView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            app:label_distance="30dp"
+            app:label_location="right_top"
+            app:label_padding="1dp"
+            app:label_text="中欧人"
+            app:label_textColor="#ff0000"
+            app:label_textSize="10sp"
+            app:label_textStyle="bold"
+            app:label_yAxisDegree="60"
+            app:shapeAppearance="@style/ImageShape.Rounded" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="斜体加粗、15度夹角、右下角、10间距、6dp padding、白字蓝底" />
+
+        <bas.android.view.label.ShapeableImageLabelView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            app:label_backgroundColor="#0000ff"
+            app:label_distance="10dp"
+            app:label_location="right_bottom"
+            app:label_padding="6dp"
+            app:label_text="中欧人"
+            app:label_textColor="#ffffff"
+            app:label_textSize="10sp"
+            app:label_textStyle="bold_italic"
+            app:label_yAxisDegree="15"
+            app:shapeAppearance="@style/ImageShape.Circle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="带边框" />
+
+        <bas.android.view.label.AppCompatImageLabelView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            app:label_distance="40dp"
+            app:label_location="left_bottom"
+            app:label_padding="6dp"
+            app:label_strokeColor="#ff5813"
+            app:label_strokeWidth="2dp"
+            app:label_text="中欧人" />
+
+
+    </LinearLayout>
+</ScrollView>

@@ -59,6 +59,7 @@ dependencies {
     implementation project(path: ':bas-binding-ext')
     implementation project(path: ':bas-adapter-imageloader')
     implementation project(path: ':bas-leanback-core')
+    implementation project(path: ':bas-view-label')
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

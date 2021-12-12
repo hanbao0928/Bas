@@ -3,7 +3,6 @@ package bas.android.view.label;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
@@ -11,28 +10,26 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.appcompat.widget.AppCompatImageView;
 
-public class LabelView extends View {
+public class LabelImageViewTemplate extends AppCompatImageView {
 
     LabelViewHelper labelHelper;
 
-    public LabelView(Context context) {
+    public LabelImageViewTemplate(Context context) {
         this(context, null);
     }
 
-    public LabelView(Context context, AttributeSet attrs) {
+    public LabelImageViewTemplate(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LabelView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LabelImageViewTemplate(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         labelHelper = new LabelViewHelper(this, attrs, defStyleAttr);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = labelHelper.measureWidth(widthMeasureSpec);
-        int height =  labelHelper.measureHeight(heightMeasureSpec);
-        setMeasuredDimension(width,height);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -91,7 +88,7 @@ public class LabelView extends View {
         labelHelper.setYAxisDegree(degree);
     }
 
-    public void setLabelVisible(boolean isVisible){
+    public void setLabelVisible(boolean isVisible) {
         labelHelper.setVisible(isVisible);
     }
 }
