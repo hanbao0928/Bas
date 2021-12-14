@@ -139,7 +139,7 @@ internal class EffectView @JvmOverloads constructor(
         }
     }
 
-    fun start() {
+    fun startAnimation() {
         visibility = VISIBLE
         if (params.breatheEnabled) {
             if (breatheAnim.isStarted)
@@ -150,7 +150,7 @@ internal class EffectView @JvmOverloads constructor(
         }
     }
 
-    fun stop() {
+    fun stopAnimation() {
         visibility = GONE
         if (params.breatheEnabled) {
             breatheAnim.cancel()

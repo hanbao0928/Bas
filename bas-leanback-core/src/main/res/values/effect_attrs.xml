@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--内部使用的id，用于标志View已调整四周间隙-->
+    <item name="margin_adjusted_tag_bas" type="id" />
+
     <!--是否使用缩放动画-->
-    <attr name="scale_bas" format="integer|reference" />
+    <attr name="scale_bas" format="boolean|reference" />
     <!--缩放动画时间-->
     <attr name="scaleDuration_bas" format="integer|reference" />
     <!--缩放系数-->
-    <attr name="scaleFactor_bas" format="integer|reference" />
+    <attr name="scaleFactor_bas" format="float" />
     <!--缩放是否使用弹簧效果-->
     <attr name="useBounceOnScale_bas" format="boolean|reference" />
 
@@ -33,47 +36,131 @@
     <!--圆角半径(统一设置四个角，可以通过后面属性单独设置某个角)：如果是正方形，并且半径 = width/2 则就是圆形-->
     <!--如果设置圆形效果，并设置了childrenOffsetMargin_bas，则cornerSizexxxxx的值应该加上childrenOffsetMargin_bas设置的值-->
     <attr name="cornerSize_bas" format="dimension|reference" />
-    <!---->
+    <!--左上角圆角-->
     <attr name="cornerSizeTopLeft_bas" format="dimension|reference" />
+    <!--右上角圆角-->
     <attr name="cornerSizeTopRight_bas" format="dimension|reference" />
+    <!--右下角圆角-->
     <attr name="cornerSizeBottomRight_bas" format="dimension|reference" />
+    <!--左下角圆角-->
     <attr name="cornerSizeBottomLeft_bas" format="dimension|reference" />
 
+    <!--获取焦点的时候，是否调用bringToFront-->
+    <attr name="bringToFrontOnFocus_bas" format="flags">
+        <!--不调用-->
+        <flag name="none" value="0" />
+        <!--只调用自己-->
+        <flag name="self" value="1" />
+        <!--调用自己和Parent-->
+        <flag name="selfAndParent" value="2" />
+    </attr>
+    <!--是否校准Children Margin：由于边框和阴影实际是在Layout内部绘制的，
+      会覆盖在Children之上，因此应该在Children之间增加margin才会使效果正常，如果用户需要自定义margin，可以关闭开关
+      否则会默认在children四周增加间距-->
+    <attr name="adjustChildrenMargin_bas" format="boolean" />
+    <!--排除调整margin的id,比如："name_tv,desc_tv"-->
+    <attr name="excludeAdjustReferencedIDs_bas" format="string" />
+    <!--children view 与边框之间的距离：作用就是设置边框与内部布局之间的距离，比如做镂空的边框-->
+    <attr name="childrenOffsetMargin_bas" format="dimension|reference" />
 
+    <!--后面EffectFrameLayout等的属性应该与LeanbackEffectLayout定义的属性保持一致，定义具体的属性只是为了在xml中使用对应布局时有属性提示-->
     <declare-styleable name="LeanbackEffectLayout">
-        <!--是否校准Children Margin：由于边框和阴影实际是在Layout内部绘制的，
-        会覆盖在Children之上，因此应该在Children之间增加margin才会使效果正常，如果用户需要自定义margin，可以关闭开关
-        否则会默认在children四周增加间距-->
-        <attr name="adjustChildrenMargin_bas" format="boolean" />
-        <!--children 与边框之间的margin距离-->
-        <attr name="childrenOffsetMargin_bas" format="dimension|reference" />
         <attr name="scale_bas" />
-        <!--放大系数-->
         <attr name="scaleFactor_bas" />
         <attr name="scaleDuration_bas" />
-        <!--缩放动画是否使用弹簧效果-->
         <attr name="useBounceOnScale_bas" />
-
         <attr name="shimmer_bas" />
         <attr name="shimmerColor_bas" />
-
         <attr name="breathe_bas" />
         <attr name="breatheDuration_bas" />
-
         <attr name="strokeColor_bas" />
         <attr name="strokeWidth_bas" />
         <attr name="shadowColor_bas" />
         <attr name="shadowWidth_bas" />
-
         <attr name="cornerSize_bas" />
         <attr name="cornerSizeTopLeft_bas" />
         <attr name="cornerSizeTopRight_bas" />
         <attr name="cornerSizeBottomRight_bas" />
         <attr name="cornerSizeBottomLeft_bas" />
-
         <attr name="bringToFrontOnFocus_bas" />
-
+        <attr name="adjustChildrenMargin_bas" />
+        <attr name="excludeAdjustReferencedIDs_bas"/>
+        <attr name="childrenOffsetMargin_bas" />
     </declare-styleable>
 
+    <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
+    <declare-styleable name="EffectConstraintLayout">
+        <attr name="scale_bas" />
+        <attr name="scaleFactor_bas" />
+        <attr name="scaleDuration_bas" />
+        <attr name="useBounceOnScale_bas" />
+        <attr name="shimmer_bas" />
+        <attr name="shimmerColor_bas" />
+        <attr name="breathe_bas" />
+        <attr name="breatheDuration_bas" />
+        <attr name="strokeColor_bas" />
+        <attr name="strokeWidth_bas" />
+        <attr name="shadowColor_bas" />
+        <attr name="shadowWidth_bas" />
+        <attr name="cornerSize_bas" />
+        <attr name="cornerSizeTopLeft_bas" />
+        <attr name="cornerSizeTopRight_bas" />
+        <attr name="cornerSizeBottomRight_bas" />
+        <attr name="cornerSizeBottomLeft_bas" />
+        <attr name="bringToFrontOnFocus_bas" />
+        <attr name="adjustChildrenMargin_bas" />
+        <attr name="excludeAdjustReferencedIDs_bas"/>
+        <attr name="childrenOffsetMargin_bas" />
+    </declare-styleable>
+
+    <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
+    <declare-styleable name="EffectFrameLayout">
+        <attr name="scale_bas" />
+        <attr name="scaleFactor_bas" />
+        <attr name="scaleDuration_bas" />
+        <attr name="useBounceOnScale_bas" />
+        <attr name="shimmer_bas" />
+        <attr name="shimmerColor_bas" />
+        <attr name="breathe_bas" />
+        <attr name="breatheDuration_bas" />
+        <attr name="strokeColor_bas" />
+        <attr name="strokeWidth_bas" />
+        <attr name="shadowColor_bas" />
+        <attr name="shadowWidth_bas" />
+        <attr name="cornerSize_bas" />
+        <attr name="cornerSizeTopLeft_bas" />
+        <attr name="cornerSizeTopRight_bas" />
+        <attr name="cornerSizeBottomRight_bas" />
+        <attr name="cornerSizeBottomLeft_bas" />
+        <attr name="bringToFrontOnFocus_bas" />
+        <attr name="adjustChildrenMargin_bas" />
+        <attr name="excludeAdjustReferencedIDs_bas"/>
+        <attr name="childrenOffsetMargin_bas" />
+    </declare-styleable>
+
+    <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
+    <declare-styleable name="EffectRelativeLayout">
+        <attr name="scale_bas" />
+        <attr name="scaleFactor_bas" />
+        <attr name="scaleDuration_bas" />
+        <attr name="useBounceOnScale_bas" />
+        <attr name="shimmer_bas" />
+        <attr name="shimmerColor_bas" />
+        <attr name="breathe_bas" />
+        <attr name="breatheDuration_bas" />
+        <attr name="strokeColor_bas" />
+        <attr name="strokeWidth_bas" />
+        <attr name="shadowColor_bas" />
+        <attr name="shadowWidth_bas" />
+        <attr name="cornerSize_bas" />
+        <attr name="cornerSizeTopLeft_bas" />
+        <attr name="cornerSizeTopRight_bas" />
+        <attr name="cornerSizeBottomRight_bas" />
+        <attr name="cornerSizeBottomLeft_bas" />
+        <attr name="bringToFrontOnFocus_bas" />
+        <attr name="adjustChildrenMargin_bas" />
+        <attr name="excludeAdjustReferencedIDs_bas"/>
+        <attr name="childrenOffsetMargin_bas" />
+    </declare-styleable>
 
 </resources>

@@ -51,12 +51,15 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     val isRoundedShape: Boolean
 
     //获取焦点时是否调用bringToFront
-    val bringToFrontOnFocus: Boolean
+    val bringToFrontOnFocus: Int
 
     //是否校准children margin，默认true：除非您知道该含义，否则别关闭该开关
-    val adjustChildrenMargin:Boolean
+    val adjustChildrenMargin: Boolean
 
-    val childrenOffsetMargin:Float
+    /*需要排除的id*/
+    val excludeAdjustIds = mutableSetOf<Int>()
+
+    val childrenOffsetMargin: Float
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackEffectLayout)
@@ -68,11 +71,13 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         scaleAnimDuration =
             ta.getInt(R.styleable.LeanbackEffectLayout_scaleDuration_bas, DEFAULT_SCALE_DURATION)
                 .toLong()
-        shimmerDelay = scaleAnimDuration + 100
+        shimmerDelay = scaleAnimDuration + SHIMMER_DELAY_OFFSET
         scaleEnabled =
             ta.getBoolean(R.styleable.LeanbackEffectLayout_scale_bas, DEFAULT_SCALE_ENABLED)
-        scaleFactor =
-            ta.getFloat(R.styleable.LeanbackEffectLayout_scaleFactor_bas, DEFAULT_SCALE_FACTOR)
+        scaleFactor = ta.getFloat(
+            R.styleable.LeanbackEffectLayout_scaleFactor_bas,
+            DEFAULT_SCALE_FACTOR
+        )
         useBounceOnScale =
             ta.getBoolean(
                 R.styleable.LeanbackEffectLayout_useBounceOnScale_bas,
@@ -99,16 +104,24 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         shadowColor = ta.getColor(R.styleable.LeanbackEffectLayout_shadowColor_bas, 0)
 
         bringToFrontOnFocus =
-            ta.getBoolean(
+            ta.getInt(
                 R.styleable.LeanbackEffectLayout_bringToFrontOnFocus_bas,
-                DEFAULT_BRING_TO_FRONT
+                BRING_FLAG_NONE
             )
 
-        adjustChildrenMargin = ta.getBoolean(R.styleable.LeanbackEffectLayout_adjustChildrenMargin_bas,
+        adjustChildrenMargin = ta.getBoolean(
+            R.styleable.LeanbackEffectLayout_adjustChildrenMargin_bas,
             DEFAULT_ADJUST_CHILDREN_MARGIN
         )
 
-        childrenOffsetMargin = ta.getDimension(R.styleable.LeanbackEffectLayout_childrenOffsetMargin_bas,0f)
+        val excludesIds =
+            ta.getString(R.styleable.EffectConstraintLayout_excludeAdjustReferencedIDs_bas)
+        parseExcludeIds(context,excludesIds)
+
+        childrenOffsetMargin = ta.getDimension(
+            R.styleable.LeanbackEffectLayout_childrenOffsetMargin_bas,
+            0f
+        )
 
         val cornerSize = ta.getDimension(R.styleable.LeanbackEffectLayout_cornerSize_bas, 0f)
         cornerSizeTopLeft =
@@ -135,6 +148,23 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         ta.recycle()
     }
 
+    private fun parseExcludeIds(context: Context,ids: String?) {
+        excludeAdjustIds.clear()
+        if (ids.isNullOrEmpty())
+            return
+
+        val tempIds = ids.split(',')
+        tempIds.forEach {
+            try {
+                val vid = context.resources.getIdentifier(it,"id",context.packageName)
+                if(vid > 0)
+                    excludeAdjustIds.add(vid)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     companion object {
 
         const val DEFAULT_SCALE_ENABLED = true
@@ -150,10 +180,14 @@ class EffectParams(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
 
         const val BREATHE_DURATION = 4000
 
-        const val DEFAULT_BRING_TO_FRONT = false
-
 
         const val DEFAULT_ADJUST_CHILDREN_MARGIN = true
+
+        const val SHIMMER_DELAY_OFFSET = 300
+
+        const val BRING_FLAG_NONE = 0
+        const val BRING_FLAG_SELF = 1
+        const val BRING_FLAG_SELF_PARENT = 2
     }
 
 }

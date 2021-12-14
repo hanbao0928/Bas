@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import bas.leanback.core.CallByOwner
+import bas.leanback.core.R
 import bas.leanback.core.loge
 import com.bas.core.converter.toJson
 
@@ -40,12 +41,15 @@ class EffectLayoutDelegate(
             return EffectLayoutDelegate(layout, callback, attrs, defStyleAttr)
         }
 
-        private fun createMarginAdjuster(params: EffectParams, layout: ViewGroup): AbstractMarginAdjuster {
+        private fun createMarginAdjuster(
+            params: EffectParams,
+            layout: ViewGroup
+        ): AbstractMarginAdjuster {
             if (layout is ConstraintLayout) {
                 return ConstraintMarginAdjuster(params, layout)
-            } else if(layout is RelativeLayout){
+            } else if (layout is RelativeLayout) {
                 return RelativeAdjuster(params, layout)
-            }else {
+            } else {
                 return MarginAdjuster(params, layout)
             }
         }
@@ -171,11 +175,12 @@ class EffectLayoutDelegate(
 
     @CallByOwner
     fun onFocusChanged(gainFocus: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
-        layout.isSelected = gainFocus
+//        这么处理会带来不可预期的异常：用户并不知道内部在这个地方改变了状态，因此状态的改变改为由用户决定
+//        layout.isSelected = gainFocus
         if (gainFocus) {
             onGainFocus()
         } else {
-            stopAnimation()
+            startAnimationOnFocusLost()
         }
     }
 
@@ -191,6 +196,101 @@ class EffectLayoutDelegate(
         logd("onDetachedFromWindow")
         stopAnimation()
         callback.callSuperOnDetachedFromWindow()
+    }
+
+    //获取焦点
+    private fun onGainFocus() {
+        if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF) {
+            layout.bringToFront()
+        } else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF_PARENT) {
+            layout.bringToFront()
+            (layout.parent as? ViewGroup)?.bringToFront()
+        }
+        ensureEffectViewOnGainFocus()
+        startAnimationOnFocusGain()
+    }
+
+    /**
+     * 开始动画（失去焦点）
+     */
+    private fun startAnimationOnFocusLost() {
+        clearPreDrawListener()
+        performAnimationOnFocusLost()
+        effectView?.stopAnimation()
+    }
+
+    /**
+     * 开始动画（获取焦点）
+     */
+    private fun startAnimationOnFocusGain() {
+        if (layout.width == 0) {
+            try {
+                if (startAnimationPreDrawListener == null) {
+                    startAnimationPreDrawListener = ViewTreeObserver.OnPreDrawListener {
+                        clearPreDrawListener()
+                        startAnimationOnFocusGain()
+                        true
+                    }
+                    layout.viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
+                } else {
+                    layout.viewTreeObserver.removeOnPreDrawListener(startAnimationPreDrawListener)
+                    layout.viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return
+        }
+        performAnimationOnFocusGain()
+        effectView?.startAnimation()
+    }
+
+    private fun performAnimationOnFocusGain() {
+        stopAnimation()
+        if (!focusAnimEnabled) {
+            return
+        }
+        if (animOnFocus == null) {
+            createFocusAnimator()?.let {
+                animOnFocus = it
+                it.start()
+            }
+        } else {
+            animOnFocus?.start()
+        }
+    }
+
+    private fun stopAnimationOnFocusLost() {
+        layout.clearAnimation()
+        if (!focusAnimEnabled) {
+            animOnUnfocus?.end()
+            return
+        } else {
+            animOnUnfocus?.cancel()
+        }
+        effectView?.stopAnimation()
+    }
+
+    private fun stopAnimationOnFocusGain() {
+        layout.clearAnimation()
+        if (!focusAnimEnabled) {
+            animOnFocus?.end()
+            return
+        } else {
+            animOnFocus?.cancel()
+        }
+    }
+
+    fun stopAnimation() {
+        layout.clearAnimation()
+        if (!focusAnimEnabled) {
+            animOnFocus?.end()
+            animOnUnfocus?.end()
+        } else {
+            animOnFocus?.cancel()
+            animOnUnfocus?.cancel()
+        }
+        effectView?.stopAnimation()
     }
 
     private fun updateShimmerParamsOnSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
@@ -300,45 +400,12 @@ class EffectLayoutDelegate(
         )
     }
 
-    private fun startAnimationOnFocused() {
-        if (layout.width == 0) {
-            startAnimationPreDrawListener = ViewTreeObserver.OnPreDrawListener {
-                clearPreDrawListener()
-                startAnimationOnFocused()
-                true
-            }
-            layout.viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
-            return
-        }
-        startScaleAndShimmerAnim()
-        effectView?.start()
-    }
-
-    private fun startScaleAndShimmerAnim() {
+    /*开始失去焦点执行的动画*/
+    private fun performAnimationOnFocusLost() {
+        stopAnimation()
         if (!focusAnimEnabled) {
-            animOnFocus?.end()
             return
-        } else {
-            animOnFocus?.cancel()
         }
-        if (animOnFocus == null) {
-            createFocusAnimator()?.let {
-                animOnFocus = it
-                it.start()
-            }
-        } else {
-            animOnFocus?.start()
-        }
-    }
-
-    private fun stopScaleAndShimmerAnim() {
-        if (!focusAnimEnabled) {
-            animOnUnfocus?.end()
-            return
-        } else {
-            animOnUnfocus?.cancel()
-        }
-
         if (animOnUnfocus == null) {
             createUnfocusAnimator()?.let {
                 animOnUnfocus = it
@@ -362,6 +429,7 @@ class EffectLayoutDelegate(
 
     private fun createFocusAnimator(): Animator? {
         if (params.scaleEnabled && params.shimmerEnabled) {
+            logd("使用缩放和扫光")
             return AnimatorSet().also {
                 it.playTogether(
                     getScaleXAnimator(params.scaleFactor),
@@ -370,6 +438,7 @@ class EffectLayoutDelegate(
                 it.playSequentially(shimmerAnimator)
             }
         } else if (params.scaleEnabled) {
+            logd("使用缩放")
             return AnimatorSet().also {
                 it.playTogether(
                     getScaleXAnimator(params.scaleFactor),
@@ -377,8 +446,10 @@ class EffectLayoutDelegate(
                 )
             }
         } else if (params.shimmerEnabled) {
+            logd("使用扫光")
             return shimmerAnimator
         } else {
+            logd("不使用动画")
             return null
         }
     }
@@ -388,12 +459,6 @@ class EffectLayoutDelegate(
             layout.viewTreeObserver.removeOnPreDrawListener(startAnimationPreDrawListener)
         }
         startAnimationPreDrawListener = null
-    }
-
-    private fun stopAnimation() {
-        clearPreDrawListener()
-        stopScaleAndShimmerAnim()
-        effectView?.stop()
     }
 
     private fun getScaleXAnimator(scale: Float): ObjectAnimator {
@@ -414,15 +479,6 @@ class EffectLayoutDelegate(
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
         return scaleYObjectAnimator
-    }
-
-    //获取焦点
-    private fun onGainFocus() {
-        if (params.bringToFrontOnFocus) {
-            layout.bringToFront()
-        }
-        ensureEffectViewOnGainFocus()
-        startAnimationOnFocused()
     }
 
     private fun ensureEffectViewOnGainFocus() {
@@ -455,26 +511,9 @@ class EffectLayoutDelegate(
         if (!params.adjustChildrenMargin || child == effectView)
             return
 
+        if(child.id > 0 && params.excludeAdjustIds.contains(child.id))
+            return
         marginAdjuster.adjustChildMargin(child)
-//        val adjustMargin =
-//            (params.strokeWidth + params.shadowWidth + params.childrenOffsetMargin).toInt()
-//        if (adjustMargin <= 0)//不需要调整
-//            return
-//
-//        val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
-//        if (hasAdjusted)//已调整过
-//            return
-//
-//
-//        val lp = child.layoutParams as? ViewGroup.MarginLayoutParams ?: return
-//        child.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-//            lp.leftMargin += adjustMargin
-//            lp.topMargin += adjustMargin
-//            lp.rightMargin += adjustMargin
-//            lp.bottomMargin += adjustMargin
-//            //增加调整标记
-//            child.setTag(params.hashCode(), true)
-//        }
     }
 
     interface Callback {
@@ -487,7 +526,10 @@ class EffectLayoutDelegate(
     }
 
 
-    internal abstract class AbstractMarginAdjuster(val params: EffectParams, val layout: ViewGroup) {
+    internal abstract class AbstractMarginAdjuster(
+        val params: EffectParams,
+        val layout: ViewGroup
+    ) {
         abstract fun adjustChildMargin(child: View)
     }
 
@@ -500,7 +542,7 @@ class EffectLayoutDelegate(
             if (adjustMargin <= 0)//不需要调整
                 return
 
-            val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
+            val hasAdjusted = child.getTag(R.id.margin_adjusted_tag_bas) as? Boolean ?: false
             if (hasAdjusted)//已调整过
                 return
 
@@ -512,7 +554,7 @@ class EffectLayoutDelegate(
                 lp.rightMargin += adjustMargin
                 lp.bottomMargin += adjustMargin
                 //增加调整标记
-                child.setTag(params.hashCode(), true)
+                child.setTag(R.id.margin_adjusted_tag_bas, true)
             }
         }
     }
@@ -526,7 +568,7 @@ class EffectLayoutDelegate(
             if (adjustMargin <= 0)//不需要调整
                 return
 
-            val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
+            val hasAdjusted = child.getTag(R.id.margin_adjusted_tag_bas) as? Boolean ?: false
             if (hasAdjusted)//已调整过
                 return
 
@@ -539,7 +581,7 @@ class EffectLayoutDelegate(
                 lp.rightMargin += adjustMargin
                 lp.bottomMargin += adjustMargin
                 //增加调整标记
-                child.setTag(params.hashCode(), true)
+                child.setTag(R.id.margin_adjusted_tag_bas, true)
             }
         }
     }
@@ -552,7 +594,7 @@ class EffectLayoutDelegate(
             if (adjustMargin <= 0)//不需要调整
                 return
 
-            val hasAdjusted = child.getTag(params.hashCode()) as? Boolean ?: false
+            val hasAdjusted = child.getTag(R.id.margin_adjusted_tag_bas) as? Boolean ?: false
             if (hasAdjusted)//已调整过
                 return
 
@@ -578,7 +620,7 @@ class EffectLayoutDelegate(
                     lp.goneBottomMargin += adjustMargin
                 }
                 //增加调整标记
-                child.setTag(params.hashCode(), true)
+                child.setTag(R.id.margin_adjusted_tag_bas, true)
             }
         }
     }
