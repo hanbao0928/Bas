@@ -30,12 +30,22 @@ public class ProcessorUtils {
             ClassName.get("androidx.annotation", "ColorInt")
     ).build();
 
-    public static final AnnotationSpec createIntRangeAnnotation(int from, int to) {
+
+    public static AnnotationSpec createIntRangeAnnotation(int from, int to) {
         return AnnotationSpec.builder(ClassName.get("androidx.annotation", "IntRange"))
                 .addMember("from", String.valueOf(from))
                 .addMember("to", String.valueOf(to)).build();
     }
 
+    public static AnnotationSpec createSuppressLintAnnotation(String value) {
+        return AnnotationSpec.builder(ClassName.get("android.annotation", "SuppressLint"))
+                .addMember("value", "value = \"" + value + "\"")
+                .build();
+    }
+
+    public static AnnotationSpec createMissingSuperCallAnnotation() {
+        return createSuppressLintAnnotation("MissingSuperCall");
+    }
 
     public static ClassName createContext() {
         return ClassName.get("android.content", "Context");

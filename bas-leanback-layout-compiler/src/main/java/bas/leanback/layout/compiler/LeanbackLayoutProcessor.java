@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -234,9 +233,14 @@ public class LeanbackLayoutProcessor extends BaseProcessor {
     private CodeBlock constructorCode() {
         return CodeBlock.builder()
                 .addStatement("super(context, attrs, defStyleAttr)")
-                .addStatement("boolean isSupportBringChildToFront = BringToFrontHelper.isLayoutSupportBringChildToFront(this)")
-                .addStatement("this.setChildrenDrawingOrderEnabled(!isSupportBringChildToFront)")
-                .addStatement("layoutHelper = LeanbackLayoutHelper.create(this, this, attrs, defStyleAttr)")
+                .add(CodeBlock.builder().beginControlFlow("if (isInEditMode())")
+                        .addStatement("layoutHelper = null")
+                        .nextControlFlow("else")
+                        .addStatement("boolean isSupportBringChildToFront = BringToFrontHelper.isLayoutSupportBringChildToFront(this)")
+                        .addStatement("this.setChildrenDrawingOrderEnabled(!isSupportBringChildToFront)")
+                        .addStatement("layoutHelper = LeanbackLayoutHelper.create(this, this, attrs, defStyleAttr)")
+                        .endControlFlow()
+                        .build())
                 .build();
     }
 
@@ -259,7 +263,6 @@ public class LeanbackLayoutProcessor extends BaseProcessor {
             }
         }
     }
-
 
 
 }

@@ -53,7 +53,6 @@ class LeanbackTabLayout @JvmOverloads constructor(
      */
     private var mediator: LeanbackTabLayoutMediator? = null
 
-
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.LeanbackTabLayout)
         focusOutEnabled = ta.getBoolean(R.styleable.LeanbackTabLayout_focusOutEnabled_lbt, false)

@@ -8,7 +8,7 @@
         <!--默认不开启-->
         <attr name="duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
-        <attr name="focusMemoryEnabled_bas"/>
+        <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->
         <attr name="focusMemoryStateType_bas"/>
     </declare-styleable>

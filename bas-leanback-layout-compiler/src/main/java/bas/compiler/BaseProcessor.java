@@ -64,6 +64,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     /**
      * 生成View常用的构造函数
+     *
      * @param typeBuilder
      * @param clazz
      * @param constructorCode
@@ -77,7 +78,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
         MethodSpec constructorOne = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(contextType, "context")
-                .addStatement("this(context, null)")
+                .addStatement("this(context,(AttributeSet) null)")
                 .build();
         MethodSpec constructorTwo = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
