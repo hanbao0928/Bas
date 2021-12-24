@@ -77,10 +77,14 @@ class ConfigurableVideoView @JvmOverloads constructor(
         if (type == this.kernelType && kernelView != null) {
             Logger.i(
                 TAG,
-                "switch kernel video view fail,the type value is same with current type value."
+                "switch kernel video view fail,the type value is same with current type value${type}."
             )
             return
         }
+        Logger.i(
+            TAG,
+            "当前使用播放器类型=${type}."
+        )
         resetKernelVideoView()
         addKernelVideoView(type)
     }

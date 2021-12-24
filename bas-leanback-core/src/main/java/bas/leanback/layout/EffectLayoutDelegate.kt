@@ -23,12 +23,12 @@ import com.bas.core.converter.toJson
 /**
  * Created by Lucio on 2021/12/9.
  */
-class EffectLayoutDelegate(
+class EffectLayoutDelegate private constructor(
     val layout: ViewGroup,
     val callback: Callback,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    private val params: EffectParams
 ) {
+
     companion object {
 
         @JvmStatic
@@ -41,6 +41,16 @@ class EffectLayoutDelegate(
             return EffectLayoutDelegate(layout, callback, attrs, defStyleAttr)
         }
 
+        @JvmStatic
+        fun create(
+            layout: ViewGroup,
+            callback: Callback,
+            params: EffectParams
+        ): EffectLayoutDelegate {
+            return EffectLayoutDelegate(layout, callback, params)
+        }
+
+        @JvmStatic
         private fun createMarginAdjuster(
             params: EffectParams,
             layout: ViewGroup
@@ -55,10 +65,11 @@ class EffectLayoutDelegate(
         }
     }
 
-    private var params: EffectParams
-
     private val shimmerPath: Path = Path()
-    private val shimmerPaint: Paint = Paint()
+    private val shimmerPaint: Paint = Paint().also {
+        it.isAntiAlias = true
+        it.isDither = true
+    }
     private var shimmerLinearGradient: LinearGradient? = null
     private var shimmerGradientMatrix: Matrix = Matrix()
 
@@ -69,7 +80,7 @@ class EffectLayoutDelegate(
     //shimmer 动画启动标志
     private var isShimmerTranslating: Boolean = false
 
-    private var refreshRectF: RectF = RectF()
+    private val refreshRectF: RectF = RectF()
     private var dispatchDrawFlag = false
     private var effectView: EffectView? = null
 
@@ -83,9 +94,14 @@ class EffectLayoutDelegate(
 
     private val marginAdjuster: AbstractMarginAdjuster
 
+    constructor(
+        layout: ViewGroup, callback: Callback,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
+    ) : this(layout, callback, EffectParams(layout.context, attrs, defStyleAttr))
+
     init {
         layout.setWillNotDraw(false)
-        params = EffectParams(layout.context, attrs)
         marginAdjuster = createMarginAdjuster(params, layout)
         logd(params.toJson().orEmpty())
     }
@@ -122,7 +138,7 @@ class EffectLayoutDelegate(
                         this.width = w
                         this.height = h
                     }
-                    logd("Effect Size不同，修正")
+                    logd("Effect Size不同，修正 onSizeChanged")
                 }
                 if (effectViewIndex != layout.childCount - 1) {
                     logd("Effect View未在末尾，bringToFront")
@@ -202,7 +218,9 @@ class EffectLayoutDelegate(
     private fun onGainFocus() {
         if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF) {
             layout.bringToFront()
-        } else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF_PARENT) {
+        } else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_PARENT) {
+            (layout.parent as? ViewGroup)?.bringToFront()
+        }else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF_PARENT) {
             layout.bringToFront()
             (layout.parent as? ViewGroup)?.bringToFront()
         }
@@ -336,7 +354,7 @@ class EffectLayoutDelegate(
         val max = if (width >= height) width else height
         val duration = if (max > screenWidth / 3) screenWidth / 3 else max
         shimmerAnimator.duration = (duration * 3).toLong()
-        shimmerAnimator.startDelay = params.shimmerDelay
+        shimmerAnimator.startDelay = params.shimmerDelay.toLong()
     }
 
     private fun ShimmerAnimator(): Animator {
@@ -464,7 +482,7 @@ class EffectLayoutDelegate(
     private fun getScaleXAnimator(scale: Float): ObjectAnimator {
         val scaleXObjectAnimator =
             ObjectAnimator.ofFloat(layout, "scaleX", scale)
-                .setDuration(params.scaleAnimDuration)
+                .setDuration(params.scaleAnimDuration.toLong())
         if (params.useBounceOnScale) {
             scaleXObjectAnimator.interpolator = BounceInterpolator()
         }
@@ -474,7 +492,7 @@ class EffectLayoutDelegate(
     private fun getScaleYAnimator(scale: Float): ObjectAnimator {
         val scaleYObjectAnimator =
             ObjectAnimator.ofFloat(layout, "scaleY", scale)
-                .setDuration(params.scaleAnimDuration)
+                .setDuration(params.scaleAnimDuration.toLong())
         if (params.useBounceOnScale) {
             scaleYObjectAnimator.interpolator = BounceInterpolator()
         }
@@ -485,24 +503,35 @@ class EffectLayoutDelegate(
         //没有effect效果，不处理
         if (params.strokeWidth <= 0 && params.shadowWidth <= 0)
             return
-        val effectView = this.effectView
+        val effectView = this.effectView ?: return
 
         val effectViewIndex = layout.indexOfChild(effectView)
         if (effectViewIndex < 0) {
             logd("未添加Effect View，重新添加")
-            (effectView!!.parent as? ViewGroup)?.removeView(effectView)
+            (effectView.parent as? ViewGroup)?.removeView(effectView)
             layout.addView(effectView, FrameLayout.LayoutParams(layout.width, layout.height))
         } else {
-            if (effectView?.width != layout.width && effectView?.height != layout.height) {
-                effectView?.updateLayoutParams<ViewGroup.LayoutParams> {
+            /*effect view 或parent 尺寸发生了变化，重新设置布局参数*/
+            if (effectView.width > 0 && effectView.width != layout.width && effectView.height > 0 && effectView.height != layout.height) {
+                effectView.updateLayoutParams<ViewGroup.LayoutParams> {
                     this.width = layout.width
                     this.height = layout.height
                 }
-                logd("Effect Size不同，修正")
+                logd("Effect Size不同，修正 ensureEffectViewOnGainFocus")
+                logd(
+                    "Effect Size不同，effectView.width=${effectView.measuredWidth} " +
+                            "effectView.height=${effectView.measuredHeight} "
+                )
+                logd(
+                    "Effect Size不同，effectView.width=${effectView.width} " +
+                            "effectView.height=${effectView.height} " +
+                            "layout.width=${layout.width}" +
+                            " layout.height=${layout.height}"
+                )
             }
             if (effectViewIndex != layout.childCount - 1) {
                 logd("Effect View未在末尾，bringToFront")
-                effectView?.bringToFront()
+                effectView.bringToFront()
             }
         }
     }
@@ -511,7 +540,7 @@ class EffectLayoutDelegate(
         if (!params.adjustChildrenMargin || child == effectView)
             return
 
-        if(child.id > 0 && params.excludeAdjustIds.contains(child.id))
+        if (child.id > 0 && params.excludeAdjustIds.contains(child.id))
             return
         marginAdjuster.adjustChildMargin(child)
     }

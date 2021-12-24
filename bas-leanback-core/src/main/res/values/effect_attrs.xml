@@ -51,8 +51,10 @@
         <flag name="none" value="0" />
         <!--只调用自己-->
         <flag name="self" value="1" />
-        <!--调用自己和Parent-->
+        <!--调用自己和parent-->
         <flag name="selfAndParent" value="2" />
+        <!--只调用parent-->
+        <flag name="parent" value="3" />
     </attr>
     <!--是否校准Children Margin：由于边框和阴影实际是在Layout内部绘制的，
       会覆盖在Children之上，因此应该在Children之间增加margin才会使效果正常，如果用户需要自定义margin，可以关闭开关

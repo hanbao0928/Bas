@@ -62,7 +62,37 @@
         <attr name="label_visible"/>
     </declare-styleable>
 
-    <declare-styleable name="LabelImageView">
+    <declare-styleable name="ImageLabelView">
+        <attr name="label_location" />
+        <attr name="label_text" />
+        <attr name="label_textColor" />
+        <attr name="label_textSize" />
+        <attr name="label_textStyle" />
+        <attr name="label_padding" />
+        <attr name="label_distance"/>
+        <attr name="label_backgroundColor" />
+        <attr name="label_strokeWidth" />
+        <attr name="label_strokeColor" />
+        <attr name="label_yAxisDegree"/>
+        <attr name="label_visible"/>
+    </declare-styleable>
+
+    <declare-styleable name="AppCompatImageLabelView">
+        <attr name="label_location" />
+        <attr name="label_text" />
+        <attr name="label_textColor" />
+        <attr name="label_textSize" />
+        <attr name="label_textStyle" />
+        <attr name="label_padding" />
+        <attr name="label_distance"/>
+        <attr name="label_backgroundColor" />
+        <attr name="label_strokeWidth" />
+        <attr name="label_strokeColor" />
+        <attr name="label_yAxisDegree"/>
+        <attr name="label_visible"/>
+    </declare-styleable>
+
+    <declare-styleable name="ShapeableImageLabelView">
         <attr name="label_location" />
         <attr name="label_text" />
         <attr name="label_textColor" />

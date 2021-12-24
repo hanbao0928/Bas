@@ -1,7 +1,6 @@
 package bas.leanback.layout;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,9 +30,13 @@ public class LeanbackLayoutTemplate extends LinearLayout implements LeanbackLayo
     public LeanbackLayoutTemplate(@NonNull Context context, @Nullable AttributeSet attrs,
                                   int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        boolean isSupportBringChildToFront = BringToFrontHelper.isLayoutSupportBringChildToFront(this);
-        this.setChildrenDrawingOrderEnabled(!isSupportBringChildToFront);
-        layoutHelper = LeanbackLayoutHelper.create(this, this, attrs, defStyleAttr);
+        if (isInEditMode()) {
+            layoutHelper = null;
+        } else {
+            boolean isSupportBringChildToFront = BringToFrontHelper.isLayoutSupportBringChildToFront(this);
+            this.setChildrenDrawingOrderEnabled(!isSupportBringChildToFront);
+            layoutHelper = LeanbackLayoutHelper.create(this, this, attrs, defStyleAttr);
+        }
     }
 
     @Override

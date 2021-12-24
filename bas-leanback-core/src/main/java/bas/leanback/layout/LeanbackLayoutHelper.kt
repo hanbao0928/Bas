@@ -23,6 +23,7 @@ class LeanbackLayoutHelper private constructor(
 ) {
 
     private val memoryHelper: MemoryHelper = MemoryHelper.create(layout, attrs, defStyleAttr)
+
     private val bringToFrontHelper: BringToFrontHelper = BringToFrontHelper.create(
         layout,
         callback,

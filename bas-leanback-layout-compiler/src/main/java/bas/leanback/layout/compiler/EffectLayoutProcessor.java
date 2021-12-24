@@ -5,6 +5,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
@@ -101,6 +102,18 @@ public class EffectLayoutProcessor extends BaseProcessor {
 
     private void generateMethods(TypeSpec.Builder typeBuilder, String clazz) {
         viewConstructor(typeBuilder, clazz, constructorCode());
+        /*额外新增的构造函数：用于直接创建Layout的场景*/
+        TypeName contextType = ProcessorUtils.createContext()
+                .annotated(ProcessorUtils.nonNullAnnotation);
+        MethodSpec extraConstructor = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(contextType, "context")
+                .addParameter(ClassName.get(PACKAGE_NAME,"EffectParams").annotated(ProcessorUtils.nonNullAnnotation), "effectParams")
+                .addStatement("super(context)")
+                .addStatement("effectDelegate = EffectLayoutDelegate.create(this, this, effectParams)")
+                .build();
+        typeBuilder.addMethod(extraConstructor);
+                
         delegateCallbackImpl(typeBuilder, clazz);
         onSizeChanged(typeBuilder, clazz);
         dispatchDraw(typeBuilder, clazz);
@@ -162,6 +175,7 @@ public class EffectLayoutProcessor extends BaseProcessor {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
                 .addParameter(ProcessorUtils.createCanvasTypeName(true), "canvas")
+                .addStatement("assert canvas != null")
                 .addStatement("effectDelegate.dispatchDraw(canvas)")
                 .build();
         typeBuilder.addMethod(dispatchDraw);
@@ -169,9 +183,11 @@ public class EffectLayoutProcessor extends BaseProcessor {
 
     private void draw(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec draw = MethodSpec.methodBuilder("draw")
+                .addAnnotation(ProcessorUtils.createMissingSuperCallAnnotation())
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ProcessorUtils.createCanvasTypeName(true), "canvas")
+                .addStatement("assert canvas != null")
                 .addStatement("effectDelegate.draw(canvas)")
                 .build();
         typeBuilder.addMethod(draw);
@@ -203,8 +219,9 @@ public class EffectLayoutProcessor extends BaseProcessor {
 
     private void onDetachedFromWindow(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec onDetachedFromWindow = MethodSpec.methodBuilder("onDetachedFromWindow")
+                .addAnnotation(ProcessorUtils.createMissingSuperCallAnnotation())
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.PROTECTED)
                 .addStatement("effectDelegate.onDetachedFromWindow()")
                 .build();
         typeBuilder.addMethod(onDetachedFromWindow);

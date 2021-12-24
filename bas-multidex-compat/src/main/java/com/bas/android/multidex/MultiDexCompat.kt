@@ -25,10 +25,17 @@ object MultiDexCompat {
     fun install(context: Context, installer: Installer? = null) {
         val packageName = context.packageName
         val processName = getProcessName(context)
+        //安装进程
+        if (isInstallerProcess(processName)) {
+            logi("该进程为MultiDex安装进程，不执行MuliDex安装。")
+            return
+        }
         if (packageName != processName) {
+            //todo 待确定：是否其他进程需要执行安装？
             logi("当前不是主进程（processName=${processName}），不执行MultiDex安装")
             return
         }
+
         val startTime = System.currentTimeMillis()
         logi("Installing application")
         if (IS_VM_MULTIDEX_CAPABLE) {
@@ -71,13 +78,15 @@ object MultiDexCompat {
     private fun doInstallation(context: Context, custom: Installer?) {
         val installer = custom ?: DefaultMultiDexInstaller()
 
-        //安装过程是异步过程，则需要在后面
+        //安装过程不是同步过程，则创建锁文件
         if (!installer.isSyncMode) {
             createInstallLockFlag(context)
         }
+        //执行二次安装
         installer.doInstall(context)
 
         if (!installer.isSyncMode) {
+            //非同步安装，阻塞等待安装结束
             waitUntilDexInstallComplete(context)
             installer.doSecondInstall(context)
         }
@@ -95,6 +104,11 @@ object MultiDexCompat {
         try {
             logi("lock install process.")
             val file = LockFile(context)
+
+            val parent = file.parentFile
+            if(parent != null && !parent.exists()){
+                parent.mkdirs()
+            }
             if (!file.exists()) {
                 logd("create lock file.")
                 file.createNewFile()
@@ -148,10 +162,6 @@ object MultiDexCompat {
             file.delete()
     }
 
-    //是否是主进程
-    private fun isMainProcess(context: Context): Boolean {
-        return context.packageName == getProcessName(context)
-    }
 
     /**
      * 判断当前VM是否支持MultiDex(从MultiDex 拷出来的的方法)
@@ -207,8 +217,15 @@ object MultiDexCompat {
         }
     }
 
+    /**
+     * 是否是安装进程
+     */
+    fun isInstallerProcess(processName: String?): Boolean {
+        return processName != null && processName.endsWith(":multidex_compat")
+    }
+
     //获取当前进程名字
-    private fun getProcessName(ctx: Context): String? {
+    fun getProcessName(ctx: Context): String? {
         if (Build.VERSION.SDK_INT >= 28) {
             return Application.getProcessName()
         } else {
@@ -229,5 +246,6 @@ object MultiDexCompat {
             return null
         }
     }
+
 
 }

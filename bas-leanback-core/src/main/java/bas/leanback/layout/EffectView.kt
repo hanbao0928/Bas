@@ -33,10 +33,10 @@ internal class EffectView @JvmOverloads constructor(
     private val breatheAnim: ObjectAnimator by lazy {
         ObjectAnimator.ofFloat(this, "alpha", 1f, 0.2f, 1f).apply {
             interpolator = AccelerateDecelerateInterpolator()
-            duration = params.breatheDuration
+            duration = params.breatheDuration.toLong()
             repeatMode = ValueAnimator.REVERSE
             repeatCount = ValueAnimator.INFINITE
-            startDelay = params.shimmerDelay
+            startDelay = params.shimmerDelay.toLong()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationCancel(animation: Animator) {
                     super.onAnimationCancel(animation)
@@ -106,10 +106,11 @@ internal class EffectView @JvmOverloads constructor(
         val offset =
             params.strokeWidthHalf//if(params.isRoundedShape) params.strokeWidth else params.strokeWidthHalf
 
-        val newLeft = params.shadowWidth + offset
-        val newTop = params.shadowWidth + offset
-        val newRight = width - params.shadowWidth - offset
-        val newBottom = height - params.shadowWidth - offset
+        //todo 很奇怪，不管怎么计算，绘制的路径都有些许偏差
+        val newLeft = paddingLeft + params.shadowWidth
+        val newTop = paddingTop + params.shadowWidth
+        val newRight =width - paddingRight - params.shadowWidth
+        val newBottom = height - paddingBottom - params.shadowWidth
 
         if (newLeft == strokeRectF.left && newTop == strokeRectF.top && newRight == strokeRectF.right && newBottom == strokeRectF.bottom)
             return
@@ -120,7 +121,7 @@ internal class EffectView @JvmOverloads constructor(
         if (params.isRoundedShape) {
             strokePath.addRoundRect(strokeRectF, params.cornerRadius, Path.Direction.CW)
         } else {
-            strokePath.addRoundRect(strokeRectF, 0f, 0f, Path.Direction.CW)
+            strokePath.addRect(strokeRectF, Path.Direction.CW)
         }
     }
 
