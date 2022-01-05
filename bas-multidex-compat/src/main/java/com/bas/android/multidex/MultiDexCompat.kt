@@ -23,18 +23,20 @@ object MultiDexCompat {
 
     @JvmOverloads
     fun install(context: Context, installer: Installer? = null) {
-        val packageName = context.packageName
+//        val packageName = context.packageName
         val processName = getProcessName(context)
         //安装进程
         if (isInstallerProcess(processName)) {
             logi("该进程为MultiDex安装进程，不执行MuliDex安装。")
             return
         }
-        if (packageName != processName) {
-            //todo 待确定：是否其他进程需要执行安装？
-            logi("当前不是主进程（processName=${processName}），不执行MultiDex安装")
-            return
-        }
+
+        //其他进程也需要执行安装或者等待安装完成
+//        if (packageName != processName) {
+//            //todo 待确定：是否其他进程需要执行安装？
+//            logi("当前不是主进程（processName=${processName}），不执行MultiDex安装")
+//            return
+//        }
 
         val startTime = System.currentTimeMillis()
         logi("Installing application")
@@ -82,12 +84,14 @@ object MultiDexCompat {
         if (!installer.isSyncMode) {
             createInstallLockFlag(context)
         }
-        //执行二次安装
+
+        //执行安装
         installer.doInstall(context)
 
         if (!installer.isSyncMode) {
             //非同步安装，阻塞等待安装结束
             waitUntilDexInstallComplete(context)
+            //执行二次安装
             installer.doSecondInstall(context)
         }
     }
@@ -100,7 +104,7 @@ object MultiDexCompat {
      * 创建安装进程锁标记：通过创建一个文件作为标示
      * 必须是跨进程
      */
-    fun createInstallLockFlag(context: Context) {
+    private fun createInstallLockFlag(context: Context) {
         try {
             logi("lock install process.")
             val file = LockFile(context)
@@ -225,7 +229,7 @@ object MultiDexCompat {
     }
 
     //获取当前进程名字
-    fun getProcessName(ctx: Context): String? {
+    private fun getProcessName(ctx: Context): String? {
         if (Build.VERSION.SDK_INT >= 28) {
             return Application.getProcessName()
         } else {
