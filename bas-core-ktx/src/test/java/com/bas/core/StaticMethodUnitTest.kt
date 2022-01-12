@@ -1,9 +1,14 @@
 package com.bas.core
 
 import com.bas.core.lang.NOW
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
+import kotlin.random.Random
 
 /**
  * Created by Lucio on 2021/11/13.
@@ -67,5 +72,18 @@ class StaticMethodUnitTest {
             }
             lock.await()
         }
+    }
+
+    @Test
+    fun testProgress() = runBlocking {
+        println("当前线程@${Thread.currentThread().name}")
+        var progress = 0
+        do{
+            withContext(Dispatchers.Default) {
+                delay(500)
+                progress += Random.nextInt(1, 10)
+            }
+            println("当前进度：${progress.coerceAtMost(100)}")
+        }while(progress < 100)
     }
 }

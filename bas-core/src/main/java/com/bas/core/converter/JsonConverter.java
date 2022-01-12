@@ -3,6 +3,7 @@ package com.bas.core.converter;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,6 +18,6 @@ public interface JsonConverter {
     <T> List<T> toObjectList(@Nullable String json, Class<T> clazz);
 
     @Nullable
-    String toJson(@Nullable Object obj) ;
+    <T> String toJson(@Nullable T obj) ;
 
 }

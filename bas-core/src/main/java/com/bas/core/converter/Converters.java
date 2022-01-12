@@ -1,5 +1,6 @@
 package com.bas.core.converter;
 
+import com.bas.core.converter.fastjson.FastJsonConverter;
 import com.bas.core.converter.gson.GsonConverter;
 import com.bas.core.converter.jackson.JacksonConverter;
 import com.bas.core.lang.ClassUtils;
@@ -16,15 +17,26 @@ public class Converters {
 
     private static JsonConverter mJsonConverter;
 
-    private Converters() { }
+    private Converters() {
+    }
 
     static {
         try {
-            //初始化默认JsonConverter，优先使用Jackson
-            if (ClassUtils.isClassExists("com.fasterxml.jackson.databind.ObjectMapper")) {
+            //初始化默认JsonConverter，优先使用Jackson(Kotlin版本)
+            if (ClassUtils.isClassExists("com.fasterxml.jackson.module.kotlin.KotlinModule")) {
+                System.out.println("Converters：使用JacksonKotlinConverter");
+                mJsonConverter = new JacksonConverter();
+            } else if (ClassUtils.isClassExists("com.fasterxml.jackson.databind.ObjectMapper")) {
+                System.out.println("Converters：使用JacksonConverter");
                 mJsonConverter = new JacksonConverter();
             } else if (ClassUtils.isClassExists("com.google.gson.Gson")) {
+                System.out.println("Converters：使用GsonConverter");
                 mJsonConverter = new GsonConverter();
+            } else if (ClassUtils.isClassExists("com.alibaba.fastjson.JSON")) {
+                System.out.println("Converters：使用FastJsonConverter");
+                mJsonConverter = new FastJsonConverter();
+            } else {
+                System.out.println("Converters：null");
             }
         } catch (Exception e) {
             e.printStackTrace();

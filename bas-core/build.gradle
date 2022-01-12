@@ -21,14 +21,31 @@ dependencies {
     */
     compileOnly "com.google.code.gson:gson:2.8.7"
 
-    /*实际会引入jackson-core、jackson-annotations依赖
+    /*
+    常规Jackson引用
+    实际会引入jackson-core、jackson-annotations依赖
     * https://github.com/FasterXML/jackson-dataformat-xml
     * */
-    compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.6"
+
+    /**
+     * Jackson支持Kotlin&data class
+     * https://github.com/FasterXML/jackson-module-kotlin
+     *
+     * 版本缺陷：某些版本使用的时候会出现 java.lang.NoSuchMethodError: java.lang.reflect.Method.getAnnotationsByType
+     *      比如2.9.10、2.9.8等
+     *      解决办法：使用2.9.6 或者 2.10.5 +版本
+     *      该问题详细参考链接：https://github.com/FasterXML/jackson-module-kotlin/issues/218
+     *
+     *      测试结果：2.9.6版能解决该问题  2.10.5版本不存在
+     *      测试了2.13.1版本，发现程序运行过程中经常需要等很久才响应（几十秒），Log不断输出 Background sticky concurrent mark sweep GC freed等提示语
+     */
+    compileOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
 
     /*https://github.com/square/retrofit/wiki/Converters
     https://github.com/ligboy/retrofit-converter-fastjson
     https://github.com/alibaba/fastjson
     * */
     compileOnly "com.alibaba:fastjson:1.2.10"
+
 }

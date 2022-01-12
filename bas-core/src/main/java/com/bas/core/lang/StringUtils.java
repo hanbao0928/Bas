@@ -63,6 +63,7 @@ public class StringUtils {
 
     /**
      * 获取字符串扩展名
+     *
      * @see #getExtension(String, String, String)
      */
     public static String getExtension(@NotNull String value) {
@@ -71,6 +72,7 @@ public class StringUtils {
 
     /**
      * 获取字符串扩展名
+     *
      * @see #getExtension(String, String, String)
      */
     public static String getExtension(@NotNull String value, @NotNull String delimiter) {
@@ -222,4 +224,17 @@ public class StringUtils {
         return new String(source);
     }
 
+    /**
+     * Returns whether the given CharSequence contains only digits.
+     */
+    public static boolean isDigitsOnly(CharSequence str) {
+        final int len = str.length();
+        for (int cp, i = 0; i < len; i += Character.charCount(cp)) {
+            cp = Character.codePointAt(str, i);
+            if (!Character.isDigit(cp)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

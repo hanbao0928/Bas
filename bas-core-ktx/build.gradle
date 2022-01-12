@@ -25,6 +25,11 @@ dependencies {
     compileOnly 'com.google.code.gson:gson:2.8.7'
     /*实际会引入jackson-core、jackson-annotations依赖*/
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.8"
+    
+    /**
+     * https://github.com/square/moshi
+     */
+    compileOnly "com.squareup.moshi:moshi:1.8.0"
 
     // for test
     testImplementation 'junit:junit:4.+'
