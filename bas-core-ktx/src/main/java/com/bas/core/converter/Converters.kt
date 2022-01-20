@@ -11,7 +11,7 @@ import java.lang.reflect.Type
  * Created by Lucio on 2021/7/22.
  */
 
-inline fun Any?.toJson(): String? {
+inline fun <reified T> T?.toJson(): String? {
     return Converters.toJson(this)
 }
 
