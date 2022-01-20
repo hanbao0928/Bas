@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="am_id_fragment_container" type="id" />
+
+
+    <item name="am_id_recycler" type="id" />
+
+    <dimen name="activity_horizontal_margin">36dp</dimen>
+    <dimen name="view_margin">8dp</dimen>
+    <dimen name="view_margin_big">12dp</dimen>
+
+</resources>
