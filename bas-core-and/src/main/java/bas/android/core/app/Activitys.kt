@@ -3,6 +3,10 @@ package bas.android.core.app
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import bas.android.core.util.checkValidationOrThrow
+import com.bas.core.lang.onCatch
+import com.bas.core.lang.tryIgnore
 
 /**
  * Created by Lucio on 2021/12/1.
@@ -21,4 +25,25 @@ fun Context.startActivity(clazz: Class<out Activity>) {
 fun Activity.startActivity(clazz: Class<out Activity>) {
     val it = Intent(this, clazz)
     startActivity(it)
+}
+
+fun Context.startActivitySafely(intent: Intent) {
+    tryIgnore {
+        intent.checkValidationOrThrow(this)
+        if (this !is Activity) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        this.startActivity(intent)
+    }.onCatch {
+        Log.w(this::class.java.simpleName, "无法打开指定Intent", it)
+    }
+}
+
+fun Activity.startActivityForResultSafely(intent: Intent, requestCode: Int) {
+    tryIgnore {
+        intent.checkValidationOrThrow(this)
+        this.startActivityForResult(intent, requestCode)
+    }.onCatch {
+        Log.w(this::class.java.simpleName, "无法打开指定Intent", it)
+    }
 }

@@ -119,6 +119,7 @@ public class EffectLayoutProcessor extends BaseProcessor {
         dispatchDraw(typeBuilder, clazz);
         draw(typeBuilder, clazz);
         onFocusChanged(typeBuilder, clazz);
+        performFocusChanged(typeBuilder, clazz);
         onViewAdded(typeBuilder, clazz);
         onDetachedFromWindow(typeBuilder, clazz);
     }
@@ -204,6 +205,16 @@ public class EffectLayoutProcessor extends BaseProcessor {
                 .addStatement("effectDelegate.onFocusChanged(gainFocus, direction, previouslyFocusedRect)")
                 .build();
         typeBuilder.addMethod(onFocusChanged);
+    }
+
+    private void performFocusChanged(TypeSpec.Builder typeBuilder, String clazz) {
+        MethodSpec performFocusChanged = MethodSpec.methodBuilder("performFocusChanged")
+                .addJavadoc("执行焦点效果")
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(boolean.class, "hasFocus")
+                .addStatement("effectDelegate.performFocusChanged(hasFocus)")
+                .build();
+        typeBuilder.addMethod(performFocusChanged);
     }
 
     private void onViewAdded(TypeSpec.Builder typeBuilder, String clazz) {

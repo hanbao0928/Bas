@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    &lt;!&ndash;圆角&ndash;&gt;-->
+<!--    <attr name="cornerRadiusBas" format="reference|dimension" />-->
+<!--    &lt;!&ndash;图片圆角&ndash;&gt;-->
+<!--    <attr name="imageCornerRadiusBas" format="reference|dimension" />-->
+
+
+<!--    <style name="BasTheme" parent="Theme.AppCompat">-->
+<!--        <item name="cornerRadiusBas"></item>-->
+<!--    </style>-->
+</resources>

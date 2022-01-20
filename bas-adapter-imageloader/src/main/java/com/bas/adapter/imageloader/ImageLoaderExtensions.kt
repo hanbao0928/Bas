@@ -10,21 +10,25 @@ import androidx.annotation.DrawableRes
 /**
  * 默认图片资源
  */
+@get:DrawableRes
 inline val defaultImageResBas: Int get() = ImageLoader.config.defaultImageRes
 
 /**
  * 默认圆角图片
  */
+@get:DrawableRes
 inline val defaultRoundedImageResBas: Int get() = ImageLoader.config.defaultRoundedImageRes
 
 /**
  * 默认圆形图片
  */
+@get:DrawableRes
 inline val defaultCircleImageResBas: Int get() = ImageLoader.config.defaultCircleImageRes
 
 /**
  * 图片圆角半径
  */
+@get:DrawableRes
 inline val defaultRoundedImageRadius: Int get() = ImageLoader.defaultRoundedImageRadius
 
 /**

@@ -19,6 +19,14 @@ inline val screenWidth: Int get() = basCtx.resources.displayMetrics.widthPixels
  */
 inline val screenHeight: Int get() = basCtx.resources.displayMetrics.heightPixels
 
+//returns dip(dp) dimension value in pixels
+fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
+fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
+
+//return sp dimension value in pixels
+fun Context.sp(value: Int): Int = (value * resources.displayMetrics.scaledDensity).toInt()
+fun Context.sp(value: Float): Int = (value * resources.displayMetrics.scaledDensity).toInt()
+
 
 fun Context.getDrawableIdentifier(name: String): Int {
     return resources.getIdentifier(name, "drawable", packageName)
@@ -45,7 +53,7 @@ inline val Double.dp: Int
 
 inline val Int.dp: Int
     get() = run {
-        return toFloat().dp
+        return (this * density).toInt()
     }
 
 inline val Float.sp: Int

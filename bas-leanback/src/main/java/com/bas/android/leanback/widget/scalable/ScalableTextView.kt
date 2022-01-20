@@ -2,6 +2,7 @@ package com.bas.android.leanback.widget.scalable
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
@@ -19,19 +20,16 @@ class ScalableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatTextView(context, attrs, defStyleAttr), View.OnFocusChangeListener {
+) : AppCompatTextView(context, attrs, defStyleAttr){
 
     private var mFocusHelper: FocusHighlightHandler
     private var mEnableScale: Boolean = true
-    private var mBringToFrontOnFocus:Boolean = false
-
-    private var mCustomFocusChangedListener :View.OnFocusChangeListener? = null
+    private var mBringToFrontOnFocus: Boolean = false
 
     init {
         isFocusable = true
         isClickable = true
         isFocusableInTouchMode = Leanback.isLeanbackMode
-        onFocusChangeListener = this
 
         val tp = context.obtainStyledAttributes(attrs, R.styleable.ScalableView)
         tp.also {
@@ -48,20 +46,13 @@ class ScalableTextView @JvmOverloads constructor(
         tp.recycle()
     }
 
-    /**
-     * 设置自定义焦点改变监听：不能通过重写[setOnFocusChangeListener]方法实现，否则在[androidx.leanback.widget.ItemBridgeAdapter]中作为根布局使用时会产生循环调用问题，导致anr直到溢出
-     */
-     fun setOnCustomFocusChangeListener(l: OnFocusChangeListener?) {
-        mCustomFocusChangedListener = l
-    }
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
 
-    override fun onFocusChange(v: View, hasFocus: Boolean) {
-        if(mBringToFrontOnFocus && hasFocus)
+        if (mBringToFrontOnFocus && focused)
             bringToFront()
-
         if (mEnableScale) {
-            mFocusHelper.onItemFocused(v, hasFocus)
+            mFocusHelper.onItemFocused(this, focused)
         }
-        mCustomFocusChangedListener?.onFocusChange(v,hasFocus)
     }
 }

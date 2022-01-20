@@ -95,6 +95,9 @@ class EffectParams {
     var childrenOffsetMargin: Float = 0f
         private set
 
+    var containsSurfaceChild: Boolean = false
+        private set
+
     /*需要排除的id*/
     internal val excludeAdjustIds = mutableSetOf<Int>()
 
@@ -133,6 +136,7 @@ class EffectParams {
             adjustChildrenMargin
         )
 
+        containsSurfaceChild = ta.getBoolean(R.styleable.LeanbackEffectLayout_effect_contains_surface_child_bas,containsSurfaceChild)
         val excludesIds =
             ta.getString(R.styleable.EffectConstraintLayout_excludeAdjustReferencedIDs_bas)
         parseExcludeIds(context, excludesIds)

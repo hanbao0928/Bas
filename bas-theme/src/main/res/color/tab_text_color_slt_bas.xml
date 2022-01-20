@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="@color/tab_text_color_focused_bas" android:state_focused="true" />
+
+    <item android:color="@color/tab_text_color_selected_bas" android:state_selected="true" />
+
+    <!--    <item android:color="@color/text_color_primary" android:state_activated="false" android:state_focused="true" />-->
+    <item android:color="@color/tab_text_color_bas" />
+</selector>

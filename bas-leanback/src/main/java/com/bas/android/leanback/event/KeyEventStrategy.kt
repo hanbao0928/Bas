@@ -1,7 +1,7 @@
 package com.bas.android.leanback.event
 
 import android.view.KeyEvent
-import com.bas.core.android.util.Logger
+import bas.android.core.util.Logger
 
 /**
  * Created by Lucio on 2021/9/27.

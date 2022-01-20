@@ -1,20 +1,20 @@
+@file:JvmName("Intents")
+@file:JvmMultifileClass
+
 package bas.android.core.util
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.util.Log
+import android.provider.MediaStore
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresPermission
-import androidx.fragment.app.Fragment
-import com.bas.core.lang.onCatch
-import com.bas.core.lang.tryIgnore
 
 /**
  * Created by Lucio on 2021/10/27.
@@ -25,48 +25,93 @@ inline fun Intent.checkValidationOrThrow(ctx: Context) {
         ?: throw ActivityNotFoundException("no activity can handle this intent $this")
 }
 
-inline fun Intent.canResolve(ctx: Context):Boolean {
-    return resolveActivity(ctx.packageManager) !=null
+inline fun Intent.canResolve(ctx: Context): Boolean {
+    return resolveActivity(ctx.packageManager) != null
 }
 
-fun Context.startActivitySafely(intent: Intent){
-    tryIgnore { 
-        intent.checkValidationOrThrow(this)
-        if(this !is Activity){
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+/**
+ * 拍照意图（不返回数据，通过URI获取）
+ * 在[Activity.onActivityResult]方法中操作此方法的Uri参数，即可处理数据
+ * @param outputUri         用于存储拍照之后的图片
+ */
+fun PhotographIntent(outputUri: Uri): Intent {
+    return Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+        putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
+        if (Build.VERSION.SDK_INT >= 24) {
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        this.startActivity(intent)
-    }.onCatch {
-        Log.w(this::class.java.simpleName,"无法打开指定Intent",it)
     }
 }
 
-fun Activity.startActivityForResultSafely(intent: Intent,requestCode: Int){
-    tryIgnore {
-        intent.checkValidationOrThrow(this)
-        this.startActivityForResult(intent,requestCode)
-    }.onCatch {
-        Log.w(this::class.java.simpleName,"无法打开指定Intent",it)
-    }
+/**
+ * 图片选择意图（不返回数据，通过在[Activity.onActivityResult]方法中调用data.getData()获取返回的数据）
+ */
+@JvmOverloads
+fun PhotoPickIntent(mimeType: String = "image/*"): Intent {
+    return Intent(Intent.ACTION_PICK)
+        .setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mimeType)
 }
 
-fun Fragment.startActivitySafely(intent: Intent) {
-    tryIgnore {
-        intent.checkValidationOrThrow(this.requireContext())
-        this.startActivity(intent)
-    }.onCatch {
-        Log.w(this::class.java.simpleName,"无法打开指定Intent",it)
-    }
+/**
+ * 裁剪意图(不通过onActivityResult返回结果，结果保存在[toUri]中)
+ * 适用场景：适用任意场景，对于所需图片尺寸较大的结果的情况则必须适用此方法，否则在某些机型上可能崩溃
+ * @param fromUri     数据源，被裁剪的图片URI
+ * @param toUri 保存结果的uri
+ * @param aspectX     X所占比例
+ * @param aspectY     Y所占比例
+ * @param outputX     X宽度
+ * @param outputY     Y宽度
+ * @param format 压缩格式，默认jpeg，占用内存更小
+ */
+fun CropImageIntent(
+    fromUri: Uri,
+    toUri: Uri,
+    aspectX: Int,
+    aspectY: Int,
+    outputX: Int,
+    outputY: Int,
+    format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
+): Intent {
+    return CropIntentInternal(
+        fromUri,
+        aspectX,
+        aspectY,
+        outputX,
+        outputY,
+        format
+    ).putExtra(MediaStore.EXTRA_OUTPUT, toUri)
+        .putExtra("return-data", false)
 }
 
-fun Fragment.startActivityForResultSafely(intent: Intent, requestCode: Int) {
-    tryIgnore {
-        intent.checkValidationOrThrow(this.requireContext())
-        this.startActivityForResult(intent,requestCode)
-    }.onCatch {
-        Log.w(this::class.java.simpleName,"无法打开指定Intent",it)
-    }
+/**
+ * 裁剪意图(直接返回裁剪后的Bitmap数据)
+ * 【返回数据获取】onActivityResult：（Bitmap）data.getExtras().getParcelable("data")）
+ * 适用场景：类似于头像获取这种所需的结果尺寸较小的情况
+ * @param fromUri     数据源，被裁剪的图片URI
+ * @param aspectX     X所占比例
+ * @param aspectY     Y所占比例
+ * @param outputX     X宽度
+ * @param outputY     Y宽度
+ * @param format 压缩格式，默认jpeg，占用内存更小
+ */
+fun CropImageIntent(
+    fromUri: Uri,
+    aspectX: Int,
+    aspectY: Int,
+    outputX: Int,
+    outputY: Int,
+    format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
+): Intent {
+    return CropIntentInternal(
+        fromUri,
+        aspectX,
+        aspectY,
+        outputX,
+        outputY,
+        format
+    ).putExtra("return-data", true)
 }
+
 
 /**
  * 拨号意图（只是唤起电话输入界面）
@@ -127,6 +172,7 @@ fun MailIntent(
 
 /**
  * 系统设置界面
+ * 具体设置见 [android.provider.Settings]的Action_xxxx定义
  */
 fun SysSettingIntent(): Intent {
     return Intent(android.provider.Settings.ACTION_SETTINGS)
@@ -160,35 +206,6 @@ fun NotificationSettingIntent(ctx: Context): Intent {
     }
 }
 
-private fun NotificationSettingDefault(ctx: Context): Intent {
-    var intent =
-        AMIntents.Setting.createAppDetailSettingIntent(ctx.packageName)
-    if (intent.resolveActivity(ctx.packageManager) == null) {
-        intent = AMIntents.Setting.createSettingIntent()
-    }
-    return intent
-}
-
-@TargetApi(26)
-private fun NotificationSettingApi26(ctx: Context): Intent {
-    return Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-        .apply {
-            putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, ctx.packageName)
-            putExtra(
-                android.provider.Settings.EXTRA_CHANNEL_ID,
-                ctx.applicationInfo.uid
-            )
-        }
-}
-
-@TargetApi(19)
-private fun NotificationSettingApi19(ctx: Context): Intent {
-    return Intent("android.settings.APP_NOTIFICATION_SETTINGS")
-        .apply {
-            putExtra("app_package", ctx.packageName)
-            putExtra("app_uid", ctx.applicationInfo.uid)
-        }
-}
 
 /**
  * 应用详情设置界面意图

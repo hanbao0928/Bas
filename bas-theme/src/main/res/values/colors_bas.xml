@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black_opacity_90">#E6000000</color>
+    <color name="black_opacity_70">#B2000000</color>
+    <color name="black_opacity_60">#99000000</color>
+    <color name="black_opacity_50">#7F000000</color>
+    <color name="black_opacity_40">#66000000</color>
+    <color name="black_opacity_30">#4D000000</color>
+    <color name="black_opacity_20">#33000000</color>
+    <color name="black_opacity_10">#19000000</color>
+
+    <color name="white_opacity_90">#E6FFFFFF</color>
+    <color name="white_opacity_70">#B2FFFFFF</color>
+    <color name="white_opacity_60">#99FFFFFF</color>
+    <color name="white_opacity_50">#7FFFFFFF</color>
+    <color name="white_opacity_40">#66FFFFFF</color>
+    <color name="white_opacity_30">#4DFFFFFF</color>
+    <color name="white_opacity_20">#33FFFFFF</color>
+    <color name="white_opacity_15">#26FFFFFF</color>
+    <color name="white_opacity_10">#19FFFFFF</color>
+
+    <!--主题文本颜色：通常为导航栏文本颜色-->
+    <color name="text_color_primary_bas">#FFFFFFFF</color>
+
+    <!--文本选中的颜色-->
+    <color name="text_color_selected_bas">#FFD42D2D</color>
+
+    <!--文本获取焦点的颜色-->
+    <color name="text_color_focused_bas">#FFD42D2D</color>
+
+
+    <!--tab文本选中的颜色-->
+    <color name="tab_text_color_selected_bas">@color/text_color_selected_bas</color>
+
+    <!--tab文本获取焦点的颜色-->
+    <color name="tab_text_color_focused_bas">#FFF1F1F1</color>
+
+    <!--默认tab颜色-->
+    <color name="tab_text_color_bas">#FFB9B9B9</color>
+
+</resources>

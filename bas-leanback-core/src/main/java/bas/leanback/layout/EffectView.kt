@@ -10,10 +10,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
-/**
- * user by pj567
- * date on 2019/12/16.
- */
 internal class EffectView @JvmOverloads constructor(
     val params: EffectParams,
     context: Context?,
@@ -94,7 +90,7 @@ internal class EffectView @JvmOverloads constructor(
         if (params.isRoundedShape) {
             shadowPath.addRoundRect(shadowRectF, params.cornerRadius, Path.Direction.CW)
         } else {
-            shadowPath.addRoundRect(shadowRectF, 0f, 0f, Path.Direction.CW)
+            shadowPath.addRoundRect(shadowRectF,0f,0f,Path.Direction.CW)
         }
     }
 

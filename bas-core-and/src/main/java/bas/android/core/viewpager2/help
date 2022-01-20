@@ -1,0 +1,9 @@
+
+
+1、ViewPager2 设置 画廊效果的关键步骤
+    方法一、ViewPager2通过设置Padding + clipToPadding=false 实现
+
+    方法二、ViewPager2设置Margin，并且ViewPager2和其Parent设置clipChildren = false
+
+建议使用方法一，因为方法二在Margin区域的时候存在无法响应ViewPager2事件问题，如果需要在Margin区域响应ViewPager2的触摸
+事件，还需要由其Parent传递到ViewPager2才行，略显麻烦。

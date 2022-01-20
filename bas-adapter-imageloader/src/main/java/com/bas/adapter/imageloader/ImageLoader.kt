@@ -92,13 +92,13 @@ object ImageLoader : ImageLoaderEngine by engine {
          * 默认圆角图片
          */
         @JvmField
-        var defaultRoundedImageRes: Int = R.drawable.rounded_image_placeholder_bas
+        var defaultRoundedImageRes: Int = R.drawable.image_placeholder_corner_bas
 
         /**
          * 默认圆形图片
          */
         @JvmField
-        var defaultCircleImageRes: Int = R.drawable.circle_image_placeholder_bas
+        var defaultCircleImageRes: Int = R.drawable.image_placeholder_circle_bas
 
         /**
          * disk 缓存目录名字,如果为空，则使用对应Engine的默认目录名字；
@@ -112,8 +112,8 @@ object ImageLoader : ImageLoaderEngine by engine {
             private var isMemoryCacheEnabled: Boolean = true
             private var diskCacheFolderName: String? = null
             private var defaultImageRes: Int = R.drawable.image_placeholder_bas
-            private var defaultRoundedImageRes: Int = R.drawable.rounded_image_placeholder_bas
-            private var defaultCircleImageRes: Int = R.drawable.circle_image_placeholder_bas
+            private var defaultRoundedImageRes: Int = R.drawable.image_placeholder_corner_bas
+            private var defaultCircleImageRes: Int = R.drawable.image_placeholder_circle_bas
 
             /**
              * 是否启用Disk缓存

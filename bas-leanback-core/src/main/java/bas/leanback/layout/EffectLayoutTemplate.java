@@ -77,13 +77,21 @@ class EffectLayoutTemplate extends ConstraintLayout implements EffectLayoutDeleg
         effectDelegate.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
 
+    /**
+     * 执行焦点效果
+     * @param hasFocus
+     */
+    public void performFocusChanged(boolean hasFocus) {
+        effectDelegate.performFocusChanged(hasFocus);
+    }
+
     @Override
     public void onViewAdded(@Nullable View child) {
         super.onViewAdded(child);
         effectDelegate.onViewAdded(child);
     }
 
-    @SuppressLint(value ="MissingSuperCall")
+    @SuppressLint(value = "MissingSuperCall")
     @Override
     protected void onDetachedFromWindow() {
         effectDelegate.onDetachedFromWindow();

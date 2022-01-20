@@ -65,6 +65,9 @@
     <!--children view 与边框之间的距离：作用就是设置边框与内部布局之间的距离，比如做镂空的边框-->
     <attr name="childrenOffsetMargin_bas" format="dimension|reference" />
 
+    <!--是否包含surface 作为child view，默认false-->
+    <attr name="effect_contains_surface_child_bas" format="boolean" />
+
     <!--后面EffectFrameLayout等的属性应该与LeanbackEffectLayout定义的属性保持一致，定义具体的属性只是为了在xml中使用对应布局时有属性提示-->
     <declare-styleable name="LeanbackEffectLayout">
         <attr name="scale_bas" />
@@ -88,6 +91,7 @@
         <attr name="adjustChildrenMargin_bas" />
         <attr name="excludeAdjustReferencedIDs_bas"/>
         <attr name="childrenOffsetMargin_bas" />
+        <attr name="effect_contains_surface_child_bas"/>
     </declare-styleable>
 
     <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
@@ -113,6 +117,7 @@
         <attr name="adjustChildrenMargin_bas" />
         <attr name="excludeAdjustReferencedIDs_bas"/>
         <attr name="childrenOffsetMargin_bas" />
+        <attr name="effect_contains_surface_child_bas"/>
     </declare-styleable>
 
     <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
@@ -138,6 +143,7 @@
         <attr name="adjustChildrenMargin_bas" />
         <attr name="excludeAdjustReferencedIDs_bas"/>
         <attr name="childrenOffsetMargin_bas" />
+        <attr name="effect_contains_surface_child_bas"/>
     </declare-styleable>
 
     <!--与LeanbackEffectLayout定义的属性保持一致：只是为了xml 提示-->
@@ -163,6 +169,7 @@
         <attr name="adjustChildrenMargin_bas" />
         <attr name="excludeAdjustReferencedIDs_bas"/>
         <attr name="childrenOffsetMargin_bas" />
+        <attr name="effect_contains_surface_child_bas"/>
     </declare-styleable>
 
 </resources>

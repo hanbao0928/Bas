@@ -7,6 +7,7 @@
 package bas.android.core.util
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -65,7 +66,7 @@ internal fun transformNetworkType(@NetworkType type: Int): Int {
             NETWORK_TYPE_WIFI -> {
                 ConnectivityManager.TYPE_WIFI
             }
-            NETWORK_TYPE_ETHERNET ->{
+            NETWORK_TYPE_ETHERNET -> {
                 ConnectivityManager.TYPE_ETHERNET
             }
             else -> {
@@ -80,7 +81,7 @@ internal fun transformNetworkType(@NetworkType type: Int): Int {
             NETWORK_TYPE_WIFI -> {
                 NetworkCapabilities.TRANSPORT_WIFI
             }
-            NETWORK_TYPE_ETHERNET ->{
+            NETWORK_TYPE_ETHERNET -> {
                 NetworkCapabilities.TRANSPORT_ETHERNET
             }
             else -> {
@@ -90,26 +91,27 @@ internal fun transformNetworkType(@NetworkType type: Int): Int {
     }
 }
 
+@SuppressLint("NewApi")
 @RequiresPermission(value = Manifest.permission.ACCESS_NETWORK_STATE)
 internal fun isNetworkConnected(ctx: Context, @NetworkType type: Int): Boolean {
     val cm = ctx.connectivityManager ?: return false
     val netType = transformNetworkType(type)
 
-    if (Build.VERSION.SDK_INT < 23) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            cm.allNetworks.forEach {
-                val networkInfo = cm.getNetworkInfo(it)
-                if (networkInfo != null && networkInfo.isConnected && networkInfo.type == netType)
-                    return true
-            }
-        } else {
-            val networkInfo = cm.activeNetworkInfo
-            return networkInfo != null && networkInfo.isAvailable && networkInfo.type == netType
-        }
-        return false
-    } else {
+    val sdkInt = Build.VERSION.SDK_INT
+    if (sdkInt >= 23) {
         val an = cm.activeNetwork ?: return false
         val nc = cm.getNetworkCapabilities(an) ?: return false
         return nc.hasTransport(netType)
+    } else if (sdkInt >= 21) {
+        cm.allNetworks.forEach {
+            val networkInfo = cm.getNetworkInfo(it)
+            if (networkInfo != null && networkInfo.isConnected && networkInfo.type == netType)
+                return true
+        }
+        return false
+    } else {
+        val networkInfo = cm.activeNetworkInfo
+        return networkInfo != null && networkInfo.isAvailable && networkInfo.type == netType
     }
+
 }

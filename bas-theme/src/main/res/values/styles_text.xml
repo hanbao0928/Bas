@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="text_shadow_dx_bas">0</integer>
+    <integer name="text_shadow_dy_bas">5</integer>
+    <integer name="text_shadow_radius_bas">3</integer>
+    <color name="text_shadow_color_bas">#6b1b2322</color>
+
+    <!--带阴影的文本-->
+    <style name="ShadowText">
+        <item name="android:shadowDx">@integer/text_shadow_dx_bas</item>
+        <item name="android:shadowDy">@integer/text_shadow_dy_bas</item>
+        <item name="android:shadowRadius">@integer/text_shadow_radius_bas</item>
+        <item name="android:shadowColor">@color/text_shadow_color_bas</item>
+    </style>
+
+    <!--带阴影的文本（跑马灯）-->
+    <style name="ShadowText.Marquee">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <!--跑马灯-->
+    <style name="MarqueeText">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <!--不应该提供该属性，是否dup是应用场景决定的才对-->
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <!--跑马灯（阴影）-->
+    <style name="MarqueeText.Shadow">
+        <item name="android:shadowDx">@integer/text_shadow_dx_bas</item>
+        <item name="android:shadowDy">@integer/text_shadow_dy_bas</item>
+        <item name="android:shadowRadius">@integer/text_shadow_radius_bas</item>
+        <item name="android:shadowColor">@color/text_shadow_color_bas</item>
+    </style>
+
+</resources>

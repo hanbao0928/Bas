@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--圆角大小-->
+    <dimen name="corner_radius_bas">6dp</dimen>
+
+</resources>

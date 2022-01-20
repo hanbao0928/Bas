@@ -2,6 +2,8 @@ package bas.android.core.util
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Process
 import androidx.annotation.RequiresApi
@@ -129,4 +131,33 @@ fun getProcessNameFromFile(pid: Int): String? {
         }
     }
     return null
+}
+
+
+/**
+ * 判断手机是否安装某个应用
+ * @param appPkgName  应用包名
+ * @return   true：安装，false：未安装
+ */
+fun Context.isApplicationInstall(appPkgName: String): Boolean {
+    val packageManager = packageManager ?: return false
+    val pinfos = packageManager.getInstalledPackages(0)
+    if (pinfos.isNullOrEmpty())
+        return false
+    pinfos.forEach {
+        if (it.packageName == appPkgName)
+            return true
+    }
+    return false
+}
+
+/**
+ * 删除某个应用
+ * @Note: 清单文件中增加如下权限 <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
+ */
+fun Context.deleteApplication(appPkgName: String) {
+    val uri = Uri.fromParts("package", appPkgName, null)
+    val intent = Intent(Intent.ACTION_DELETE, uri)
+    startActivity(intent)
 }

@@ -230,6 +230,7 @@ fun Dialog.hideSoftInputAlwaysImpl() {
 
 /**
  * 当前是否运行在TV上
+ * @note :在某些TV设备上 读取到的值为false
  */
 fun Context.isTVUIMode(): Boolean {
     val uiModeManager =

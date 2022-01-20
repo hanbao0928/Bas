@@ -2,6 +2,7 @@ package com.bas.android.leanback.compat
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -9,6 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
  */
 
 const val NO_POSITION = RecyclerView.NO_POSITION
+
+/**
+ * 设置是否使用Item改变动画：也就是调用Adapter#notifyXX之后刷新列表，是否执行动画（默认是闪一下）
+ */
+fun RecyclerView.setChangeAnimationsEnabled(isEnable:Boolean){
+    (itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = isEnable
+}
 
 fun ViewGroup.findContainingItemView(view: View): View? {
     var result = view

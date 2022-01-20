@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="item_click_listener_tag_bas" type="id"/>
+    <item name="item_focus_listener_tag_bas" type="id"/>
+    <item name="item_key_listener_tag_bas" type="id"/>
+
+    <declare-styleable name="LeanbackVerticalGridView">
+        <!--默认不开启-->
+        <attr name="focusMemory_bas"/>
+        <!--焦点状态类型-->
+        <attr name="focusMemoryStateType_bas"/>
+    </declare-styleable>
+</resources>

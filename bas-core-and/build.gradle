@@ -39,6 +39,8 @@ android {
 
 dependencies {
     api project(path: ':bas-core-ktx')
+    api project(path: ':bas-theme')
+    api project(path: ':bas-adapter-imageloader')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'

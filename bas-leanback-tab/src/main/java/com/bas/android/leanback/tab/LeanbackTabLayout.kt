@@ -23,6 +23,8 @@ import java.util.*
  *  TV上应该是通过Tab的焦点获取进行ViewPager的翻页
  *
  *  更多查看ReadMe
+ *
+ *  备注：TabLayout和ViewPager的联动，应该让Tab去处理ViewPager的切换，ViewPager的切换回调同时设置TabLayout的选中
  */
 class LeanbackTabLayout @JvmOverloads constructor(
     context: Context,
@@ -69,6 +71,17 @@ class LeanbackTabLayout @JvmOverloads constructor(
             duplicateTabViewStateListener = DuplicateTabViewStateOnTabSelected()
             addOnTabSelectedListener(duplicateTabViewStateListener)
         }
+    }
+
+    override fun setClipChildren(clipChildren: Boolean) {
+        super.setClipChildren(clipChildren)
+        (getChildAt(0) as ViewGroup?)?.clipChildren = clipChildren
+    }
+
+
+    override fun setClipToPadding(clipToPadding: Boolean) {
+        super.setClipToPadding(clipToPadding)
+        (getChildAt(0) as ViewGroup?)?.clipToPadding = clipToPadding
     }
 
     /**
@@ -256,35 +269,33 @@ class LeanbackTabLayout @JvmOverloads constructor(
     }
 
     private fun setupTabViewLeanbackMode(view: View) {
-        if (isLeanbackMode) {
-            view.let {
-                it.isFocusable = true
-                it.isFocusableInTouchMode = true
+        if (!isLeanbackMode)
+            return
+//        val listener = view.onFocusChangeListener
+//        if (listener != null)
+//            return
+        view.let {
+            it.isFocusable = true
+            it.isFocusableInTouchMode = true
 
-                //用于解决TabView失去焦点但选中时isActivated状态传递给ChildView
-                if (duplicateTabViewState && ::duplicateTabViewStateListener.isInitialized) {
-                    it.onFocusChangeListener = ChainFocusListener(
-                        TabFocusChangeListener(
-                            this,
-                            viewPager
-                        ), duplicateTabViewStateListener
-                    )
-                } else {
-                    it.onFocusChangeListener = TabFocusChangeListener(
+            //用于解决TabView失去焦点但选中时isActivated状态传递给ChildView
+            if (duplicateTabViewState && ::duplicateTabViewStateListener.isInitialized) {
+                it.onFocusChangeListener = ChainFocusListener(
+                    TabFocusChangeListener(
                         this,
                         viewPager
-                    )
-                }
-            }
-        } else {
-            val listener = view.onFocusChangeListener
-            if (listener != null && listener is TabFocusChangeListener) {
-                view.onFocusChangeListener = null
+                    ), duplicateTabViewStateListener
+                )
+            } else {
+                it.onFocusChangeListener = TabFocusChangeListener(
+                    this,
+                    viewPager
+                )
             }
         }
     }
 
-    private open class TabFocusChangeListener constructor(
+    class TabFocusChangeListener constructor(
         val tabLayout: TabLayout,
         val viewPager: ViewPager?
     ) : OnFocusChangeListener {
@@ -385,7 +396,7 @@ class LeanbackTabLayout @JvmOverloads constructor(
 
     }
 
-    private class ChainFocusListener(vararg val listeners: OnFocusChangeListener) :
+    class ChainFocusListener(vararg val listeners: OnFocusChangeListener) :
         OnFocusChangeListener {
         /**
          * Called when the focus state of a view has changed.

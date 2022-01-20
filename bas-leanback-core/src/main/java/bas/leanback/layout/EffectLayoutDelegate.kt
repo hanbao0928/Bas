@@ -159,33 +159,43 @@ class EffectLayoutDelegate private constructor(
 
     @CallByOwner
     fun dispatchDraw(canvas: Canvas) {
-        if (dispatchDrawFlag || !params.isRoundedShape) {
+        if (params.containsSurfaceChild) {
             callback.callSuperDispatchDraw(canvas)
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.saveLayer(refreshRectF, null)
+            if (dispatchDrawFlag || !params.isRoundedShape) {
+                callback.callSuperDispatchDraw(canvas)
             } else {
-                canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    canvas.saveLayer(refreshRectF, null)
+                } else {
+                    canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                }
+                callback.callSuperDispatchDraw(canvas)
+                canvas.restore()
             }
-            callback.callSuperDispatchDraw(canvas)
-            canvas.restore()
         }
+        logd("dispatchDraw")
         drawShimmer(canvas)
     }
 
     @CallByOwner
     fun draw(canvas: Canvas) {
-        if (!params.isRoundedShape) {
+        logd("draw")
+        if (params.containsSurfaceChild) {
             callback.callSuperDraw(canvas)
         } else {
-            dispatchDrawFlag = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.saveLayer(refreshRectF, null)
+            if (!params.isRoundedShape) {
+                callback.callSuperDraw(canvas)
             } else {
-                canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                dispatchDrawFlag = true
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    canvas.saveLayer(refreshRectF, null)
+                } else {
+                    canvas.saveLayer(refreshRectF, null, Canvas.ALL_SAVE_FLAG)
+                }
+                callback.callSuperDraw(canvas)
+                canvas.restore()
             }
-            callback.callSuperDraw(canvas)
-            canvas.restore()
         }
     }
 
@@ -193,7 +203,12 @@ class EffectLayoutDelegate private constructor(
     fun onFocusChanged(gainFocus: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
 //        这么处理会带来不可预期的异常：用户并不知道内部在这个地方改变了状态，因此状态的改变改为由用户决定
 //        layout.isSelected = gainFocus
-        if (gainFocus) {
+        performFocusChanged(gainFocus)
+    }
+
+    @CallByOwner
+    fun performFocusChanged(hasFocus:Boolean){
+        if (hasFocus) {
             onGainFocus()
         } else {
             startAnimationOnFocusLost()
@@ -220,7 +235,7 @@ class EffectLayoutDelegate private constructor(
             layout.bringToFront()
         } else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_PARENT) {
             (layout.parent as? ViewGroup)?.bringToFront()
-        }else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF_PARENT) {
+        } else if (params.bringToFrontOnFocus == EffectParams.BRING_FLAG_SELF_PARENT) {
             layout.bringToFront()
             (layout.parent as? ViewGroup)?.bringToFront()
         }
@@ -330,7 +345,8 @@ class EffectLayoutDelegate private constructor(
         if (params.isRoundedShape) {
             shimmerPath.addRoundRect(frameRectF, params.cornerRadius, Path.Direction.CW)
         } else {
-            shimmerPath.addRoundRect(frameRectF, 0f, 0f, Path.Direction.CW)
+            shimmerPath.addRect(frameRectF, Path.Direction.CW)
+//            shimmerPath.addRoundRect(frameRectF, 0f, 0f, Path.Direction.CW)
         }
 
         shimmerLinearGradient = LinearGradient(

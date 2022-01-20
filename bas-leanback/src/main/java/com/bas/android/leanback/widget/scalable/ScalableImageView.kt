@@ -45,6 +45,8 @@ class ScalableImageView @JvmOverloads constructor(
                 it.getBoolean(R.styleable.ScalableConstraintLayout_bringToFrontOnFocus, false)
         }
         tp.recycle()
+        
+        requestFocus()
     }
 
     private fun onFocusChanged(v:View,hasFocus:Boolean){
