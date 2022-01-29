@@ -18,6 +18,7 @@ class FormatDateUseCase(pattern: String, locale: Locale = Locale.getDefault()) {
     operator fun invoke(date: Date): String {
         return formatter.format(date)
     }
+
 }
 
 /**
@@ -49,3 +50,83 @@ class WeekDateUseCase(
         }.toTypedArray()
     }
 }
+
+/**
+ * 获取范围日期用例
+ */
+class RangeDateUseCase(
+    timeZone: TimeZone = TimeZone.getDefault(),
+    locale: Locale = Locale.getDefault()
+) {
+
+    private val calendar = Calendar.getInstance(timeZone, locale)
+
+    /**
+     * 范围日期用例：获取指定日期[targetDate]前[beforeDateCount]个日期和指定日期[targetDate]后[afterDateCount]个日期组成的日期集合
+     * @param targetDate 目标日期
+     * @param beforeDateCount 目标日期之前取多少个日期
+     * @param afterDateCount 目标日期之后取多少个日期
+     * @return [beforeDateCount] + [targetDate] + [afterDateCount] 拼接成的日期列表
+     */
+    operator fun invoke(
+        targetDate: Date,
+        beforeDateCount: Int,
+        afterDateCount: Int,
+    ): List<Date> {
+        val items = mutableListOf<Date>()
+        calendar.time = targetDate
+        calendar.add(Calendar.DAY_OF_MONTH, -beforeDateCount)
+        repeat(beforeDateCount - 1) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            items.add(calendar.time)
+        }
+
+        items.add(targetDate)
+
+        calendar.time = targetDate
+        repeat(afterDateCount) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            items.add(calendar.time)
+        }
+        return items
+    }
+
+}
+
+/**
+ * 以周为单位获取日期范围
+ */
+class WeeklyRangeDateUseCase(
+    firstDayOfWeek: Int = Calendar.MONDAY,
+    timeZone: TimeZone = TimeZone.getDefault(),
+    locale: Locale = Locale.getDefault()
+) {
+
+    private val weeklyDateUseCase = WeekDateUseCase(firstDayOfWeek, locale)
+    private val rangeDateUseCase = RangeDateUseCase(timeZone, locale)
+
+    /**
+     * 以周为单位获取范围日期：获取指定日期[targetDate]前[beforeWeekCount]个周日期和指定日期[targetDate]后[afterWeekCount]个周日期组成的日期集合
+     * ：比如指定日期为 12-01，  [beforeWeekCount] = 2,[afterWeekCount] = 1,则获取的日期为12-01当周的日期加上这个周之前的两个周日期和之后的一个周日期
+     * @param targetDate 指定日期
+     * @param beforeWeekCount 指定日期所在周之前多少个周
+     * @param afterWeekCount 指定日期所在周之后多少个周
+     */
+    operator fun invoke(
+        targetDate: Date,
+        beforeWeekCount: Int,
+        afterWeekCount: Int,
+    ): List<Date> {
+        val currentWeek = weeklyDateUseCase(targetDate)
+        val currentIndex = currentWeek.indexOf(targetDate)
+        val beforeDateCount = beforeWeekCount * 7 + currentIndex
+        val afterDateCount = afterWeekCount * 7 + (7 - currentIndex - 1)
+        return rangeDateUseCase(
+            targetDate,
+            beforeDateCount,
+            afterDateCount
+        )
+    }
+}
+
+
