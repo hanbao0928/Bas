@@ -1,4 +1,4 @@
-package com.bas.android.leanback.compat
+package bas.android.core.view.extensions
 
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ const val NO_POSITION = RecyclerView.NO_POSITION
 /**
  * 设置是否使用Item改变动画：也就是调用Adapter#notifyXX之后刷新列表，是否执行动画（默认是闪一下）
  */
-fun RecyclerView.setChangeAnimationsEnabled(isEnable:Boolean){
+fun RecyclerView.setChangeAnimationsEnabled(isEnable: Boolean) {
     (itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = isEnable
 }
 
@@ -49,6 +49,6 @@ fun RecyclerView.findImmediateChildIndex(view: View?): Int {
 /**
  * 是否正在滑动中
  */
-fun RecyclerView.isScrolling():Boolean{
+fun RecyclerView.isScrolling(): Boolean {
     return scrollState != RecyclerView.SCROLL_STATE_IDLE
 }

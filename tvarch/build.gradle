@@ -47,7 +47,7 @@ dependencies {
     def okhttp3_version = "3.12.12"
 
     /*查看地址：https://developer.android.google.cn/jetpack/androidx/releases/leanback?hl=zh_cn*/
-    api 'androidx.leanback:leanback:1.1.0-beta01'
+    api 'androidx.leanback:leanback:1.2.0-alpha01'/*1.1.0-beta01*/
 //    //leanback 专用的paging https://developer.android.google.cn/training/tv/start/libraries?hl=zh_cn
 //    api "androidx.leanback:leanback-paging:1.1.0-alpha07"
 

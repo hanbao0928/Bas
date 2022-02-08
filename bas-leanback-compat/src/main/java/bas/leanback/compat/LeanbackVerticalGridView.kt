@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.View
 import androidx.leanback.widget.OnChildViewHolderSelectedListener
 import androidx.leanback.widget.VerticalGridView
 import bas.leanback.compat.focussearch.AbstractGridViewFocusSearchHelper
 import bas.leanback.compat.memory.GridViewMemoryHelper
 import bas.leanback.layout.memory.MemoryState
+import bas.android.core.view.extensions.isScrolling
 import java.util.*
 
 /**
@@ -39,8 +41,12 @@ class LeanbackVerticalGridView @JvmOverloads constructor(
         }
 
     override fun requestChildFocus(child: View?, focused: View?) {
-        super.requestChildFocus(child, focused)
-        memoryHelper.requestChildFocus(child, focused)
+//        try {
+            super.requestChildFocus(child, focused)
+            memoryHelper.requestChildFocus(child, focused)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     override fun onViewRemoved(child: View?) {
@@ -109,17 +115,24 @@ class LeanbackVerticalGridView @JvmOverloads constructor(
 //        return super.onRequestFocusInDescendants(direction, previouslyFocusedRect)
 //    }
 
+//
+//    override fun setAdapter(adapter: Adapter<*>?) {
+//        super.setAdapter(adapter)
+//    }
+//
+//    override fun swapAdapter(adapter: Adapter<*>?, removeAndRecycleExistingViews: Boolean) {
+//        super.swapAdapter(adapter, removeAndRecycleExistingViews)
+//    }
 
-    override fun setAdapter(adapter: Adapter<*>?) {
-        super.setAdapter(adapter)
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        //bugfix：修正控件处于遥控器按键一直按下时，引起列表快速滑动或翻页引起NPE问题导致崩溃
+        //NullPointerException androidx.leanback.widget.GridLayoutManager$2.getCount(GridLayoutManager.java:1622) - Google 搜索
+        if (this.isScrolling()) {
+            //注意：event.action == Down || Up都应该消耗掉
+            //如果当前列表处于滑动中，并且是按下的遥控器上/下键，则消耗事件，避免一直触发按键事件引起崩溃。
+            return true
+        }
+
+        return super.dispatchKeyEvent(event)
     }
-
-
-    override fun swapAdapter(adapter: Adapter<*>?, removeAndRecycleExistingViews: Boolean) {
-        super.swapAdapter(adapter, removeAndRecycleExistingViews)
-    }
-
-
-
-
 }

@@ -12,6 +12,7 @@ import android.view.animation.TranslateAnimation
 /**
  * Shake动画持续时间
  */
+@JvmField
 var SHAKE_DURATION = 500L
 
 private const val SHAKE_X_ANIM_OFFSET = 0x11

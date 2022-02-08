@@ -21,9 +21,6 @@ internal const val ANIM_TAG_OFFSET_BASE = 0x1212
  */
 internal const val DEFAULT_ANIM_DURATION = 300
 
-private const val SHAKE_X_ANIM_OFFSET = 0x11
-private const val SHAKE_Y_ANIM_OFFSET = 0x12
-
 
 internal fun View.startAnim(@AnimRes id: Int) {
     val anim = this.getTag(id) as? Animation ?: AnimationUtils.loadAnimation(context, id)

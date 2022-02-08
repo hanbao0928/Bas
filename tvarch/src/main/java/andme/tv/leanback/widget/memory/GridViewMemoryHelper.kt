@@ -52,7 +52,7 @@ class GridViewMemoryHelper private constructor(val view: BaseGridView) :
      * 焦点记忆位置观察
      */
     override fun onChildViewHolderSelected(
-        parent: RecyclerView?,
+        parent: RecyclerView,
         child: RecyclerView.ViewHolder?,
         position: Int,
         subposition: Int

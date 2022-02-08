@@ -39,9 +39,7 @@ public class CollectionUtils {
      * @param destination    不允许为null
      * @param elements       允许为null
      * @param filterNotNulls 是否允许添加的Item为null。
-     * @return source
      */
-    @NotNull
     public static <E> void mergeTo(@NotNull Collection<E> destination,
                                    @Nullable Collection<E> elements,
                                    boolean filterNotNulls) {
@@ -58,7 +56,6 @@ public class CollectionUtils {
         }
     }
 
-    @NotNull
     public static <E> void mergeTo(@NotNull Collection<E> source,
                                    @Nullable Collection<E> elements) {
         mergeTo(source, elements, false);

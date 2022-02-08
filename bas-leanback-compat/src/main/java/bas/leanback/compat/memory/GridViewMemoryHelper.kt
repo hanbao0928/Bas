@@ -34,7 +34,7 @@ internal class GridViewMemoryHelper private constructor(
          * 焦点记忆位置观察
          */
         override fun onChildViewHolderSelected(
-            parent: RecyclerView?,
+            parent: RecyclerView,
             child: RecyclerView.ViewHolder?,
             position: Int,
             subposition: Int

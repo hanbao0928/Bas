@@ -6,9 +6,9 @@ import android.graphics.Rect
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import androidx.leanback.R
 import androidx.leanback.widget.BaseGridView
 import androidx.leanback.widget.VerticalGridView
+import bas.leanback.compat.R
 import bas.leanback.compat.logd
 import bas.leanback.core.CallByOwner
 
