@@ -76,9 +76,9 @@ class RangeDateUseCase(
         val items = mutableListOf<Date>()
         calendar.time = targetDate
         calendar.add(Calendar.DAY_OF_MONTH, -beforeDateCount)
-        repeat(beforeDateCount - 1) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        repeat(beforeDateCount) {
             items.add(calendar.time)
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
         items.add(targetDate)
