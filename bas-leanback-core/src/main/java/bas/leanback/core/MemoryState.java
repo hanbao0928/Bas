@@ -1,4 +1,4 @@
-package bas.leanback.layout.memory;
+package bas.leanback.core;
 
 import androidx.annotation.IntDef;
 

@@ -1,4 +1,4 @@
-package bas.leanback.layout.memory
+package bas.leanback.layout
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import bas.leanback.core.CallByOwner
+import bas.leanback.core.MemoryState
 import bas.leanback.core.R
 import bas.leanback.core.logd
 import com.bas.core.data.smartObservable

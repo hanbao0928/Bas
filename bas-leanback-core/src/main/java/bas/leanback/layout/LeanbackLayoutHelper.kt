@@ -8,7 +8,6 @@ import bas.leanback.core.CallByOwner
 import bas.leanback.core.R
 import bas.leanback.effect.shakeX
 import bas.leanback.effect.shakeY
-import bas.leanback.layout.memory.MemoryHelper
 import java.util.*
 
 /**

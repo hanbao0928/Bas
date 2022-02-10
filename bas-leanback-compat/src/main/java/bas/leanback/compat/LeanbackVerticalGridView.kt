@@ -10,7 +10,7 @@ import androidx.leanback.widget.OnChildViewHolderSelectedListener
 import androidx.leanback.widget.VerticalGridView
 import bas.leanback.compat.focussearch.AbstractGridViewFocusSearchHelper
 import bas.leanback.compat.memory.GridViewMemoryHelper
-import bas.leanback.layout.memory.MemoryState
+import bas.leanback.core.MemoryState
 import bas.android.core.view.extensions.isScrolling
 import java.util.*
 

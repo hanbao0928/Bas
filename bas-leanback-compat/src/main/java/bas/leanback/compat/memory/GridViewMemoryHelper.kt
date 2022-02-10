@@ -8,7 +8,7 @@ import androidx.leanback.widget.BaseGridView
 import androidx.leanback.widget.OnChildViewHolderSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import bas.leanback.compat.logd
-import bas.leanback.layout.memory.MemoryHelper
+import bas.leanback.layout.MemoryHelper
 import bas.android.core.view.extensions.canTakeFocus
 import java.util.*
 
