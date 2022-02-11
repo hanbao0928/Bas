@@ -18,7 +18,7 @@ import androidx.core.view.updateLayoutParams
 import bas.leanback.core.CallByOwner
 import bas.leanback.core.R
 import bas.leanback.core.loge
-import com.bas.core.converter.toJson
+import bas.converter.toJson
 
 /**
  * Created by Lucio on 2021/12/9.

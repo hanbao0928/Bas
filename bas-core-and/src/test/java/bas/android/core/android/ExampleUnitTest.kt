@@ -1,10 +1,10 @@
 package com.bas.core.android
 
-import com.bas.core.coroutines.retryableAsync
-import com.bas.core.coroutines.retryableLaunch
-import com.bas.core.lang.NOW
-import com.bas.core.exception.RetryException
-import com.bas.core.lang.dateTimeFormatCN
+import bas.coroutines.retryableAsync
+import bas.coroutines.retryableLaunch
+import bas.lang.NOW
+import bas.lang.exception.RetryException
+import bas.lang.dateTimeFormatCN
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

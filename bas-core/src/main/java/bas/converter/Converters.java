@@ -1,0 +1,69 @@
+package bas.converter;
+
+import bas.converter.fastjson.FastJsonConverter;
+import bas.converter.gson.GsonConverter;
+import bas.converter.jackson.JacksonConverter;
+import bas.lang.ClassUtils;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+/**
+ * Created by Lucio on 2021/7/21.
+ */
+public class Converters {
+
+    private static JsonConverter mJsonConverter;
+
+    private Converters() {
+    }
+
+    static {
+        try {
+            //初始化默认JsonConverter，优先使用Jackson(Kotlin版本)
+            if (ClassUtils.isClassExists("com.fasterxml.jackson.module.kotlin.KotlinModule")) {
+                System.out.println("Converters：使用JacksonKotlinConverter");
+                mJsonConverter = new bas.converter.jackson.JacksonConverter();
+            } else if (ClassUtils.isClassExists("com.fasterxml.jackson.databind.ObjectMapper")) {
+                System.out.println("Converters：使用JacksonConverter");
+                mJsonConverter = new JacksonConverter();
+            } else if (ClassUtils.isClassExists("com.google.gson.Gson")) {
+                System.out.println("Converters：使用GsonConverter");
+                mJsonConverter = new GsonConverter();
+            } else if (ClassUtils.isClassExists("com.alibaba.fastjson.JSON")) {
+                System.out.println("Converters：使用FastJsonConverter");
+                mJsonConverter = new FastJsonConverter();
+            } else {
+                System.out.println("Converters：null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setJsonConverter(@NotNull JsonConverter converter) {
+        mJsonConverter = converter;
+    }
+
+    public static JsonConverter getJsonConverter() {
+        return mJsonConverter;
+    }
+
+    @Nullable
+    public static <T> T toObject(@Nullable String json, Class<T> clazz) {
+        return mJsonConverter.toObject(json, clazz);
+    }
+
+    @Nullable
+    public static <T> List<T> toObjectList(@Nullable String json, Class<T> clazz) {
+        return mJsonConverter.toObjectList(json, clazz);
+    }
+
+    @Nullable
+    public static String toJson(@Nullable Object obj) {
+        return mJsonConverter.toJson(obj);
+    }
+
+}

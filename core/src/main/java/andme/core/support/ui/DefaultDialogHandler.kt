@@ -6,7 +6,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import com.bas.core.lang.mapAs
+import bas.lang.mapAs
 
 /**
  * 默认对话框实现

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.leanback.widget.Presenter
 import bas.android.core.util.layoutInflater
 import bas.leanback.compat.R
-import com.bas.core.lang.orDefault
+import bas.lang.orDefault
 
 /**
  * Created by Lucio on 2021/3/10.

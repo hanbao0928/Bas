@@ -3,7 +3,7 @@ package andme.core.exception
 import andme.core.dialogHandlerAM
 import andme.lang.runOnDebug
 import android.content.Context
-import com.bas.core.lang.orDefaultIfNullOrEmpty
+import bas.lang.orDefaultIfNullOrEmpty
 import retrofit2.HttpException
 import java.lang.NullPointerException
 import java.net.ConnectException

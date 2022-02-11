@@ -1,7 +1,7 @@
 package com.bas.core.converter;
 
 
-import com.bas.core.converter.gson.LocalJsonField;
+import bas.converter.gson.LocalJsonField;
 
 /**
  * Created by Lucio on 2021/7/21.

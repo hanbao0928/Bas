@@ -1,9 +1,10 @@
 package com.bas.core.converter;
 
-import com.bas.core.converter.fastjson.FastJsonConverter;
-import com.bas.core.converter.gson.GsonConverter;
-import com.bas.core.converter.jackson.JacksonConverter;
-import com.bas.core.lang.CollectionUtils;
+import bas.converter.Converters;
+import bas.converter.fastjson.FastJsonConverter;
+import bas.converter.gson.GsonConverter;
+import bas.converter.jackson.JacksonConverter;
+import bas.lang.CollectionUtils;
 
 import org.junit.Test;
 

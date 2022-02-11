@@ -11,7 +11,7 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.IntDef
 import androidx.annotation.RequiresPermission
-import com.bas.core.lang.orDefault
+import bas.lang.orDefault
 
 /**
  * 无网络

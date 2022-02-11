@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import bas.android.core.util.checkValidationOrThrow
-import com.bas.core.lang.onCatch
-import com.bas.core.lang.tryIgnore
+import bas.lang.onCatch
+import bas.lang.tryIgnore
 
 /**
  * Created by Lucio on 2021/12/1.

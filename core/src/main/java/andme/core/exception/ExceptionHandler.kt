@@ -9,12 +9,13 @@ import andme.core.exceptionHandlerAM
 import andme.core.isDebuggable
 import andme.core.support.ui.showAlertDialog
 import andme.lang.IgnoreException
-import com.bas.core.lang.orDefaultIfNullOrEmpty
+import bas.lang.orDefaultIfNullOrEmpty
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
 import androidx.fragment.app.Fragment
+import bas.lang.exception.SilentException
 
 /**
  * 异常处理器,用于处理程序中相关的各种类型的异常

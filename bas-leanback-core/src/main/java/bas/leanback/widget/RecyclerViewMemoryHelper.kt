@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bas.leanback.core.CallByOwner
 import bas.leanback.core.MemoryState
 import bas.leanback.core.R
-import com.bas.core.data.smartObservable
+import bas.data.smartObservable
 import java.util.*
 import kotlin.properties.Delegates
 

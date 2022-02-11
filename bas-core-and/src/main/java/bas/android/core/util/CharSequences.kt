@@ -6,8 +6,8 @@ import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.webkit.MimeTypeMap
 import androidx.annotation.ColorInt
-import com.bas.core.lang.StringUtils
-import com.bas.core.lang.getExtension
+import bas.lang.StringUtils
+import bas.lang.getExtension
 
 /**
  * Created by Lucio on 2021/12/5.

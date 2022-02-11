@@ -1,7 +1,7 @@
 package bas.android.core.res
 
 import android.content.Context
-import com.bas.core.lang.annotation.Suggestion
+import bas.lang.annotation.Suggestion
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

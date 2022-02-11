@@ -13,7 +13,7 @@ import com.bas.android.leanback.widget.focus.FocusHighlightHandler
 import com.bas.android.leanback.widget.focus.ScaleFocusHighlightHelper
 import com.bas.android.leanback.widget.focus.ZoomFactor
 import com.bas.android.leanback.widget.FlashView
-import com.bas.core.lang.tryIgnore
+import bas.lang.tryIgnore
 
 /**
  * 获取焦点自动放大的[ConstraintLayout]

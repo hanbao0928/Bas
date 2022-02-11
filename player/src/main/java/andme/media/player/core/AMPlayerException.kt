@@ -2,7 +2,7 @@ package andme.media.player.core
 
 import andme.core.ctxAM
 import andme.core.util.isNetworkConnected
-import com.bas.core.lang.orDefaultIfNullOrEmpty
+import bas.lang.orDefaultIfNullOrEmpty
 import android.media.MediaPlayer
 import androidx.annotation.IntDef
 

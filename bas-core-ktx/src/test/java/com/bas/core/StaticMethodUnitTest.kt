@@ -1,6 +1,6 @@
 package com.bas.core
 
-import com.bas.core.lang.NOW
+import bas.lang.NOW
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking

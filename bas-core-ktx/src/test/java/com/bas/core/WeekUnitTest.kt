@@ -1,7 +1,7 @@
 package com.bas.core
 
-import com.bas.core.lang.FormatDateUseCase
-import com.bas.core.lang.WeekDateUseCase
+import bas.lang.FormatDateUseCase
+import bas.lang.WeekDateUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.text.SimpleDateFormat

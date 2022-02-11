@@ -13,7 +13,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import bas.android.core.basCtx
-import com.bas.core.lang.orDefaultIfNullOrEmpty
+import bas.lang.orDefaultIfNullOrEmpty
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

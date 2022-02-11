@@ -1,6 +1,6 @@
 package com.bas.core.android
 
-import com.bas.core.security.MD5Utils
+import bas.lang.security.MD5Utils
 import org.junit.Assert
 import org.junit.Test
 

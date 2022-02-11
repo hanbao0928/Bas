@@ -15,8 +15,8 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bas.core.lang.DateUtils.ONE_HOUR_TIME
-import com.bas.core.lang.DateUtils.ONE_MINUTE_TIME
+import bas.lang.DateUtils.ONE_HOUR_TIME
+import bas.lang.DateUtils.ONE_MINUTE_TIME
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.ceil
 

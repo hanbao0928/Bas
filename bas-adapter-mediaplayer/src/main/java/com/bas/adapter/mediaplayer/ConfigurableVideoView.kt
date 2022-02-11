@@ -8,7 +8,7 @@ import com.bas.adapter.mediaplayer.sys.SysVideoView
 import com.bas.adapter.mediaplayer.tencent.TXVideoView
 import bas.android.core.util.Logger
 import bas.android.core.view.extensions.removeSelfFromParent
-import com.bas.core.lang.orDefault
+import bas.lang.orDefault
 import com.bas.player.R
 
 /**

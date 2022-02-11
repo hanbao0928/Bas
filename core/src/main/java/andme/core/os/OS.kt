@@ -1,6 +1,6 @@
 package andme.core.os
 
-import com.bas.core.lang.orDefaultIfNullOrEmpty
+import bas.lang.orDefaultIfNullOrEmpty
 import android.os.Build
 import android.util.Log
 import java.io.BufferedReader

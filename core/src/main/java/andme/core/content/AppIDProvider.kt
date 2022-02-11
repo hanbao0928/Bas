@@ -7,7 +7,7 @@ import android.os.Build
 import bas.android.core.appManagerBas
 import bas.android.core.content.edit
 import java.util.*
-import com.bas.core.security.toMD5
+import bas.lang.security.toMD5
 
 /**
  * Created by Lucio on 2020/11/23.
