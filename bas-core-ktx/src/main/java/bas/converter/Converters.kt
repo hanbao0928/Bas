@@ -1,6 +1,5 @@
 package bas.converter
 
-import bas.converter.Converters
 import bas.converter.gson.GsonConverter
 import bas.converter.jackson.JacksonConverter
 import com.fasterxml.jackson.databind.ObjectMapper

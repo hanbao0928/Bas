@@ -1,9 +1,5 @@
 package bas.converter.jackson;
 
-import bas.converter.JsonConverter;
-import bas.lang.DateUtils;
-import bas.lang.StringUtils;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -16,6 +12,10 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import bas.converter.JsonConverter;
+import bas.lang.DateUtils;
+import bas.lang.StringUtils;
 
 /**
  * Created by Lucio on 2021/7/21.
@@ -82,11 +82,14 @@ public class JacksonConverter implements JsonConverter {
 
     /**
      * 使用UTC时间格式
+     *
      * @param om
      */
-    public static ObjectMapper applyUTCDateFormat(ObjectMapper om){
-        om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
-        om.setDateFormat(DateUtils.getUTCDateTimeFormat());
+    public static ObjectMapper applyUTCDateFormat(ObjectMapper om) {
+        //Jackson本身就是使用的UTC时间格式，在序列化的时候是将时间序列化成时间戳，所以只需要关闭这个开关即可
+        om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        //Jackson本身就是使用的UTC时间格式,所以不用在设置对应的dateformat了，设置format的时候要注意时区问题
+//        om.setDateFormat(DateUtils.getUTCDateTimeFormat());
         return om;
     }
 }

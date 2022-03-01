@@ -4,7 +4,7 @@ import andme.arch.app.AMViewModel
 import andme.arch.app.AMViewModelOwner
 import andme.core.lifecycle.SingleEvent
 import andme.core.lifecycle.SingleLiveEvent
-import andme.lang.Note
+import bas.lang.annotation.Note
 import android.app.Application
 import androidx.annotation.MainThread
 

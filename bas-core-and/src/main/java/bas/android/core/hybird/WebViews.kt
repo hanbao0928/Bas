@@ -7,6 +7,7 @@ package bas.android.core.hybird
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.webkit.WebView
 
 

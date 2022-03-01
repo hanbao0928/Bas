@@ -47,4 +47,6 @@ class AMStoreTest {
         println("DownloadDirectory=${storageAM.getDownloadDirectory().absolutePath}")
         println("InnerDownloadDirectory=${storageAM.getInnerDownloadDirectory().absolutePath}")
     }
+
+
 }

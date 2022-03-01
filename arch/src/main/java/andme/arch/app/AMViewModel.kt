@@ -4,7 +4,7 @@ import andme.core.dialogHandlerAM
 import andme.core.lifecycle.SingleEvent
 import andme.core.lifecycle.SingleLiveEvent
 import andme.core.support.ui.AMProgressDialog
-import andme.lang.Note
+import bas.lang.annotation.Note
 import andme.lang.coroutines.ControlledRunner
 import android.app.Application
 import android.content.Context

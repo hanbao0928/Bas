@@ -17,7 +17,7 @@
 package andme.core.widget
 
 import andme.core.R
-import andme.lang.orDefault
+import bas.lang.orDefault
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable

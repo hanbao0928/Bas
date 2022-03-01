@@ -1,6 +1,6 @@
 package andme.lang.coroutines
 
-import andme.lang.RetryException
+import bas.lang.exception.RetryException
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext

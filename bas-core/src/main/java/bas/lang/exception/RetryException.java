@@ -2,8 +2,10 @@ package bas.lang.exception;
 
 /**
  * Created by Lucio on 2021/11/10.
+ * <p>
+ * 重试异常，捕获之后重试逻辑：用于协程代码块在捕获对应类型异常时重新执行
  */
-public class RetryException extends Throwable{
+public class RetryException extends Throwable {
     public RetryException() {
     }
 

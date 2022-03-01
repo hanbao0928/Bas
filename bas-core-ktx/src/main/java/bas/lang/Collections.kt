@@ -3,7 +3,6 @@
  */
 package bas.lang
 
-import bas.lang.CollectionUtils
 
 /**
  * 拼接所有非空元素
@@ -22,6 +21,19 @@ inline fun <E> MutableCollection<E>.appendAll(
 ): MutableCollection<E> {
     CollectionUtils.mergeTo(this, elements, filterNotNulls)
     return this
+}
+
+/**
+ *
+ * @return `true` if any of the specified elements was added to the collection, `false` if the collection was not modified.
+ */
+inline fun <E> MutableCollection<E>.addAllNotNulls(
+    elements: Collection<E>?
+): Boolean {
+    if(!elements.isNullOrEmpty()){
+        return this.addAll(elements)
+    }
+    return false
 }
 
 inline fun <E> Collection<E>?.areItemsEqual(other: Collection<E>?) =

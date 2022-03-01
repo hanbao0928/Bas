@@ -1,6 +1,6 @@
 package andme.core.util
 
-import andme.lang.orDefault
+import bas.lang.orDefault
 import android.content.Context
 import android.view.View
 import androidx.annotation.DimenRes

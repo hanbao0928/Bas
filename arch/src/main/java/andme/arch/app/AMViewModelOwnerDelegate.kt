@@ -1,7 +1,7 @@
 package andme.arch.app
 
 import andme.core.toastHandlerAM
-import andme.lang.Note
+import bas.lang.annotation.Note
 import andme.lang.runOnTrue
 import android.content.Intent
 import android.os.Bundle

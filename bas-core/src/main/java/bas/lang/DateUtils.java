@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Lucio on 2021/8/31.
@@ -55,17 +56,31 @@ public class DateUtils {
 
 
     @SuppressWarnings("SimpleDateFormat")
-    private static final DateFormat CN_DATETIME_FORMAT = new SimpleDateFormat(CN_DATETIME_PATTERN);
+    private static final DateFormat CN_DATETIME_FORMAT;
 
-    private static DateFormat UTC_DATE_FORMAT;
+    private static final DateFormat UTC_DATE_FORMAT;
+
+    static {
+        UTC_DATE_FORMAT = new SimpleDateFormat(UTC_DATETIME_PATTERN);
+        UTC_DATE_FORMAT.setTimeZone(getUTCTimeZone());
+
+
+        CN_DATETIME_FORMAT = new SimpleDateFormat(CN_DATETIME_PATTERN);
+        CN_DATETIME_FORMAT.setTimeZone(getChinaTimeZone());
+    }
 
     @SuppressWarnings("SimpleDateFormat")
     @NotNull
     public static DateFormat getUTCDateTimeFormat() {
-        if (UTC_DATE_FORMAT == null) {
-            UTC_DATE_FORMAT = new SimpleDateFormat(UTC_DATETIME_PATTERN);
-        }
         return UTC_DATE_FORMAT;
+    }
+
+    public static TimeZone getUTCTimeZone() {
+        return TimeZone.getTimeZone("UTC");
+    }
+
+    public static TimeZone getChinaTimeZone() {
+        return TimeZone.getTimeZone("Asia/Shanghai");
     }
 
     @NotNull
@@ -73,19 +88,21 @@ public class DateUtils {
         return CN_DATETIME_FORMAT;
     }
 
-    public static @NotNull Date now() {
+    public static @NotNull
+    Date now() {
         return new Date();
     }
 
     /**
      * 根据{@code pattern}格式化时间
-     * @param date 日期
+     *
+     * @param date    日期
      * @param pattern 格式
      * @return 格式化后的字符串
      */
     @SuppressWarnings("SimpleDateFormat")
     @NotNull
-    public static String format(@Nullable Date date,@Nullable String pattern) {
+    public static String format(@Nullable Date date, @Nullable String pattern) {
         if (StringUtils.isNullOrEmpty(pattern) || date == null) return "";
         if (CN_DATETIME_PATTERN.equals(pattern)) {
             return getCNDateTimeFormat().format(date);
@@ -121,7 +138,8 @@ public class DateUtils {
         return format(date, TIME24_PATTERN);
     }
 
-    public static @NotNull String toUTCDateTimeFormat(@Nullable Date date) {
+    public static @NotNull
+    String toUTCDateTimeFormat(@Nullable Date date) {
         return format(date, UTC_DATETIME_PATTERN);
     }
 
@@ -131,11 +149,13 @@ public class DateUtils {
      * @param date 日期
      * @return 星期几
      */
-    public static @NotNull String getWeek(@Nullable Date date) {
+    public static @NotNull
+    String getWeek(@Nullable Date date) {
         return format(date, WEEK_PATTERN);
     }
 
-    public static @NotNull String toVariesTimeFormat(long timeMillis) {
+    public static @NotNull
+    String toVariesTimeFormat(long timeMillis) {
         return toVariesTimeFormat(timeMillis, "秒");
     }
 
@@ -151,7 +171,8 @@ public class DateUtils {
      * @return 格式化之后的时间格式字符串
      */
     @SuppressWarnings("DefaultLocale")
-    public static @NotNull String toVariesTimeFormat(long timeMillis, @Nullable String secondUnit) {
+    public static @NotNull
+    String toVariesTimeFormat(long timeMillis, @Nullable String secondUnit) {
         if (timeMillis < ONE_MINUTE_TIME) {
             return timeMillis / 1000 + secondUnit;
         } else if (timeMillis < ONE_HOUR_TIME) {

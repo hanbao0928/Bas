@@ -21,11 +21,17 @@ abstract class CommonPresenter<D> private constructor(
      * Creates a new [View].
      */
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        return if(layoutId > 0){
+        val holder = if (layoutId > 0) {
             CommonViewHolder(layoutId, parent)
-        }else{
+        } else {
             CommonViewHolder(itemViewCreator!!.invoke(parent))
         }
+        onViewHolderCreated(holder)
+        return holder
+    }
+
+    protected open fun onViewHolderCreated(holder: CommonViewHolder) {
+
     }
 
     open class CommonViewHolder : BaseViewHolder {

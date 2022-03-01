@@ -7,7 +7,7 @@ import andme.arch.refresh.AMViewModelRefreshableOwnerDelegate
 import andme.core.activity.AMBackPressedDispatcher
 import andme.core.activity.AMBackPressedOwner
 import andme.core.exception.tryCatch
-import andme.lang.Note
+import bas.lang.annotation.Note
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle

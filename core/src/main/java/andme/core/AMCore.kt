@@ -16,12 +16,10 @@ import andme.core.support.ui.DialogUI
 import andme.core.support.ui.ToastUI
 import andme.core.sysui.AMSystemUI
 import andme.core.sysui.AMSystemUIImpl
-import andme.integration.imageloader.GlideImageLoader
-import andme.integration.imageloader.ImageLoader
 import andme.integration.media.MediaStore
-import andme.lang.orDefault
 import android.app.Application
 import android.content.Context
+import bas.lang.orDefault
 import halo.android.permission.BuildConfig
 
 @Deprecated(message = "请使用ctxAM替换")
@@ -69,10 +67,6 @@ var mediaStoreAM: MediaStore
         mMediaStore = value
     }
 
-/**
- * 图片加载器
- */
-var imageLoaderAM: ImageLoader = GlideImageLoader
 
 /**
  * 默认异常处理器

@@ -33,7 +33,6 @@ inline fun <T> Delegates.cache(expires: Long, initialValue: T? = null): ReadWrit
     return CacheProperty(expires, initialValue)
 }
 
-
 /**
  * 可以更新的缓存属性：即获取数据时，如果数据超过了[expires]设置的时间，则重新调用acquirer获取最新数据
  * @param expires 过期时间，单位毫秒

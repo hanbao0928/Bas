@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-//    id 'kotlin'
+    id 'kotlin'
 }
 apply from: "../bas-doc/jitpack/publish.gradle"
 
@@ -15,6 +15,13 @@ dependencies {
 
     /*注解支持*/
     implementation 'org.jetbrains:annotations:16.0.1'
+
+    /*kotlin基础库*/
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    /**
+     * Kotlin-协程 https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
+     * */
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
 
     /*
     https://github.com/google/gson

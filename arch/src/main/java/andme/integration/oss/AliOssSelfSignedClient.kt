@@ -1,15 +1,12 @@
 package andme.integration.oss
 
 import andme.core.ctxAM
-import andme.lang.orDefault
+import bas.lang.orDefault
 import androidx.annotation.WorkerThread
 import com.alibaba.sdk.android.oss.ClientConfiguration
 import com.alibaba.sdk.android.oss.OSSClient
 import com.alibaba.sdk.android.oss.common.OSSLog
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider
-import com.alibaba.sdk.android.oss.model.ObjectMetadata
-import com.alibaba.sdk.android.oss.model.PutObjectRequest
-import com.alibaba.sdk.android.oss.model.PutObjectResult
 
 /**
  * Created by Lucio on 2021/6/21.

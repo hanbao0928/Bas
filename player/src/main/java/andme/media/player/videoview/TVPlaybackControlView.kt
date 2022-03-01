@@ -3,7 +3,7 @@ package andme.media.player.videoview
 import andme.core.widget.progressbar.FloatStatableSeekBar
 import andme.core.widget.setGone
 import andme.core.widget.setVisible
-import andme.lang.orDefault
+import bas.lang.orDefault
 import andme.media.player.R
 import andme.media.player.core.AMPlayer2
 import andme.media.player.core.AMPlayerException

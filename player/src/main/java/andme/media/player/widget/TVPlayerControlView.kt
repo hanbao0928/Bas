@@ -3,7 +3,7 @@
 //import andme.core.widget.progressbar.FloatStatableSeekBar
 //import andme.lang.ONE_HOUR_TIME
 //import andme.lang.ONE_MINUTE_TIME
-//import andme.lang.orDefault
+//import bas.lang.orDefault
 //import andme.media.player.R
 //import andme.media.player.core.AMPlayer
 //import android.content.Context

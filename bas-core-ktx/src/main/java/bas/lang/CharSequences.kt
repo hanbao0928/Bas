@@ -3,8 +3,6 @@
  */
 package bas.lang
 
-import bas.lang.StringUtils
-
 
 inline fun String?.orEmpty(): String = this ?: ""
 

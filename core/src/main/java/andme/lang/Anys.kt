@@ -3,22 +3,6 @@ package andme.lang
 import andme.core.isDebuggable
 import kotlin.system.measureTimeMillis
 
-/**
- * Created by Lucio on 2020-10-29.
- */
-
-inline fun Boolean?.orDefault(def: Boolean = false) = this ?: def
-
-inline fun Int?.orDefault(def: Int = 0) = this ?: def
-inline fun Float?.orDefault(def: Float = 0f) = this ?: def
-inline fun Long?.orDefault(def: Long = 0) = this ?: def
-inline fun Double?.orDefault(def: Double = 0.0) = this ?: def
-
-/**
- * 当前对象为空，则使用默认值
- */
-inline fun <T> T?.orDefault(initializer: () -> T): T = this ?: initializer()
-
 
 /**
  * 调试执行代码
@@ -29,7 +13,6 @@ inline fun <T> T.runOnDebug(action: () -> Unit): T {
     }
     return this
 }
-
 
 /**
  * 此方法看起来与if(){}没有差别，但是此方法可以实现链式调用，而if不能
