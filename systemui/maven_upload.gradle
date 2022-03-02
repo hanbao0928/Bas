@@ -1,0 +1,82 @@
+apply from: "../local_maven_upload.gradle"
+apply plugin: 'maven'
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka-android'
+    id 'maven'
+}
+
+def PROJECT_NAME = 'systemui'
+def PROJECT_VERSION = '0.0.1'
+def PROJECT_DESC = 'status bar and virtual navigation bar handler.'
+def ARTIFACT_ID = 'systemui'
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_URL) {
+                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+            }
+            pom.project {
+                name PROJECT_NAME
+                version PROJECT_VERSION
+                artifactId ARTIFACT_ID
+                groupId 'bas.droid'
+                packaging 'aar'
+                description PROJECT_DESC
+            }
+        }
+    }
+}
+
+//
+//task androidJavadocs(type: Javadoc) {
+//    options.encoding = "utf-8"
+//    source = android.sourceSets.main.java.srcDirs
+//    //添加classpath，解析类型
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+////打包doc
+//task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+//    classifier = 'javadoc' //分类器，区分jar
+//    from androidJavadocs.destinationDir
+//}
+//
+////打包源码
+//task androidSourcesJar(type: Jar) {
+//    classifier = 'sources'//分类器，区分jar
+//    from android.sourceSets.main.java.srcDirs
+//}
+//
+//artifacts {
+//    archives androidSourcesJar
+//    archives androidJavadocsJar
+//}
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: NEXUS_URL) {
+//                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+//            }
+//            pom.project {
+//                name PROJECT_NAME
+//                version PROJECT_VERSION
+//                artifactId ARTIFACT_ID
+//                groupId 'bas.droid'
+//                packaging 'aar'
+//                description PROJECT_DESC
+//            }
+//        }
+//    }
+//}
