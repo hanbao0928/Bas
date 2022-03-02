@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import bas.droid.systemui.R
-import bas.droid.systemui.StatusBarFaker
+import bas.droid.systemui.StatusBarFakerView
 import bas.droid.systemui.SystemUi
 
 /**
@@ -13,16 +13,16 @@ import bas.droid.systemui.SystemUi
  */
 internal class SystemUi19 : SystemUi {
 
-    private val fakeStatusBarId = R.id.status_bar_compat19_bas
+    private val fakeStatusBarId = R.id.faker_status_bar_id_bas
 
     /**
      * 查找或添加一个新的模拟的状态栏
      */
-    private fun findOrAddNewFakeStatusBar(activity: Activity): StatusBarFaker {
+    private fun findOrAddNewFakeStatusBar(activity: Activity): StatusBarFakerView {
         val decorView = activity.window.decorView as ViewGroup
         var statusBarView: View? = decorView.findViewById(fakeStatusBarId)
-        if (statusBarView == null || statusBarView !is StatusBarFaker) {
-            statusBarView = StatusBarFaker(activity).apply {
+        if (statusBarView == null || statusBarView !is StatusBarFakerView) {
+            statusBarView = StatusBarFakerView(activity).apply {
                 id = fakeStatusBarId
             }
             decorView.addView(statusBarView)

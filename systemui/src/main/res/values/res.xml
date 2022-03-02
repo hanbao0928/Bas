@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--fake status bar id-->
-    <item name="status_bar_compat19_bas" type="id" />
+    <item name="faker_status_bar_id_bas" type="id" />
 
 
 </resources>

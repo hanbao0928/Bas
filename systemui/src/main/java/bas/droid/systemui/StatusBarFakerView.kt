@@ -12,7 +12,7 @@ import kotlin.math.min
  * Created by Lucio on 2019/6/6.
  * 状态栏伪装（与状态栏等高的View，用于需要放在布局顶端占用状态栏高度的场景）
  */
-class StatusBarFaker @JvmOverloads constructor(
+class StatusBarFakerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

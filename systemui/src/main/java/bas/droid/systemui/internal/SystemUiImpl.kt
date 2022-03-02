@@ -1,4 +1,3 @@
-
 /**
  * Created by Lucio on 2019/6/6.
  */
@@ -17,7 +16,11 @@ import bas.droid.systemui.SystemUi
  * @param color2
  * @param ratio 如果比率为0，则使用[color1],如果比率为0.5,则均匀混合两种颜色，如果比率为1，则使用[color2]
  */
-internal fun blendColor( @ColorInt color1: Int, @ColorInt color2: Int, @FloatRange(from = 0.0, to = 1.0) ratio: Float): Int {
+internal fun blendColor(
+    @ColorInt color1: Int,
+    @ColorInt color2: Int,
+    @FloatRange(from = 0.0, to = 1.0) ratio: Float
+): Int {
     return ColorUtils.blendARGB(color1, color2, ratio)
 }
 
