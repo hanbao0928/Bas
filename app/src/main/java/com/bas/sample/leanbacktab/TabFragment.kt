@@ -3,7 +3,7 @@ package com.bas.sample.leanbacktab
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import bas.android.core.util.Logger
+import bas.droid.core.util.Logger
 import com.bas.R
 
 /**

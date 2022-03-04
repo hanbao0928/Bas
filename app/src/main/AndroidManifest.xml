@@ -46,6 +46,9 @@
 <!--        <service android:name=".OtherProcessService"-->
 <!--            android:exported="false"-->
 <!--            android:process=":otherProcess"/>-->
+
+        <activity android:name="andme.arch.app.FragmentContainerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

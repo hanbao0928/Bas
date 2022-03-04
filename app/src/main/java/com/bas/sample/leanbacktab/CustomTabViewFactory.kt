@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import com.bas.R
 import com.bas.android.leanback.tab.TabConfigurationStrategy
 import com.google.android.material.tabs.TabLayout
-import bas.android.core.util.getDrawable
+import bas.droid.core.util.getDrawable
 
 /**
  * Created by Lucio on 2021/10/12.

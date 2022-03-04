@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.bas"
@@ -59,17 +59,26 @@ dependencies {
     implementation project(path: ':bas-binding-ext')
     implementation project(path: ':bas-adapter-imageloader')
     implementation project(path: ':bas-leanback-core')
-    implementation project(path: ':bas-view-label')
+
+    implementation project(path: ':arch')
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    implementation 'com.jakewharton.timber:timber:4.7.1'
-    api project(path: ':bas-core-and')
+    api project(path: ':droid-core')
     api project(path: ':bas-adapter-mediaplayer')
     api project(path: ':bas-leanback')
     api project(path: ':bas-leanback-tab')
+
+    //测试 system ui代码
+//    implementation project(path: ':systemui')
+    implementation("bas.droid:systemui:0.0.1")
+
+    //测试 labelview代码
+//    implementation project(path: ':labelview')
+    implementation("bas.droid:labelview:0.0.1")
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

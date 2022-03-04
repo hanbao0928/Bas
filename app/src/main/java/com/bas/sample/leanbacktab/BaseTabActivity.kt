@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
-import bas.android.core.util.Logger
+import bas.droid.core.util.Logger
 import com.bas.android.leanback.tab.TabConfigurationStrategy
 import com.bas.databinding.LeanbackTabActivityBinding
 import com.google.android.material.tabs.TabLayout

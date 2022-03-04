@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
-import bas.android.core.util.dp
+import bas.droid.core.util.dp
 import bas.leanback.layout.EffectFrameLayout
 import com.bas.R
 

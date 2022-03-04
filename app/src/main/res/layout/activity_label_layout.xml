@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <bas.android.view.label.LabelView
+        <bas.droid.view.label.LabelView
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:focusable="true"
@@ -28,7 +28,7 @@
             android:layout_marginTop="8dp"
             android:text="默认情况：普通文本、45度、左上角、间距20dp、文本Padding（2dp）" />
 
-        <bas.android.view.label.AppCompatImageLabelView
+        <bas.droid.view.label.AppCompatImageLabelView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:focusable="true"
@@ -43,7 +43,7 @@
             android:layout_marginTop="12dp"
             android:text="红色文本、加粗、60度夹角、右上角、30dp间距、padding（1dp）、10sp" />
 
-        <bas.android.view.label.ShapeableImageLabelView
+        <bas.droid.view.label.ShapeableImageLabelView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:focusable="true"
@@ -66,7 +66,7 @@
             android:layout_marginTop="12dp"
             android:text="斜体加粗、15度夹角、右下角、10间距、6dp padding、白字蓝底" />
 
-        <bas.android.view.label.ShapeableImageLabelView
+        <bas.droid.view.label.ShapeableImageLabelView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:focusable="true"
@@ -90,7 +90,7 @@
             android:layout_marginTop="12dp"
             android:text="带边框" />
 
-        <bas.android.view.label.AppCompatImageLabelView
+        <bas.droid.view.label.AppCompatImageLabelView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:focusable="true"
