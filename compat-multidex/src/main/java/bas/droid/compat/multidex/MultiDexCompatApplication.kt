@@ -1,4 +1,4 @@
-package com.bas.android.multidex
+package bas.droid.compat.multidex
 
 import android.app.Application
 import android.content.Context
@@ -13,7 +13,7 @@ abstract class MultiDexCompatApplication : Application() {
         MultiDexCompat.install(base, getMultidexInstaller())
     }
 
-    protected open fun getMultidexInstaller():Installer?{
+    protected open fun getMultidexInstaller(): Installer?{
         return null
     }
 

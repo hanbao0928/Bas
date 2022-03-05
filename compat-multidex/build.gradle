@@ -12,8 +12,8 @@ android {
     compileSdkVersion rootProject.ext.globalCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.globalMinSdkVersion
-        targetSdkVersion rootProject.ext.globalTargetSdkVersion
+        minSdkVersion rootProject.ext.globalMinSdkVersion17
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion30
         versionCode 1
         versionName "1.0"
 
@@ -23,7 +23,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,17 +41,14 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    /*用于引入ShapeableImageView*/
-    implementation "com.google.android.material:material:${material_version}"
-//    annotationProcessor project(path: ':labelview-compiler')
-    annotationProcessor("bas.droid:labelview-compiler:0.0.1")
-    implementation("bas.droid:labelview-annotation:0.0.1")
-
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //字节跳动MultiDex方案：https://github.com/bytedance/BoostMultiDex
+    implementation "com.bytedance.boost_multidex:boost_multidex:1.0.1"
+    implementation "androidx.multidex:multidex:2.0.1"
 }
 
 // kotlin android javadoc
@@ -78,10 +79,10 @@ artifacts {
     archives generateSourcesJar
 }
 
-def PROJECT_NAME = 'labelview'
+def PROJECT_NAME = 'compat-multidex'
 def PROJECT_VERSION = '0.0.1'
-def PROJECT_DESC = '可以在view的四个角上显示文本标签，支持设置角度、文字属性、背景等其他属性.'
-def ARTIFACT_ID = 'labelview'
+def PROJECT_DESC = ''
+def ARTIFACT_ID = 'compat-multidex'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())

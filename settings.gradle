@@ -9,6 +9,9 @@ include ':lib-compiler'
 //已发布，需要修改代码时再配置进来
 //include ':systemui'
 
+//已发布，需要修改代码时再配置进来
+//include ':compat-multidex'
+
 include ':bas-and-arch'
 include ':tvarch'
 include ':player'
@@ -17,10 +20,10 @@ include ':core'
 include ':bas-leanback-core'
 include ':bas-leanback-layout-compiler'
 include ':bas-leanback-layout-annotation'
-include ':bas-lFeanback-compat'
+include ':bas-leanback-compat'
 include ':bas-leanback-paging'
 include ':bas-theme'
-include ':bas-multidex-compat'
+
 include ':bas-binding-ext'
 include ':bas-leanback-flexbox'
 include ':bas-leanback-tab'

@@ -1,4 +1,4 @@
-package com.bas.android.multidex
+package bas.droid.compat.multidex
 
 import android.util.Log
 
@@ -6,7 +6,7 @@ import android.util.Log
  * Created by Lucio on 2021/11/17.
  */
 
-private const val TAG = "MultiDexCompat"
+private const val TAG = "MultiDexCompatBas"
 private const val DEBUG = true
 
 internal fun logd(msg: String) {

@@ -2,7 +2,7 @@
 -keep class com.bytedance.boost_multidex.** { *; }
 
 #保持本库定义类
--keep public class com.bas.android.multidex.** {
+-keep public class bas.droid.compat.multidex.** {
     public *;
     protected *;
 }

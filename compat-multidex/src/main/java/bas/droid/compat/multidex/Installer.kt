@@ -1,4 +1,4 @@
-package com.bas.android.multidex
+package bas.droid.compat.multidex
 
 import android.content.Context
 

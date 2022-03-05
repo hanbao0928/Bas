@@ -1,9 +1,8 @@
-package com.bas.android.multidex
+package bas.droid.compat.multidex
 
 import android.app.Activity
 import android.os.Bundle
 import androidx.multidex.MultiDex
-
 /**
  * Created by Lucio on 2021/11/17.
  */

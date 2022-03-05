@@ -1,4 +1,4 @@
-package com.bas.android.multidex
+package bas.droid.compat.multidex
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,9 @@ import androidx.multidex.MultiDex
 
 /**
  * Created by Lucio on 2021/11/17.
+ * 官方安装方式
  */
-class DefaultMultiDexInstaller(override var isSyncMode: Boolean = false) : Installer{
+class DefaultMultiDexInstaller(override var isSyncMode: Boolean = false) : Installer {
 
 
     override fun doInstall(context: Context) {
