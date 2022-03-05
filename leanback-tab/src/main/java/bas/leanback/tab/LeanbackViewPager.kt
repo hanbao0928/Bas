@@ -1,4 +1,4 @@
-package com.bas.android.leanback.tab
+package bas.leanback.tab
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import androidx.viewpager.widget.ViewPager
+import bas.leanback.tab.R
 
 /**
  * TV和Phone上ViewPager的最大差别在交互行为上：

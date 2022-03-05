@@ -12,6 +12,8 @@ include ':lib-compiler'
 //已发布，需要修改代码时再配置进来
 //include ':compat-multidex'
 
+include ':leanback-tab'
+
 include ':bas-and-arch'
 include ':tvarch'
 include ':player'
@@ -26,7 +28,7 @@ include ':bas-theme'
 
 include ':bas-binding-ext'
 include ':bas-leanback-flexbox'
-include ':bas-leanback-tab'
+
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
 include ':droid-core'

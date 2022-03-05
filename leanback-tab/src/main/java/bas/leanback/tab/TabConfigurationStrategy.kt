@@ -1,4 +1,4 @@
-package com.bas.android.leanback.tab
+package bas.leanback.tab
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -6,9 +6,8 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.bas.android.leanback.tab.TabConfigurationStrategy.*
+import bas.leanback.tab.TabConfigurationStrategy.*
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * 回调，用于配置新创建的Tab样式等
@@ -18,7 +17,6 @@ import com.google.android.material.tabs.TabLayoutMediator
  *
  * A callback interface that must be implemented to set the text and styling of newly created
  * tabs.
- *
  *
  */
 interface TabConfigurationStrategy {
@@ -60,7 +58,7 @@ interface TabConfigurationStrategy {
     /**
      * 使用[PagerAdapter.getPageTitle]配置文本Tab的策略：[TabLayout.setupWithViewPager]的默认策略
      */
-    class ViewPagerStrategy(private val viewPager:ViewPager):TabConfigurationStrategy{
+    class ViewPagerStrategy(private val viewPager:ViewPager): TabConfigurationStrategy {
         /**
          * Called to configure the tab for the page at the specified position. Typically calls [ ][TabLayout.Tab.setText], but any form of styling can be applied.
          *

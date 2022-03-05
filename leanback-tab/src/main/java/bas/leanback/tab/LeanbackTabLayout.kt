@@ -1,4 +1,4 @@
-package com.bas.android.leanback.tab
+package bas.leanback.tab
 
 import android.content.Context
 import android.graphics.Rect

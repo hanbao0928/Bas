@@ -1,4 +1,4 @@
-package com.bas.android.leanback.tab
+package bas.leanback.tab
 
 import android.database.DataSetObserver
 import androidx.viewpager.widget.PagerAdapter
