@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
-import androidx.fragment.app.FragmentContainer
 import com.bas.R
 import com.bas.sample.effectlayout.EffectLayoutActivity
+import com.bas.sample.imageloader.ImageLoaderTestFragment
 import com.bas.sample.label.LabelLayoutActivity
 import com.bas.sample.leanbacklayout.LeanbackLayoutActivity
 import com.bas.sample.systemui.SystemUIFragment
@@ -38,6 +38,12 @@ class LauncherActivity() : AppCompatActivity(R.layout.launcher_activity) {
                 val color = Color.argb((0.2* 255).toInt(),Color.RED.red,Color.RED.green,Color.RED.blue)
                 startActivity(FragmentContainerActivity.Builder(this,SystemUIFragment::class.java)
                     .setImmersiveStatusBar(color)
+                    .build())
+            }
+
+            R.id.imageloader_btn->{
+                startActivity(FragmentContainerActivity.Builder(this,ImageLoaderTestFragment::class.java)
+                    .setNormalStatusBar(Color.GREEN)
                     .build())
             }
         }

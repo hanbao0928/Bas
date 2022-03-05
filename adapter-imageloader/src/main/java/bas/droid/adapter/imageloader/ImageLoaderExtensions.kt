@@ -1,7 +1,7 @@
 /**
  * Created by Lucio on 2021/11/4.
  */
-package com.bas.adapter.imageloader
+package bas.droid.adapter.imageloader
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView

@@ -1,16 +1,20 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-//    id 'kotlin-kapt'
+
+    /*用于kotlin生成javadoc*/
+    id 'org.jetbrains.dokka-android'
+    /*用于上传maven*/
+    id 'maven'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "31.0.0"
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 30
+        minSdkVersion rootProject.ext.globalMinSdkVersion17
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion30
+
         versionCode 1
         versionName "1.0"
 
@@ -20,11 +24,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,15 +41,13 @@ android {
 dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //    implementation 'androidx.core:core-ktx:1.2.0'
-
-
 //    implementation 'androidx.appcompat:appcompat:1.1.0'
 //    implementation 'com.google.android.material:material:1.1.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-//    /*用于core library的初始化*/
+//    /*使用startup进行自动初始化，感觉没什么必要*/
 //    implementation "androidx.startup:startup-runtime:1.0.0"
 
     def glide_version = "4.11.0"
@@ -73,4 +75,63 @@ dependencies {
     }
     /*END - Glide*/
 
+}
+
+// kotlin android javadoc
+task generateSourcesJar(type: Jar) {
+    group = 'jar'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = javadoc.destinationDir
+}
+
+task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+    group = 'jar'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives generateJavadoc
+    archives generateSourcesJar
+}
+
+
+def PROJECT_NAME = 'adapter-imageloader'
+def PROJECT_VERSION = '0.0.1'
+def PROJECT_DESC = ''
+def ARTIFACT_ID = 'adapter-imageloader'
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_URL) {
+                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+            }
+            pom.project {
+                name PROJECT_NAME
+                version PROJECT_VERSION
+                artifactId ARTIFACT_ID
+                groupId 'bas.droid'
+                packaging 'aar'
+                description PROJECT_DESC
+            }
+        }
+    }
 }

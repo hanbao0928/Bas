@@ -1,22 +1,19 @@
-package com.bas.adapter.imageloader.glide
+package bas.droid.adapter.imageloader.glide
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
-import com.bas.adapter.imageloader.*
-import com.bas.adapter.imageloader.DEBUG
-import com.bas.adapter.imageloader.logw
+import bas.droid.adapter.imageloader.DEBUG
+import bas.droid.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.ImageLoaderEngine
+import bas.droid.adapter.imageloader.logw
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 
 /**
  * Created by Lucio on 2021/11/4.
@@ -69,11 +66,11 @@ object GlideEngine : ImageLoaderEngine {
 
     internal fun setDefaultRequestOptions(options: RequestOptions) {
         isDefaultRequestOptionInit = true
-        this.defaultRequestOptions = options
-        this.defaultCircleRequestOptions = options.clone().apply {
+        defaultRequestOptions = options
+        defaultCircleRequestOptions = options.clone().apply {
             transform(centerCrop, circleCrop)
         }
-        this.defaultRoundedRequestOptions = options.clone().apply {
+        defaultRoundedRequestOptions = options.clone().apply {
             transform(centerCrop, RoundedCorners(ImageLoader.defaultRoundedImageRadius))
         }
     }

@@ -1,7 +1,7 @@
-package com.bas.adapter.imageloader
+package bas.droid.adapter.imageloader
 
 import android.util.Log
-import com.bas.adapter.imageloader.glide.GlideEngine
+import bas.droid.adapter.imageloader.glide.GlideEngine
 
 /**
  * Created by Lucio on 2021/11/13.
@@ -10,7 +10,7 @@ import com.bas.adapter.imageloader.glide.GlideEngine
 internal var engine: ImageLoaderEngine = GlideEngine
 
 internal const val DEBUG = true
-internal const val TAG = "BasImageLoader"
+internal const val TAG = "ImageLoaderBas"
 
 internal fun logi(msg: String) {
     Log.i(TAG, msg)

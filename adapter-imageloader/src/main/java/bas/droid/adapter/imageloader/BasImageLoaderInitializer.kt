@@ -1,4 +1,4 @@
-//package com.bas.adapter.imageloader
+package bas.droid.adapter.imageloader//package com.bas.adapter.imageloader
 //
 //import android.content.Context
 //import androidx.startup.Initializer

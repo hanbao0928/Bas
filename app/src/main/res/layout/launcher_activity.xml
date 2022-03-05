@@ -37,4 +37,11 @@
         android:layout_height="wrap_content"
         android:text="测试SystemUI"
         android:onClick="onBtnClick"/>
+
+    <Button
+        android:id="@+id/imageloader_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试ImageLoader"
+        android:onClick="onBtnClick"/>
 </bas.leanback.layout.LeanbackLinearLayout>

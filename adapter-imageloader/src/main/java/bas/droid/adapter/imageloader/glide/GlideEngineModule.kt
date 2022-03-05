@@ -1,7 +1,7 @@
-package com.bas.adapter.imageloader.glide
+package bas.droid.adapter.imageloader.glide
 
 import android.content.Context
-import com.bas.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.ImageLoader
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory
 import com.bumptech.glide.module.AppGlideModule

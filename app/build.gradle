@@ -27,7 +27,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
 //            multiDexKeepFile file('multidex-config.txt')
         }
     }
@@ -57,7 +57,7 @@ dependencies {
     implementation project(path: ':bas-leanback-flexbox')
     implementation project(path: ':bas-core')
     implementation project(path: ':bas-binding-ext')
-    implementation project(path: ':bas-adapter-imageloader')
+
     implementation project(path: ':bas-leanback-core')
 
     implementation project(path: ':arch')
@@ -79,6 +79,11 @@ dependencies {
     //测试 labelview代码
 //    implementation project(path: ':labelview')
     implementation("bas.droid:labelview:0.0.1")
+
+    //测试 adapter-imageloader代码
+//    implementation project(path: ':adapter-imageloader')
+    implementation("bas.droid:adapter-imageloader:0.0.1")
+
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

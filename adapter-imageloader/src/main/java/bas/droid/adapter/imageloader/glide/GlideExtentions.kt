@@ -1,14 +1,13 @@
 /**
  * Created by Lucio on 2021/11/4.
  */
-package com.bas.adapter.imageloader.glide
+package bas.droid.adapter.imageloader.glide
 
-import com.bas.adapter.imageloader.DEBUG
-import com.bas.adapter.imageloader.ImageLoader
-import com.bas.adapter.imageloader.logi
+import bas.droid.adapter.imageloader.DEBUG
+import bas.droid.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.logi
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
+
 //
 ///**
 // * 默认请求参数

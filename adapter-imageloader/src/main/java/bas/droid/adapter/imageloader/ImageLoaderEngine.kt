@@ -1,4 +1,4 @@
-package com.bas.adapter.imageloader
+package bas.droid.adapter.imageloader
 
 import android.content.Context
 import android.graphics.drawable.Drawable

@@ -7,6 +7,9 @@ buildscript {
         globalTargetSdkVersion = 31
         globalMinSdkVersion = 16
 
+        globalTargetSdkVersion30 = 30
+        globalMinSdkVersion17 = 17
+
         kotlin_version = "1.4.20"
         appcompat_version = "1.1.0"
         material_version = "1.2.1"

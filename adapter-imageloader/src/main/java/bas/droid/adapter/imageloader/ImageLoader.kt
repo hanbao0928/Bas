@@ -1,4 +1,4 @@
-package com.bas.adapter.imageloader
+package bas.droid.adapter.imageloader
 
 import android.content.Context
 import android.widget.ImageView
@@ -27,10 +27,7 @@ object ImageLoader : ImageLoaderEngine by engine {
             ctx.resources.getDimensionPixelSize(R.dimen.image_rounded_radius_bas)
 
         if (DEBUG) {
-            logi(
-                "BasImageLoader init:\n" +
-                        "defaultImageRoundingRadius=$defaultRoundedImageRadius"
-            )
+            logi("init: defaultImageRoundingRadius=$defaultRoundedImageRadius")
         }
     }
 
@@ -39,7 +36,7 @@ object ImageLoader : ImageLoaderEngine by engine {
      */
     @JvmStatic
     fun setConfig(config: Config) {
-        this.config = config
+        ImageLoader.config = config
     }
 
     /**
