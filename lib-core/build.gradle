@@ -1,0 +1,115 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+
+//    /*用于kotlin生成javadoc*/
+//    id 'org.jetbrains.dokka-android'
+    /*用于上传maven*/
+    id 'maven'
+}
+apply from: "../bas-doc/jitpack/publish.gradle"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+//    implementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.+'
+
+    /*注解支持*/
+    implementation 'org.jetbrains:annotations:16.0.1'
+
+    /*kotlin基础库*/
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    /**
+     * Kotlin-协程 https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
+     * */
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_core_version"
+
+    /*
+    https://github.com/google/gson
+    */
+    compileOnly "com.google.code.gson:gson:$gson_version"
+
+    /*
+    常规Jackson引用
+    实际会引入jackson-core、jackson-annotations依赖
+    * https://github.com/FasterXML/jackson-dataformat-xml
+    * */
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+
+    /**
+     * Jackson支持Kotlin&data class
+     * https://github.com/FasterXML/jackson-module-kotlin
+     *
+     * 版本缺陷：某些版本使用的时候会出现 java.lang.NoSuchMethodError: java.lang.reflect.Method.getAnnotationsByType
+     *      比如2.9.10、2.9.8等
+     *      解决办法：使用2.9.6 或者 2.10.5 +版本
+     *      该问题详细参考链接：https://github.com/FasterXML/jackson-module-kotlin/issues/218
+     *
+     *      测试结果：2.9.6版能解决该问题  2.10.5版本不存在
+     *      测试了2.13.1版本，发现程序运行过程中经常需要等很久才响应（几十秒），Log不断输出 Background sticky concurrent mark sweep GC freed等提示语
+     */
+    compileOnly "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
+
+    /*https://github.com/square/retrofit/wiki/Converters
+    https://github.com/ligboy/retrofit-converter-fastjson
+    https://github.com/alibaba/fastjson
+    * */
+    compileOnly "com.alibaba:fastjson:$fastjson_version"
+
+}
+
+task generateSourcesJar(type: Jar) {
+    group = 'jar'
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = javadoc.destinationDir
+}
+
+task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+    group = 'jar'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives generateJavadoc
+    archives generateSourcesJar
+}
+
+def PROJECT_NAME = 'lib-core'
+def PROJECT_VERSION = '0.0.1'
+def PROJECT_DESC = ''
+def ARTIFACT_ID = 'lib-core'
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_URL) {
+                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+            }
+            pom.project {
+                name PROJECT_NAME
+                version PROJECT_VERSION
+                artifactId ARTIFACT_ID
+                groupId 'bas.base'
+                packaging 'aar'
+                description PROJECT_DESC
+            }
+        }
+    }
+}

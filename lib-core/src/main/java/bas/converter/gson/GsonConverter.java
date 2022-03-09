@@ -2,7 +2,7 @@ package bas.converter.gson;
 
 
 import bas.converter.JsonConverter;
-import bas.lang.DateUtils;
+import bas.date.DateUtils;
 import bas.lang.StringUtils;
 
 import com.google.gson.Gson;

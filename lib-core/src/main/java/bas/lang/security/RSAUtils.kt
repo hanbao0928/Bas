@@ -31,7 +31,7 @@ object RSAUtils {
      */
     @JvmStatic
     @Throws(Exception::class)
-    private fun encrypt(
+    fun encrypt(
         data: ByteArray,
         pubKey: ByteArray,
         transformation: String = RSA_TRANSFORMATION_NONE
@@ -82,7 +82,7 @@ object RSAUtils {
      * @param privateKey 私钥数据（将私钥字符串进行Base64解码之后得到的字符串对应的ByteArray）
      */
     @Throws(Exception::class)
-    private fun decrypt(
+    fun decrypt(
         encrypted: ByteArray,
         privateKey: ByteArray,
         transformation: String = RSA_TRANSFORMATION_NONE

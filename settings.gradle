@@ -12,7 +12,8 @@ include ':lib-compiler'
 //已发布，需要修改代码时再配置进来
 //include ':compat-multidex'
 
-include ':leanback-tab'
+//已发布，需要修改代码时再配置进来
+//include ':leanback-tab'
 
 include ':bas-and-arch'
 include ':tvarch'
@@ -32,8 +33,7 @@ include ':bas-leanback-flexbox'
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
 include ':droid-core'
-include ':bas-tangram'
 include ':bas-core-ktx'
-include ':bas-core'
+include ':lib-core'
 include ':app'
 rootProject.name = "Basic"

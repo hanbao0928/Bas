@@ -1,4 +1,4 @@
-package bas.lang;
+package bas.date;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,16 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import bas.lang.StringUtils;
+
+import static bas.date.DateKt.ONE_DAY_TIME;
+
 /**
  * Created by Lucio on 2021/8/31.
  * 日期相关工具类
  */
 public class DateUtils {
 
-    /**
-     * 一天
-     */
-    public static final long ONE_DAY_TIME = 86400000L;
 
     /**
      * 一个小时
@@ -88,8 +88,8 @@ public class DateUtils {
         return CN_DATETIME_FORMAT;
     }
 
-    public static @NotNull
-    Date now() {
+    @NotNull
+    public static Date now() {
         return new Date();
     }
 
@@ -99,9 +99,11 @@ public class DateUtils {
      * @param date    日期
      * @param pattern 格式
      * @return 格式化后的字符串
+     * @deprecated 请使用FormatDateUseCase
      */
     @SuppressWarnings("SimpleDateFormat")
     @NotNull
+    @Deprecated
     public static String format(@Nullable Date date, @Nullable String pattern) {
         if (StringUtils.isNullOrEmpty(pattern) || date == null) return "";
         if (CN_DATETIME_PATTERN.equals(pattern)) {
