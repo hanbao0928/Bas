@@ -7,7 +7,6 @@ plugins {
     /*用于上传maven*/
     id 'maven'
 }
-apply from: "../bas-doc/jitpack/publish.gradle"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7

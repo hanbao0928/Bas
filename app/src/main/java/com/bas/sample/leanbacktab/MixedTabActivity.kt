@@ -1,7 +1,7 @@
 package com.bas.sample.leanbacktab
 
 import androidx.viewpager.widget.PagerAdapter
-import com.bas.android.leanback.tab.TabConfigurationStrategy
+import bas.leanback.tab.TabConfigurationStrategy
 import bas.droid.core.util.getDrawable
 import com.google.android.material.tabs.TabLayout
 

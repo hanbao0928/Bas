@@ -1,9 +1,9 @@
 package com.bas
 
 import android.content.Context
+import bas.droid.compat.multidex.MultiDexCompat
 import bas.droid.core.app.BasApplication
 import bas.droid.core.initBasCore
-import com.bas.android.multidex.MultiDexCompat
 
 /**
  * Created by Lucio on 2021/9/24.

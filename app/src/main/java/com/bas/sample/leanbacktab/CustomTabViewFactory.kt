@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import bas.droid.core.util.layoutInflater
 import com.bas.R
-import com.bas.android.leanback.tab.TabConfigurationStrategy
+import bas.leanback.tab.TabConfigurationStrategy
 import com.google.android.material.tabs.TabLayout
 import bas.droid.core.util.getDrawable
 

@@ -33,7 +33,7 @@ include ':bas-leanback-flexbox'
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
 include ':droid-core'
-include ':bas-core-ktx'
+include ':lib-core-ktx'
 include ':lib-core'
 include ':app'
 rootProject.name = "Basic"
