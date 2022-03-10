@@ -15,10 +15,13 @@ buildscript {
         gson_version = "2.8.7"
         jackson_version = "2.9.6"
         fastjson_version = "1.2.10"
+        androidx_core_ktx_verson = "1.2.0"
         appcompat_version = "1.1.0"
         material_version = "1.2.1"
+        lifecycle_version = "2.4.0-alpha03"
+        flexbox_version = "3.0.0"
         androidx_annotation_version = "1.1.0"
-        androidx_core_ktx_verson = "1.2.0"
+
     }
 
     repositories {
