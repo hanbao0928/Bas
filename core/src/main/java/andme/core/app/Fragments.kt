@@ -1,6 +1,6 @@
 package andme.core.app
 
-import andme.lang.runOnTrue
+import bas.lib.core.lang.applyWhen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -26,7 +26,7 @@ fun FragmentManager.showFragment(
 
     beginTransaction().add(
         containerId, creator(), tag
-    ).runOnTrue(addToBackStack) {
+    ).applyWhen(addToBackStack) {
         addToBackStack(tag)
     }.commitNowAllowingStateLoss()
 }

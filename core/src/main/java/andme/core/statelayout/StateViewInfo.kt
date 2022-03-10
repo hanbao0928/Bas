@@ -1,6 +1,6 @@
 package andme.core.statelayout
 
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup

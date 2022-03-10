@@ -1,6 +1,6 @@
 package andme.core.fragment
 
-import andme.lang.runOnTrue
+import bas.lib.core.lang.applyWhen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
@@ -72,7 +72,7 @@ fun FragmentManager.switchFragment(
         ft.hide(fromFragment)
     }
 
-    runOnTrue(addToBackStack) {
+    applyWhen(addToBackStack) {
         ft.addToBackStack(backStackTag)
     }
     ft.commit()

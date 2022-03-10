@@ -1,9 +1,8 @@
 package andme.core.exception
 
 import andme.core.dialogHandlerAM
-import andme.lang.runOnDebug
 import android.content.Context
-import bas.lang.orDefaultIfNullOrEmpty
+import bas.lib.core.lang.orDefaultIfNullOrEmpty
 import retrofit2.HttpException
 import java.lang.NullPointerException
 import java.net.ConnectException
@@ -20,9 +19,6 @@ open class CommonExceptionHandler : ExceptionHandler {
     }
 
     override fun handleCatchException(e: Throwable) {
-        runOnDebug {
-            e.printStackTrace()
-        }
     }
 
     override fun handleUIException(context: Context, e: Throwable) {

@@ -8,18 +8,14 @@ package andme.core
 
 import andme.core.exception.CommonExceptionHandler
 import andme.core.exception.ExceptionHandler
-import andme.core.support.io.AMStorage
-import andme.core.support.io.AMStorageImpl
 import andme.core.support.ui.DefaultDialogHandler
 import andme.core.support.ui.DefaultToastHandler
 import andme.core.support.ui.DialogUI
 import andme.core.support.ui.ToastUI
-import andme.core.sysui.AMSystemUI
-import andme.core.sysui.AMSystemUIImpl
 import andme.integration.media.MediaStore
 import android.app.Application
 import android.content.Context
-import bas.lang.orDefault
+import bas.lib.core.lang.orDefault
 import halo.android.permission.BuildConfig
 
 @Deprecated(message = "请使用ctxAM替换")
@@ -45,7 +41,6 @@ fun initCore(app: Application) {
  * 是否开启调试模式
  */
 var isDebuggable: Boolean = BuildConfig.DEBUG
-
 
 
 //媒体相关功能支持器懒加载函数
@@ -88,12 +83,3 @@ var dialogHandlerAM: DialogUI = DefaultDialogHandler
  */
 var toastHandlerAM: ToastUI = DefaultToastHandler
 
-/**
- * 文件存储统一管理
- */
-var storageAM: AMStorage = AMStorageImpl
-
-/**
- * 系统UI交互：状态栏，虚拟导航栏
- */
-var systemUIAM: AMSystemUI = AMSystemUIImpl

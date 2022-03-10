@@ -1,12 +1,12 @@
 package andme.core.support.ui
 
-import andme.lang.runOnTrue
+import bas.lib.core.lang.applyWhen
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import bas.lang.mapAs
+import bas.lib.core.lang.mapAs
 
 /**
  * 默认对话框实现
@@ -58,7 +58,7 @@ object DefaultDialogHandler : DialogUI {
         val dialog = AlertDialog.Builder(ctx)
             .setMessage(message)
             .setPositiveButton(okPair.first, okPair.second)
-            .runOnTrue(cancelPair != null) {
+            .applyWhen(cancelPair != null) {
                 setNegativeButton(cancelPair!!.first, cancelPair.second)
             }
             .setCancelable(cancelable)

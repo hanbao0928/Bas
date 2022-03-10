@@ -1,0 +1,158 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+
+    /*用于kotlin生成javadoc*/
+    id 'org.jetbrains.dokka-android'
+    /*用于上传maven*/
+    id 'maven'
+}
+
+android {
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.globalMinSdkVersion
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    api "androidx.core:core-ktx:$androidx_core_ktx_verson"
+    api "androidx.appcompat:appcompat:$appcompat_version"
+    api "com.google.android.material:material:$material_version"
+//    api "com.google.android.flexbox:flexbox:$flexbox_version"
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core_version"
+
+
+    /*基础代码库*/
+    debugApi project(path: ':lib-core-ktx')
+    releaseApi("bas.base:lib-core-ktx:0.0.1")
+
+    debugApi project(path: ':adapter-imageloader')
+    releaseApi("bas.droid:adapter-imageloader:0.0.1")
+
+    debugApi project(path: ':systemui')
+    releaseApi "bas.droid:systemui:0.0.1"
+
+    releaseApi "bas.droid:droid-theme:0.0.1"
+    debugApi project(path: ':droid-theme')
+
+    /*lifecycle */
+    /**
+     *  [Lifecycle-ViewModel]
+     *  https://developer.android.google.cn/jetpack/androidx/releases/lifecycle
+     */
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    /**
+     *  [Lifecycle-LiveData]
+     *  https://developer.android.google.cn/jetpack/androidx/releases/lifecycle
+     */
+    api "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    /**
+     * lifecycle-runtime-ktx 给每个 LifeCycle 对象通过扩展属性定义了协程作用域 lifecycleScope
+     * https://www.cnblogs.com/bingxinshuo/archive/2019/10/21/11717209.html
+     */
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    /*必备组件 JetPack系列 END*/
+
+
+//    def retrofit_version = "2.6.4"
+    /**
+     *  [Retrofit Converter Gson] 使用Gson作为Retrofit的序列化和反序列化工具
+     *  <proguard>
+     *  https://github.com/square/retrofit/wiki/Converters
+     *  https://github.com/google/gson
+     */
+//    compileOnly "com.squareup.retrofit2:converter-jackson:$retrofit_version"
+//    compileOnly "com.squareup.retrofit2:converter-gson:$retrofit_version"
+//    compileOnly 'org.ligboy.retrofit2:converter-fastjson:2.0.2'
+
+
+}
+
+
+// kotlin android javadoc
+task generateSourcesJar(type: Jar) {
+    group = 'jar'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = javadoc.destinationDir
+}
+
+task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+    group = 'jar'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives generateJavadoc
+    archives generateSourcesJar
+}
+
+def PROJECT_NAME = 'droid-core'
+def PROJECT_VERSION = '0.0.1'
+def PROJECT_DESC = ''
+def ARTIFACT_ID = 'droid-core'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_URL) {
+                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+            }
+            pom.project {
+                name PROJECT_NAME
+                version PROJECT_VERSION
+                artifactId ARTIFACT_ID
+                groupId 'bas.droid'
+                packaging 'aar'
+                description PROJECT_DESC
+            }
+        }
+    }
+}

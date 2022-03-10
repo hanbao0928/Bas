@@ -1,8 +1,8 @@
 package andme.core.widget.progressbar
 
 import andme.core.R
-import andme.core.util.dip
-import andme.core.util.sp
+import bas.droid.core.util.dip
+import bas.droid.core.util.sp
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context

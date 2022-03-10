@@ -2,12 +2,15 @@
 include ':lib-compiler'
 
 //已发布，需要修改代码时再配置进来
+include ':adapter-imageloader'
+
+//已发布，需要修改代码时再配置进来
 //include ':labelview'
 //include ':labelview-annotation'
 //include ':labelview-compiler'
 
 //已发布，需要修改代码时再配置进来
-//include ':systemui'
+include ':systemui'
 
 //已发布，需要修改代码时再配置进来
 //include ':compat-multidex'
