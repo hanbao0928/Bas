@@ -1,10 +1,6 @@
 package andme.tv.leanback.widget
 
 import andme.core.exception.tryCatch
-import andme.core.util.NETWORK_TYPE_ETHERNET
-import andme.core.util.NETWORK_TYPE_NONE
-import andme.core.util.NETWORK_TYPE_WIFI
-import andme.core.util.getNetworkType
 import andme.tv.arch.R
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,6 +9,10 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import bas.droid.core.util.NETWORK_TYPE_ETHERNET
+import bas.droid.core.util.NETWORK_TYPE_NONE
+import bas.droid.core.util.NETWORK_TYPE_WIFI
+import bas.droid.core.util.getNetworkType
 
 /**
  * Created by Lucio on 2021/2/27.

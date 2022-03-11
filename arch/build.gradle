@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -36,8 +35,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.3.2'
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation project(path: ':bas-core')
     implementation project(path: ':bas-binding-ext')
+    /**
+     * 编译依赖SystemUi，需要该功能的需要自行引入
+     */
+//    compileOnly project(path: ':systemui')
+//   使用远程依赖
+    compileOnly "bas.droid:systemui:0.0.1"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

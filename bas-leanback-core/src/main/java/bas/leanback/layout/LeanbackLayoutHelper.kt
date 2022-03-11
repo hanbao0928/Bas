@@ -35,7 +35,7 @@ class LeanbackLayoutHelper private constructor(
     init {
         val ta = layout.context.obtainStyledAttributes(attrs, R.styleable.LeanbackLayout)
         borderAnimEnabled = ta.getBoolean(
-            R.styleable.LeanbackLayout_borderAnim_bas,
+            R.styleable.LeanbackLayout_lbl_borderAnim_bas,
             DEFAULT_BORDER_ANIM_ENABLED
         )
         ta.recycle()

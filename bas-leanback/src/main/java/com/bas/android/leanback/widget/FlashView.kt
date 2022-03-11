@@ -10,8 +10,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.bas.android.leanback.R
-import bas.lang.avoidZeroDividend
-import bas.lang.orDefault
+import bas.lib.core.lang.avoidZeroDividend
+import bas.lib.core.lang.orDefault
 
 /**
  * Created by Lucio on 2021/2/28.

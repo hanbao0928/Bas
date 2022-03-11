@@ -36,13 +36,19 @@ android {
 }
 
 dependencies {
-    api project(path: ':bas-core-and')
+    /*droid核心库*/
+    //    debugApi project(path: ':droid-core')
+//    releaseApi("bas.droid:droid-core:0.0.1")
+    api("bas.droid:droid-core:0.0.1")
+
+//    implementation project(path: ':leanback-core')
 
 /*base*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.2.0'
-    api 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    api "androidx.core:core-ktx:$androidx_core_ktx_verson"
+    api "androidx.appcompat:appcompat:$appcompat_version"
+    api "com.google.android.material:material:$material_version"
+
     //约束布局
     implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
 

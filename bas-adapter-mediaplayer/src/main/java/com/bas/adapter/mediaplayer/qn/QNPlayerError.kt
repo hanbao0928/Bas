@@ -1,7 +1,7 @@
 package com.bas.adapter.mediaplayer.qn
 
-import bas.android.core.basCtx
-import bas.android.core.util.isNetworkConnected
+import bas.droid.core.ctxBas
+import bas.droid.core.util.isNetworkConnected
 import com.bas.adapter.mediaplayer.MediaPlayerError
 import com.pili.pldroid.player.PLOnErrorListener
 
@@ -25,7 +25,7 @@ class QNPlayerError(val errorCode: Int) :
                 }
                 PLOnErrorListener.ERROR_CODE_IO_ERROR -> {
                     if (isLive) {
-                        if (basCtx.isNetworkConnected()) {
+                        if (ctxBas.isNetworkConnected()) {
                             "直播已断开"
                         } else {
                             "连接失败（网络错误或服务器已断开）"

@@ -1,6 +1,6 @@
 package andme.tv.leanback.presenter
 
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import andme.tv.arch.R
 import android.util.SparseArray
 import android.view.LayoutInflater

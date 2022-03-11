@@ -1,7 +1,7 @@
 package andme.integration.support.modual
 
 import andme.core.ktx.removeSelf
-import bas.lang.orDefault
+import bas.lib.core.lang.orDefault
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View

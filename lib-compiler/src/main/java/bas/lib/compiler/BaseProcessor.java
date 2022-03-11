@@ -1,10 +1,5 @@
 package bas.lib.compiler;
 
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -61,8 +56,6 @@ public abstract class BaseProcessor extends AbstractProcessor {
     protected void printDividerMessage(String title) {
         printMessage(String.format("====================================== %s ======================================", title));
     }
-
-
 
     protected boolean checkAnnotationValid(Element annotatedElement, Class clazz) {
         if (annotatedElement.getKind() != ElementKind.CLASS) {

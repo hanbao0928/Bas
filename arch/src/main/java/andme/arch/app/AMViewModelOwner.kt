@@ -1,6 +1,6 @@
 package andme.arch.app
 
-import bas.android.core.app.AnonyContext
+import bas.droid.core.app.AnonyContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 

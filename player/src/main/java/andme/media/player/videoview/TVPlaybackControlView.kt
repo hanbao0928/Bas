@@ -3,7 +3,7 @@ package andme.media.player.videoview
 import andme.core.widget.progressbar.FloatStatableSeekBar
 import andme.core.widget.setGone
 import andme.core.widget.setVisible
-import bas.lang.orDefault
+import bas.lib.core.lang.orDefault
 import andme.media.player.R
 import andme.media.player.core.AMPlayer2
 import andme.media.player.core.AMPlayerException
@@ -15,8 +15,8 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
-import bas.lang.DateUtils.ONE_HOUR_TIME
-import bas.lang.DateUtils.ONE_MINUTE_TIME
+import bas.lib.core.date.DateUtils.ONE_HOUR_TIME
+import bas.lib.core.date.DateUtils.ONE_MINUTE_TIME
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.ceil
 

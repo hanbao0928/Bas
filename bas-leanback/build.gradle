@@ -34,7 +34,11 @@ android {
 
 dependencies {
 
-    api project(path: ':bas-core-and')
+      /*droid核心库*/
+    //    debugApi project(path: ':droid-core')
+//    releaseApi("bas.droid:droid-core:0.0.1")
+    implementation("bas.droid:droid-core:0.0.1")
+
     implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
 
     api 'androidx.leanback:leanback:1.2.0-alpha01'/*1.1.0-beta01*/

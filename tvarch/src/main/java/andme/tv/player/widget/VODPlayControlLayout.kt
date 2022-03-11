@@ -7,8 +7,8 @@ import android.util.AttributeSet
 import android.widget.TextView
 import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
-import bas.lang.DateUtils.ONE_HOUR_TIME
-import bas.lang.DateUtils.ONE_MINUTE_TIME
+import bas.lib.core.date.DateUtils.ONE_HOUR_TIME
+import bas.lib.core.date.DateUtils.ONE_MINUTE_TIME
 
 /**
  * Created by Lucio on 2021/4/9.

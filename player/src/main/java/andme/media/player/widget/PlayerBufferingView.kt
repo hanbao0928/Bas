@@ -10,7 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import bas.android.core.view.extensions.setTextOrGone
+import bas.droid.core.view.extensions.setTextOrGone
 
 /**
  * Created by Lucio on 2021/4/15.

@@ -2,6 +2,6 @@
     package="andme.arch" >
 
     <application>
-        <activity android:name=".app.AMContainerActivity" />
+        <activity android:name=".app.FragmentContainerActivity" />
     </application>
 </manifest>

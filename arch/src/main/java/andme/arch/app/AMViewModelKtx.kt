@@ -1,8 +1,8 @@
 package andme.arch.app
 
-import bas.lang.exception.RetryException
+import bas.lib.core.lang.exception.RetryException
 import andme.core.exceptionHandlerAM
-import andme.lang.coroutines.launchRetryable
+import bas.lib.core.coroutines.launchRetryable
 import andme.core.support.ui.showAlertDialog
 import android.content.DialogInterface
 import androidx.annotation.StringRes

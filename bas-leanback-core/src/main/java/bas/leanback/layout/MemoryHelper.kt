@@ -11,7 +11,7 @@ import bas.leanback.core.CallByOwner
 import bas.leanback.core.MemoryState
 import bas.leanback.core.R
 import bas.leanback.core.logd
-import bas.data.smartObservable
+import bas.lib.core.data.smartObservable
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
  * 用于处理焦点记忆
  */
 open class MemoryHelper private constructor(
-    open val viewGroup: ViewGroup,
+    open val layout: ViewGroup,
     attrs: AttributeSet?,
     defStyleAttr: Int,
     context: Context
@@ -90,7 +90,7 @@ open class MemoryHelper private constructor(
      */
     @SuppressLint("RestrictedApi")
     protected open fun shouldHandleFocusMemory(): Boolean {
-        return isMemoryEnabled && !viewGroup.hasFocus()
+        return isMemoryEnabled && !layout.hasFocus()
     }
 
     /**
@@ -108,9 +108,9 @@ open class MemoryHelper private constructor(
             return
         }
 
-        memoryView = if (viewGroup.descendantFocusability == ViewGroup.FOCUS_BLOCK_DESCENDANTS
+        memoryView = if (layout.descendantFocusability == ViewGroup.FOCUS_BLOCK_DESCENDANTS
             || focused == null
-            || viewGroup.indexOfChild(focused) < 0
+            || layout.indexOfChild(focused) < 0
         ) {
             null
         } else {

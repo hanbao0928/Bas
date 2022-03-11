@@ -1,8 +1,8 @@
 package andme.arch.app
 
 import andme.core.toastHandlerAM
-import bas.lang.annotation.Note
-import andme.lang.runOnTrue
+import bas.lib.core.lang.annotation.Note
+import bas.lib.core.lang.applyWhen
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -43,7 +43,7 @@ open class AMViewModelOwnerDelegate<VM : ViewModel> constructor(open val realOwn
         if (viewModel !is AMViewModel)
             return
         //先移除观察，避免重复绑定
-        this.runOnTrue(removePrevious) {
+        this.applyWhen(removePrevious) {
             unregisterViewModelEvent(viewModel)
         }
         //添加观察

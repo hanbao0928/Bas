@@ -1,6 +1,6 @@
 package andme.tv.leanback.multistate
 
-import andme.core.lifecycle.SingleEvent
+import bas.droid.core.lifecycle.SingleEvent
 import android.app.Application
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel

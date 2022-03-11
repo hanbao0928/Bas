@@ -8,7 +8,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import bas.android.core.view.extensions.setTextOrGone
+import bas.droid.core.view.extensions.setTextOrGone
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**

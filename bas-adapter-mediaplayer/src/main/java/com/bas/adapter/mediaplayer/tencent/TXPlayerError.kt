@@ -1,7 +1,7 @@
 package com.bas.adapter.mediaplayer.tencent
 
-import bas.android.core.basCtx
-import bas.android.core.util.isNetworkConnected
+import bas.droid.core.ctxBas
+import bas.droid.core.util.isNetworkConnected
 import com.bas.adapter.mediaplayer.MediaPlayerError
 import com.tencent.rtmp.TXLiveConstants
 
@@ -23,7 +23,7 @@ class TXPlayerError(val errorCode: Int) :
                 //https://cloud.tencent.com/document/product/454/17246
                 TXLiveConstants.PLAY_ERR_NET_DISCONNECT -> {
                     if (isLive) {
-                        if (basCtx.isNetworkConnected()) {
+                        if (ctxBas.isNetworkConnected()) {
                             "直播已断开"
                         } else {
                             "连接失败（网络错误或服务器已断开）"

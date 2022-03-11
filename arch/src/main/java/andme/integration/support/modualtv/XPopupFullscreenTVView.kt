@@ -1,7 +1,7 @@
 package andme.integration.support.modualtv
 
 import andme.integration.support.modual.XPopupFullscreenView
-import bas.lang.orDefault
+import bas.lib.core.lang.orDefault
 import android.content.Context
 import android.view.KeyEvent
 import android.view.View

@@ -1,10 +1,10 @@
 package com.bas.adapter.mediaplayer.sys
 
 import android.media.MediaPlayer
-import bas.android.core.basCtx
-import bas.android.core.util.isNetworkConnected
+import bas.droid.core.ctxBas
+import bas.droid.core.util.isNetworkConnected
 import com.bas.adapter.mediaplayer.MediaPlayerError
-import bas.lang.orDefaultIfNullOrEmpty
+import bas.lib.core.lang.orDefaultIfNullOrEmpty
 
 /**
  * Created by Lucio on 2021/9/18.
@@ -31,7 +31,7 @@ class SysPlayerError private constructor(val what: Int, val extra: Int) :
     private fun getLiveFriendlyMessage(): String {
         return when (what) {
             MediaPlayer.MEDIA_ERROR_IO -> {
-                if (basCtx.isNetworkConnected()) {
+                if (ctxBas.isNetworkConnected()) {
                     "直播已断开"
                 } else {
                     "连接失败（网络错误或服务器已断开）"

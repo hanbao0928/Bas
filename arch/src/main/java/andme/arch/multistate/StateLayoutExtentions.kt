@@ -2,11 +2,11 @@ package andme.arch.multistate
 
 import andme.arch.R
 import andme.core.statelayout.StateView
-import andme.core.util.isTVUIMode
+import bas.droid.core.util.isTVUIMode
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import bas.android.core.view.extensions.setTextOrGone
+import bas.droid.core.view.extensions.setTextOrGone
 
 /**
  * Created by Lucio on 2021/5/16.

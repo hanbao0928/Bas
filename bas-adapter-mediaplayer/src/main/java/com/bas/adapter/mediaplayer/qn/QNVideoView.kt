@@ -6,7 +6,7 @@ import android.view.View
 import com.bas.adapter.mediaplayer.BaseVideoView
 import com.bas.adapter.mediaplayer.KernelViewFactory
 import com.bas.adapter.mediaplayer.MediaPlayer
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import com.bas.player.R
 import com.pili.pldroid.player.*
 import com.pili.pldroid.player.widget.PLVideoView

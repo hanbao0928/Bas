@@ -3,7 +3,7 @@ package andme.arch.multistate
 import andme.arch.app.AMViewModel
 import andme.core.exception.friendlyMessage
 import andme.core.statelayout.StateView
-import bas.lang.orDefaultIfNullOrEmpty
+import bas.lib.core.lang.orDefaultIfNullOrEmpty
 import android.app.Application
 import android.view.View
 import androidx.annotation.MainThread

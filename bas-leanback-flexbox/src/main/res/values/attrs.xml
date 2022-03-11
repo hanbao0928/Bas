@@ -2,11 +2,11 @@
 <resources>
     <declare-styleable name="LeanbackFlexboxLayout">
         <!--默认开启边界动画-->
-        <attr name="borderAnim_bas" />
+        <attr name="lbl_borderAnim_bas" />
         <!--默认不开启-->
-        <attr name="bringChildToFrontWhenRequestFocus_bas" />
+        <attr name="lbl_bringChildToFrontWhenRequestFocus_bas" />
         <!--默认不开启-->
-        <attr name="duplicateChildrenBringToFront_bas"/>
+        <attr name="lbl_duplicateChildrenBringToFront_bas"/>
         <!--默认不开启-->
         <attr name="focusMemory_bas"/>
         <!--焦点状态类型-->

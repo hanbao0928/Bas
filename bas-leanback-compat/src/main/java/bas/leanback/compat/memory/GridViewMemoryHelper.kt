@@ -9,7 +9,7 @@ import androidx.leanback.widget.OnChildViewHolderSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import bas.leanback.compat.logd
 import bas.leanback.layout.MemoryHelper
-import bas.android.core.view.extensions.canTakeFocus
+import bas.droid.core.view.extensions.canTakeFocus
 import java.util.*
 
 /**
@@ -19,10 +19,10 @@ import java.util.*
  * 此时常规处理方式焦点记忆便失效了，因此应该通过position去处理焦点记忆
  */
 internal class GridViewMemoryHelper private constructor(
-    override val viewGroup: BaseGridView,
+    override val layout: BaseGridView,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : MemoryHelper(viewGroup, attrs, defStyleAttr) {
+) : MemoryHelper(layout, attrs, defStyleAttr) {
 
     /**
      * 焦点记忆的位置
@@ -48,12 +48,12 @@ internal class GridViewMemoryHelper private constructor(
             } else {
                 focusMemoryPosition = NO_POSITION
             }
-            logd("$viewGroup 当前记忆位置：$focusMemoryPosition")
+            logd("$layout 当前记忆位置：$focusMemoryPosition")
         }
     }
 
     init {
-        viewGroup.addOnChildViewHolderSelectedListener(childViewHolderSelectedListener)
+        layout.addOnChildViewHolderSelectedListener(childViewHolderSelectedListener)
     }
     
     /**
@@ -63,9 +63,9 @@ internal class GridViewMemoryHelper private constructor(
      */
     @SuppressLint("RestrictedApi")
     protected fun shouldHandleGridViewFocusMemory(): Boolean {
-        return viewGroup.focusScrollStrategy != BaseGridView.FOCUS_SCROLL_ALIGNED 
+        return layout.focusScrollStrategy != BaseGridView.FOCUS_SCROLL_ALIGNED
                 && focusMemoryPosition != NO_POSITION
-                && viewGroup.layoutManager != null
+                && layout.layoutManager != null
     }
 
 
@@ -91,7 +91,7 @@ internal class GridViewMemoryHelper private constructor(
         }
 
         val viewHolder =
-            viewGroup.findViewHolderForAdapterPosition(focusMemoryPosition) ?: return false
+            layout.findViewHolderForAdapterPosition(focusMemoryPosition) ?: return false
 
         val pendingFocusView = viewHolder.itemView
         if (pendingFocusView.canTakeFocus) {
@@ -120,7 +120,7 @@ internal class GridViewMemoryHelper private constructor(
         }
 
         val viewHolder =
-            viewGroup.findViewHolderForAdapterPosition(focusMemoryPosition) ?: return false
+            layout.findViewHolderForAdapterPosition(focusMemoryPosition) ?: return false
 
         val pendingFocusView = viewHolder.itemView
 

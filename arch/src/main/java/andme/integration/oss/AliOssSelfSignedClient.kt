@@ -1,7 +1,7 @@
 package andme.integration.oss
 
 import andme.core.ctxAM
-import bas.lang.orDefault
+import bas.lib.core.lang.orDefault
 import androidx.annotation.WorkerThread
 import com.alibaba.sdk.android.oss.ClientConfiguration
 import com.alibaba.sdk.android.oss.OSSClient

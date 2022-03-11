@@ -18,6 +18,7 @@ buildscript {
         androidx_core_ktx_verson = "1.2.0"
         appcompat_version = "1.1.0"
         material_version = "1.2.1"
+        constraintlayout_version = "2.0.3"
         lifecycle_version = "2.4.0-alpha03"
         flexbox_version = "3.0.0"
         androidx_annotation_version = "1.1.0"

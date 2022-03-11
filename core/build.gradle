@@ -30,9 +30,9 @@ android {
 
 dependencies {
 
-      /*droid核心库*/
-    debugApi project(path: ':droid-core')
-    releaseApi("bas.droid:droid-core:0.0.1")
+    //    debugApi project(path: ':droid-core')
+//    releaseApi("bas.droid:droid-core:0.0.1")
+    api("bas.droid:droid-core:0.0.1")
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

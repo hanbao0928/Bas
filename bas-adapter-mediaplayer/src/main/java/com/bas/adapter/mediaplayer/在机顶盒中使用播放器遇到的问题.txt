@@ -27,3 +27,7 @@
     ViewHolder调用stopPlayBack之后复用，会出现设置播放地址之后不回调的问题（相当于跟没设置播放地址一样，sdk内部不会做任何处理）
     解决办法：如果只是解决当前界面不可见时暂停播放资源，使用pause方法替代stopPlayBack方法。
 
+8、
+在某些盒子里面，提示出现该异常：Could not find method android.os.Environment.getExternalStorageState
+
+解决办法：在external 不可用的情况下切换为使用inner directory。

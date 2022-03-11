@@ -6,9 +6,9 @@ import android.view.View
 import com.bas.adapter.mediaplayer.qn.QNVideoView
 import com.bas.adapter.mediaplayer.sys.SysVideoView
 import com.bas.adapter.mediaplayer.tencent.TXVideoView
-import bas.android.core.util.Logger
-import bas.android.core.view.extensions.removeSelfFromParent
-import bas.lang.orDefault
+import bas.droid.core.util.Logger
+import bas.droid.core.view.extensions.removeSelfFromParent
+import bas.lib.core.lang.orDefault
 import com.bas.player.R
 
 /**

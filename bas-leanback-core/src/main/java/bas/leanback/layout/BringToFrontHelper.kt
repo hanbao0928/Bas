@@ -35,11 +35,11 @@ class BringToFrontHelper private constructor(
     init {
         val ta = layout.context.obtainStyledAttributes(attrs, R.styleable.LeanbackLayout)
         bringChildrenToFrontWhenRequestFocus = ta.getBoolean(
-            R.styleable.LeanbackLayout_bringChildToFrontWhenRequestFocus_bas,
+            R.styleable.LeanbackLayout_lbl_bringChildToFrontWhenRequestFocus_bas,
             DEFAULT_BRING_CHILDREN_TO_FRONT
         )
         duplicateChildrenBringToFront = ta.getBoolean(
-            R.styleable.LeanbackLayout_duplicateChildrenBringToFront_bas,
+            R.styleable.LeanbackLayout_lbl_duplicateChildrenBringToFront_bas,
             DEFAULT_DUPLICATE_CHILDREN_BRING_TO_FRONT
         )
         ta.recycle()

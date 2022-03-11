@@ -1,6 +1,6 @@
 package andme.arch.multistate
 
-import andme.core.lifecycle.MutableLiveEvent
+import bas.droid.core.lifecycle.MutableLiveEvent
 import andme.core.statelayout.StateLayout
 import andme.core.statelayout.StateLayoutAction
 import andme.core.statelayout.StateView

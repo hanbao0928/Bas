@@ -8,10 +8,10 @@ import android.view.View
 import androidx.annotation.IntRange
 import com.bas.adapter.mediaplayer.BaseVideoView
 import com.bas.adapter.mediaplayer.MediaPlayer
-import bas.android.core.util.Logger
-import bas.converter.toJson
-import bas.lang.annotation.Compat
-import bas.lang.annotation.CompatNote
+import bas.droid.core.util.Logger
+import bas.lib.core.converter.toJson
+import bas.lib.core.lang.annotation.Compat
+import bas.lib.core.lang.annotation.CompatNote
 import com.bas.player.R
 import com.tencent.rtmp.ITXVodPlayListener
 import com.tencent.rtmp.TXLiveConstants

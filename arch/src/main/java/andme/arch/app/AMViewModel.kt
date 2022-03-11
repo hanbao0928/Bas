@@ -1,11 +1,11 @@
 package andme.arch.app
 
 import andme.core.dialogHandlerAM
-import andme.core.lifecycle.SingleEvent
-import andme.core.lifecycle.SingleLiveEvent
+import bas.droid.core.lifecycle.SingleEvent
+import bas.droid.core.lifecycle.SingleLiveEvent
 import andme.core.support.ui.AMProgressDialog
-import bas.lang.annotation.Note
-import andme.lang.coroutines.ControlledRunner
+import bas.lib.core.lang.annotation.Note
+import bas.lib.core.coroutines.ControlledRunner
 import android.app.Application
 import android.content.Context
 import android.content.Intent

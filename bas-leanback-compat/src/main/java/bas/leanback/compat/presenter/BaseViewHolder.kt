@@ -8,12 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.leanback.widget.Presenter
-import bas.android.core.util.layoutInflater
-import bas.android.core.view.extensions.isVisible
-import bas.android.core.view.extensions.isVisibleOrNot
-import bas.android.core.view.extensions.setTextOrGone
-import bas.android.core.view.extensions.setTextOrInvisible
-import com.bas.adapter.imageloader.load
+import bas.droid.core.util.layoutInflater
+import bas.droid.core.view.extensions.isVisible
+import bas.droid.core.view.extensions.isVisibleOrNot
+import bas.droid.core.view.extensions.setTextOrGone
+import bas.droid.core.view.extensions.setTextOrInvisible
+import bas.droid.adapter.imageloader.load
 
 open class BaseViewHolder(view: View) : Presenter.ViewHolder(view) {
 

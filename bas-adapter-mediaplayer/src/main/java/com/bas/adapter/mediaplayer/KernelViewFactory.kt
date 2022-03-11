@@ -1,12 +1,12 @@
 package com.bas.adapter.mediaplayer
 
 import android.content.Context
-import bas.android.core.basCtx
+import bas.droid.core.ctxBas
 import com.bas.adapter.mediaplayer.qn.QNVideoView
 import com.bas.adapter.mediaplayer.sys.SysVideoView
 import com.bas.adapter.mediaplayer.tencent.TXVideoView
-import bas.android.core.util.Logger
-import bas.android.core.util.isTVUIMode
+import bas.droid.core.util.Logger
+import bas.droid.core.util.isTVUIMode
 
 /**
  * Created by Lucio on 2021/9/27.
@@ -17,7 +17,7 @@ object KernelViewFactory {
      * 是否运行在tv之上
      * tv上运行要考虑焦点，要解决系统VideoView、七牛播放器默认获取焦点的问题
      */
-    var isLeanbackMode:Boolean = basCtx.isTVUIMode()
+    var isLeanbackMode:Boolean = ctxBas.isTVUIMode()
 
     @JvmStatic
     fun createVideoView(

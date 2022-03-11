@@ -1,9 +1,8 @@
 package andme.integration.support.modual
 
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 
 /**
  * Created by Lucio on 2021/3/17.

@@ -42,7 +42,7 @@ uploadArchives {
                 name PROJECT_NAME
                 version PROJECT_VERSION
                 artifactId ARTIFACT_ID
-                groupId 'bas.base'
+                groupId 'bas.lib'
                 packaging 'aar'
                 description PROJECT_DESC
             }

@@ -2,9 +2,9 @@ package andme.arch.refresh
 
 import andme.arch.app.AMViewModel
 import andme.arch.app.AMViewModelOwner
-import andme.core.lifecycle.SingleEvent
-import andme.core.lifecycle.SingleLiveEvent
-import bas.lang.annotation.Note
+import bas.droid.core.lifecycle.SingleEvent
+import bas.droid.core.lifecycle.SingleLiveEvent
+import bas.lib.core.lang.annotation.Note
 import android.app.Application
 import androidx.annotation.MainThread
 

@@ -1,6 +1,6 @@
 package andme.integration.support.recycler
 
-import bas.android.core.util.layoutInflater
+import bas.droid.core.util.layoutInflater
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
