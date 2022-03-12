@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import bas.leanback.core.CallByOwner
+import bas.leanback.core.MemoryHelper
 import bas.leanback.effect.shakeX
 import bas.leanback.effect.shakeY
 import java.util.*
@@ -34,7 +35,7 @@ class LeanbackLayoutHelper private constructor(
     init {
         val ta = layout.context.obtainStyledAttributes(attrs, R.styleable.LeanbackLayout)
         borderAnimEnabled = ta.getBoolean(
-            R.styleable.LeanbackLayout_borderAnim_bas,
+            R.styleable.LeanbackLayout_lb_borderAnimEnable,
             DEFAULT_BORDER_ANIM_ENABLED
         )
         ta.recycle()

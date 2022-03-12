@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--###############这部分属性适用于任何的ViewGroup-->
+    <!--是否启用焦点记忆，默认false-->
+    <attr name="lb_focusMemoryEnable" format="boolean" />
+
+    <!--焦点记忆类型:默认selected-->
+    <attr name="lb_focusMemoryStateType" format="enum">
+        <!--不处理任何焦点记忆View的状态-->
+        <enum name="none" value="0" />
+        <!--焦点记忆的view状态类型:即保持当前焦点记忆的[View]设置[View.setSelected]为true，而其他view则设置为false-->
+        <enum name="selected" value="1" />
+        <!--焦点记忆的view状态类型:即保持当前焦点记忆的[View]设置[View.setActivated]为true，而其他view则设置为false-->
+        <enum name="activated" value="2" />
+    </attr>
+
+    <!--焦点记忆功能对应的属性支持-->
+    <declare-styleable name="FocusMemoryView">
+        <attr name="lb_focusMemoryEnable" />
+        <attr name="lb_focusMemoryStateType" />
+    </declare-styleable>
+
+    <!--###############这部分属性适用于任何的ViewGroup-->
+
+
+
+
+</resources>

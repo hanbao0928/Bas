@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 
     /*用于kotlin生成javadoc*/
     id 'org.jetbrains.dokka-android'
@@ -47,16 +48,17 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //自动生成LeanbackLayout系列
-    implementation project(path: ':leanback-layout-compiler')
+    implementation("bas.droid:leanback-layout-annotation:0.0.1")
+    kapt "bas.droid:leanback-layout-compiler:0.0.1"
+//    kapt project(path: ':leanback-layout-compiler')
 //    annotationProcessor("bas.droid:leanback-layout-compiler:0.0.1")
 //    implementation("bas.droid:leanback-layout-annotation:0.0.1")
 
-    //约束布局
+    //约束布局:添加用于预先注入
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 
     implementation project(path: ':leanback-core')
 }
-
 
 
 // kotlin android javadoc

@@ -1,4 +1,4 @@
-package bas.leanback.layout
+package bas.leanback.core
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,11 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import bas.leanback.core.CallByOwner
-import bas.leanback.core.MemoryState
-import bas.leanback.core.R
-import bas.leanback.core.logd
-import bas.lib.core.data.smartObservable
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -64,12 +59,12 @@ open class MemoryHelper private constructor(
             0
         )
         isMemoryEnabled = ta.getBoolean(
-            R.styleable.FocusMemoryView_focusMemory_bas,
+            R.styleable.FocusMemoryView_lb_focusMemoryEnable,
             DEFAULT_MEMORY_ENABLED
         )
         memoryState =
             ta.getInt(
-                R.styleable.FocusMemoryView_focusMemoryStateType_bas,
+                R.styleable.FocusMemoryView_lb_focusMemoryStateType,
                 DEFAULT_MEMORY_STATE
             )
         logd("解析结果：isMemoryEnabled=${isMemoryEnabled} memoryState=${memoryState}")

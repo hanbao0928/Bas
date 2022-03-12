@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-
+import bas.leanback.core.CallByOwner
 
 /**
  * Created by Lucio on 2021/10/31.
@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * 用于处理[View.bringToFront]带来的问题：绘制顺序、bringToFront传递、
  *
  * 用于在[android.widget.LinearLayout]等布局中,[android.view.View.bringToFront]调用问题
+ *
+ * 注意查看[CallByOwner]注解的方法
  */
 class BringToFrontHelper private constructor(
     private val layout: ViewGroup,
@@ -34,11 +36,11 @@ class BringToFrontHelper private constructor(
     init {
         val ta = layout.context.obtainStyledAttributes(attrs, R.styleable.LeanbackLayout)
         bringChildrenToFrontWhenRequestFocus = ta.getBoolean(
-            R.styleable.LeanbackLayout_bringChildToFrontWhenRequestFocus_bas,
+            R.styleable.LeanbackLayout_lb_bringChildToFrontWhenRequestFocus,
             DEFAULT_BRING_CHILDREN_TO_FRONT
         )
         duplicateChildrenBringToFront = ta.getBoolean(
-            R.styleable.LeanbackLayout_duplicateChildrenBringToFront_bas,
+            R.styleable.LeanbackLayout_lb_duplicateChildrenBringToFront,
             DEFAULT_DUPLICATE_CHILDREN_BRING_TO_FRONT
         )
         ta.recycle()
@@ -59,29 +61,6 @@ class BringToFrontHelper private constructor(
     fun bringChildToFront(child: View?) {
         performChildrenBringToFront(child)
         performDuplicateBringToFront()
-    }
-
-    /**
-     * 执行 children  bringToFront
-     * */
-    private fun performChildrenBringToFront(child: View?) {
-        if (!isChildrenDrawingOrderEnabled) {
-            callback.callSuperBringChildToFront(child)
-            return
-        }
-        frontChildIndex = layout.indexOfChild(child)
-        if (frontChildIndex >= 0) {
-            layout.postInvalidate()
-        }
-    }
-
-    /**
-     * 当前layout是否同步执行bringToFront
-     */
-    private fun performDuplicateBringToFront() {
-        if (!duplicateChildrenBringToFront)
-            return
-        layout.bringToFront()
     }
 
     /**
@@ -133,6 +112,29 @@ class BringToFrontHelper private constructor(
 //            return childCount - 1
 //        }
 //        return drawingPosition
+    }
+
+    /**
+     * 执行 children  bringToFront
+     * */
+    private fun performChildrenBringToFront(child: View?) {
+        if (!isChildrenDrawingOrderEnabled) {
+            callback.callSuperBringChildToFront(child)
+            return
+        }
+        frontChildIndex = layout.indexOfChild(child)
+        if (frontChildIndex >= 0) {
+            layout.postInvalidate()
+        }
+    }
+
+    /**
+     * 当前layout是否同步执行bringToFront
+     */
+    private fun performDuplicateBringToFront() {
+        if (!duplicateChildrenBringToFront)
+            return
+        layout.bringToFront()
     }
 
     interface Callback {

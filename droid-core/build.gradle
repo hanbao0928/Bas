@@ -55,7 +55,7 @@ dependencies {
 
     /*基础代码库*/
     debugApi project(path: ':lib-core-ktx')
-    releaseApi("bas.base:lib-core-ktx:0.0.1")
+    releaseApi("bas.lib:lib-core-ktx:0.0.1")
 
     debugApi project(path: ':adapter-imageloader')
     releaseApi("bas.droid:adapter-imageloader:0.0.1")

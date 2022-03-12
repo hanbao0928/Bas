@@ -10,10 +10,11 @@ java {
 }
 
 dependencies {
-
+    /*compiler 工具库，提供生成文件的工具类*/
     implementation("bas.lib:lib-compiler:0.0.1")
+
+    /*对应的注解类*/
     implementation("bas.droid:leanback-layout-annotation:0.0.1")
-//    implementation project(path: ':lib-compiler')
 
     /*注解处理器*/
     compileOnly 'com.google.auto.service:auto-service:1.0.1'

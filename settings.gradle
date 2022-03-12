@@ -1,7 +1,5 @@
 include ':leanback-core'
-include ':leanback-layout-annotation'
-include ':leanback-layout-compiler'
-include ':leanback-layout'//已发布，需要修改代码时再配置进来
+
 include ':lib-compiler'
 
 //已发布，需要修改代码时再配置进来
@@ -11,6 +9,11 @@ include ':adapter-imageloader'
 //include ':labelview'
 //include ':labelview-annotation'
 //include ':labelview-compiler'
+
+//已发布，需要修改代码时再配置进来
+include ':leanback-layout-annotation'
+include ':leanback-layout-compiler'
+include ':leanback-layout'
 
 //已发布，需要修改代码时再配置进来
 include ':systemui'
@@ -28,7 +31,7 @@ include ':tvarch'
 include ':player'
 include ':arch'
 include ':core'
-include ':bas-leanback-core'
+include ':leanback-effectlayout'
 include ':bas-leanback-layout-compiler'
 include ':bas-leanback-layout-annotation'
 include ':bas-leanback-compat'

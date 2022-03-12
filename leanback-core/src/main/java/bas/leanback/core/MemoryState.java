@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by Lucio on 2021/11/26.
  */
-@IntDef({MemoryState.NONE,MemoryState.SELECTED,MemoryState.ACTIVATED})
+@IntDef({MemoryState.NONE, MemoryState.SELECTED, MemoryState.ACTIVATED})
 @Retention(RetentionPolicy.SOURCE)
 public @interface MemoryState {
 
@@ -28,5 +28,5 @@ public @interface MemoryState {
      * 即保持当前焦点记忆的[View]设置[View.setActivated]为true，而其他view则设置为false
      */
     int ACTIVATED = 2;
-    
+
 }

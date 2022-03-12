@@ -1,3 +1,6 @@
+/**
+ * Created by Lucio on 2021/11/30.
+ */
 package bas.leanback.effect
 
 import android.view.View
@@ -5,9 +8,7 @@ import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.TranslateAnimation
 
-/**
- * Created by Lucio on 2021/11/30.
- */
+
 
 /**
  * Shake动画持续时间
