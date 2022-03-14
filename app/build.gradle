@@ -53,12 +53,12 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     /*基础核心库*/
-    debugApi project(path: ':lib-core-ktx')
-    releaseApi("bas.lib:lib-core-ktx:0.0.1")
+    debugImplementation project(path: ':lib-core-ktx')
+    releaseImplementation("bas.lib:lib-core-ktx:0.0.1")
 //    implementation project(path: ':lib-core')
 //    implementation project(path: ':lib-core-ktx')
 
-    implementation project(path: ':bas-leanback-flexbox')
+    implementation project(path: ':leanback-flexbox')
 
     implementation project(path: ':bas-binding-ext')
 
@@ -71,9 +71,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    implementation 'com.jakewharton.timber:timber:4.7.1'
-      /*droid核心库*/
+
+    /*droid核心库*/
     debugApi project(path: ':droid-core')
     releaseApi("bas.droid:droid-core:0.0.1")
+
     api project(path: ':bas-adapter-mediaplayer')
     api project(path: ':bas-leanback')
 
@@ -90,8 +92,8 @@ dependencies {
     implementation("bas.droid:labelview:0.0.1")
 
     //测试 adapter-imageloader代码
-    debugImplementation project(path: ':adapter-imageloader')
-    releaseImplementation("bas.droid:adapter-imageloader:0.0.1")
+//    implementation project(path: ':adapter-imageloader')
+    implementation("bas.droid:adapter-imageloader:0.0.1")
 
     //测试 leanback-tab代码
 //    implementation project(path: ':leanback-tab')

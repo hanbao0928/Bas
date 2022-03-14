@@ -8,9 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import bas.leanback.core.CallByOwner
 import bas.leanback.core.MemoryState
-import bas.leanback.core.R
+import bas.leanback.effectlayout.R
 import bas.lib.core.data.smartObservable
 import java.util.*
 import kotlin.properties.Delegates
@@ -94,7 +93,7 @@ class RecyclerViewMemoryHelper(
      * @param child 子view
      * @param focused 获取焦点的子/孙view
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun requestChildFocus(child: View?, focused: View?) {
         if (child == null || focused == null)
             return
@@ -149,7 +148,7 @@ class RecyclerViewMemoryHelper(
      * 在自定义[ViewGroup.addFocusables]对应方法中回调该方法
      * @return 如果处理了焦点记忆，则返回true，否则返回false
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun addFocusables(
         views: ArrayList<View>?,
         direction: Int,
@@ -188,7 +187,7 @@ class RecyclerViewMemoryHelper(
     /**
      * @return 处理了焦点分发则返回true，否则返回false
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onRequestFocusInDescendants(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         if (!shouldHandleFocusMemory()) {
             log("onRequestFocusInDescendants：不启用焦点记忆分发")

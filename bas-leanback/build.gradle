@@ -36,8 +36,8 @@ dependencies {
 
       /*droid核心库*/
     //    debugApi project(path: ':droid-core')
-//    releaseApi("bas.droid:droid-core:0.0.1")
-    implementation("bas.droid:droid-core:0.0.1")
+//    releaseApi("bas.droid:droid-core:0.0.3")
+    implementation("bas.droid:droid-core:0.0.3")
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
 

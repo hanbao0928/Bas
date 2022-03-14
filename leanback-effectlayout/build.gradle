@@ -38,10 +38,13 @@ android {
 dependencies {
     /*droid核心库*/
     //    debugApi project(path: ':droid-core')
-//    releaseApi("bas.droid:droid-core:0.0.1")
-    api("bas.droid:droid-core:0.0.1")
+//    releaseApi("bas.droid:droid-core:0.0.3")
+    api("bas.droid:droid-core:0.0.3")
 
+    implementation  "bas.droid:leanback-core:0.0.3"
+    api  "bas.droid:leanback-layout:0.0.3"
 //    implementation project(path: ':leanback-core')
+//    api project(path: ':leanback-layout')
 
 /*base*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

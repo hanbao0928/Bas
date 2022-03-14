@@ -7,8 +7,8 @@
 
     <declare-styleable name="LeanbackVerticalGridView">
         <!--默认不开启-->
-        <attr name="focusMemory_bas"/>
+        <attr name="lb_focusMemoryEnable"/>
         <!--焦点状态类型-->
-        <attr name="focusMemoryStateType_bas"/>
+        <attr name="lb_focusMemoryStateType"/>
     </declare-styleable>
 </resources>

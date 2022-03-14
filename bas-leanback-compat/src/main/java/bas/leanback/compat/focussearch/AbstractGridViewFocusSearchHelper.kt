@@ -10,7 +10,7 @@ import androidx.leanback.widget.BaseGridView
 import androidx.leanback.widget.VerticalGridView
 import bas.leanback.compat.R
 import bas.leanback.compat.logd
-import bas.leanback.core.CallByOwner
+import bas.lib.core.lang.annotation.CallByOwner
 
 /**
  * Created by Lucio on 2021/11/28.
@@ -46,7 +46,7 @@ abstract class AbstractGridViewFocusSearchHelper<T : BaseGridView>(
 
     protected abstract val orientation: Int
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onRtlPropertiesChanged(layoutDirection: Int) {
         isRtl = layoutDirection == View.LAYOUT_DIRECTION_RTL
     }
@@ -56,7 +56,7 @@ abstract class AbstractGridViewFocusSearchHelper<T : BaseGridView>(
         direction: Int
     ): Int
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun focusSearch(focused: View?, direction: Int): View? {
         val next = callback.callSuperFocusSearch(focused, direction)
         if (view.isFocusSearchDisabled ||  next == null || (next != view && next != focused)) {

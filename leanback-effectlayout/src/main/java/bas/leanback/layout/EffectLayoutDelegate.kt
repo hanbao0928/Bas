@@ -15,9 +15,8 @@ import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
-import bas.leanback.core.CallByOwner
-import bas.leanback.core.R
-import bas.leanback.core.loge
+import bas.lib.core.lang.annotation.CallByOwner
+import bas.leanback.effectlayout.R
 import bas.lib.core.converter.toJson
 
 /**
@@ -113,7 +112,7 @@ class EffectLayoutDelegate private constructor(
         Log.d("EffectLayout@${this.hashCode()}", msg)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         logd("onSizeChanged($w,$h,$oldw,$oldh)")
         if (w == oldw && h == oldh) {
@@ -157,7 +156,7 @@ class EffectLayoutDelegate private constructor(
         }
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun dispatchDraw(canvas: Canvas) {
         if (params.containsSurfaceChild) {
             callback.callSuperDispatchDraw(canvas)
@@ -178,7 +177,7 @@ class EffectLayoutDelegate private constructor(
         drawShimmer(canvas)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun draw(canvas: Canvas) {
         logd("draw")
         if (params.containsSurfaceChild) {
@@ -199,14 +198,14 @@ class EffectLayoutDelegate private constructor(
         }
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onFocusChanged(gainFocus: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
 //        这么处理会带来不可预期的异常：用户并不知道内部在这个地方改变了状态，因此状态的改变改为由用户决定
 //        layout.isSelected = gainFocus
         performFocusChanged(gainFocus)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun performFocusChanged(hasFocus:Boolean){
         if (hasFocus) {
             onGainFocus()
@@ -215,14 +214,14 @@ class EffectLayoutDelegate private constructor(
         }
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onViewAdded(child: View?) {
         child?.let {
             adjustChildMargin(it)
         }
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onDetachedFromWindow() {
         logd("onDetachedFromWindow")
         stopAnimation()
@@ -386,7 +385,7 @@ class EffectLayoutDelegate private constructor(
                     setShimmerTranslate(value)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    loge("[EffectLayout]:Shimmer动画异常", e)
+                    Log.e("[EffectLayout]","Shimmer动画异常", e)
                 }
             }
             addListener(object : AnimatorListenerAdapter() {

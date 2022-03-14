@@ -33,13 +33,15 @@ android {
 }
 
 dependencies {
+//    implementation project(path: ':leanback-core')
+    implementation "bas.droid:leanback-core:0.0.3"
     /*查看地址：https://developer.android.google.cn/jetpack/androidx/releases/leanback?hl=zh_cn*/
     api 'androidx.leanback:leanback:1.2.0-alpha01'/*1.1.0-beta01*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
-    implementation project(path: ':bas-leanback-core')
+    implementation project(path: ':leanback-effectlayout')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

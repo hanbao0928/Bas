@@ -8,9 +8,9 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnFocusChangeListener
 import androidx.core.view.ViewCompat
-import androidx.recyclerview.R
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
+import bas.leanback.effectlayout.R
 
 /**
  * Created by Lucio on 2022/2/8.
@@ -66,12 +66,12 @@ open class LeanbackRecyclerView @JvmOverloads constructor(
     init {
         val ta = context.obtainStyledAttributes(
             attrs,
-            bas.leanback.core.R.styleable.LeanbackRecyclerView,
+            R.styleable.LeanbackRecyclerView,
             defStyleAttr,
             0
         )
         dispatchKeyEventOnScrolling = ta.getBoolean(
-            bas.leanback.core.R.styleable.LeanbackRecyclerView_rv_dispatchKeyEventOnScrolling_bas,
+            R.styleable.LeanbackRecyclerView_rv_dispatchKeyEventOnScrolling_bas,
             dispatchKeyEventOnScrolling
         )
 

@@ -3,7 +3,7 @@ package bas.leanback.layout
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.IdRes
-import bas.leanback.core.R
+import bas.leanback.effectlayout.R
 
 /**
  * Created by Lucio on 2021/12/6.

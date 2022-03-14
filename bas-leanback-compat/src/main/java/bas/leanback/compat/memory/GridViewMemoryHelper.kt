@@ -8,7 +8,7 @@ import androidx.leanback.widget.BaseGridView
 import androidx.leanback.widget.OnChildViewHolderSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import bas.leanback.compat.logd
-import bas.leanback.layout.MemoryHelper
+import bas.leanback.core.MemoryHelper
 import bas.droid.core.view.extensions.canTakeFocus
 import java.util.*
 
@@ -22,7 +22,7 @@ internal class GridViewMemoryHelper private constructor(
     override val layout: BaseGridView,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : MemoryHelper(layout, attrs, defStyleAttr) {
+) : bas.leanback.core.MemoryHelper(layout, attrs, defStyleAttr) {
 
     /**
      * 焦点记忆的位置
