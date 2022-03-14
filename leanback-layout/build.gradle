@@ -58,8 +58,6 @@ dependencies {
 
     //约束布局:添加用于预先注入
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-
-
 }
 
 // kotlin android javadoc

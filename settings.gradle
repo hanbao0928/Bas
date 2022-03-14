@@ -11,11 +11,6 @@ include ':adapter-imageloader'
 //include ':labelview-compiler'
 
 //已发布，需要修改代码时再配置进来
-include ':leanback-layout-annotation'
-include ':leanback-layout-compiler'
-include ':leanback-layout'
-
-//已发布，需要修改代码时再配置进来
 include ':systemui'
 
 //已发布，需要修改代码时再配置进来
@@ -23,6 +18,14 @@ include ':systemui'
 
 //已发布，需要修改代码时再配置进来
 //include ':leanback-tab'
+
+//已发布，需要修改代码时再配置进来
+//include ':leanback-layout-annotation'
+//include ':leanback-layout-compiler'
+//include ':leanback-layout'
+
+//已发布，需要修改代码时再配置进来
+//include ':leanback-flexbox'
 
 include ':droid-theme'
 
@@ -39,7 +42,7 @@ include ':bas-leanback-paging'
 
 
 include ':bas-binding-ext'
-include ':leanback-flexbox'
+
 
 include ':bas-leanback'
 include ':bas-adapter-mediaplayer'
