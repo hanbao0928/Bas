@@ -4,10 +4,9 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import bas.leanback.core.CallByOwner
+import bas.droid.core.anim.shakeX
+import bas.droid.core.anim.shakeY
 import bas.leanback.core.MemoryHelper
-import bas.leanback.effect.shakeX
-import bas.leanback.effect.shakeY
 import java.util.*
 
 /**
@@ -41,28 +40,28 @@ class LeanbackLayoutHelper private constructor(
         ta.recycle()
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun bringChildToFront(child: View?) {
         bringToFrontHelper.bringChildToFront(child)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun getChildDrawingOrder(childCount: Int, drawingPosition: Int): Int {
         return bringToFrontHelper.getChildDrawingOrder(childCount, drawingPosition)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun requestChildFocus(child: View?, focused: View?) {
         bringToFrontHelper.requestChildFocus(child, focused)
         memoryHelper.requestChildFocus(child, focused)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun addFocusables(views: ArrayList<View>?, direction: Int, focusableMode: Int): Boolean {
         return memoryHelper.addFocusables(views, direction, focusableMode)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onRequestFocusInDescendants(
         direction: Int,
         previouslyFocusedRect: Rect?
@@ -70,12 +69,12 @@ class LeanbackLayoutHelper private constructor(
         return memoryHelper.onRequestFocusInDescendants(direction, previouslyFocusedRect)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun onViewRemoved(child: View?) {
         memoryHelper.onViewRemoved(child)
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun dispatchUnhandledMove(focused: View?, direction: Int): Boolean {
         if (!borderAnimEnabled || focused == null)
             return false

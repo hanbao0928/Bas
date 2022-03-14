@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import bas.leanback.core.CallByOwner
+import bas.lib.core.lang.annotation.CallByOwner
 
 /**
  * Created by Lucio on 2021/10/31.
@@ -46,7 +46,7 @@ class BringToFrontHelper private constructor(
         ta.recycle()
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun requestChildFocus(child: View?, focused: View?) {
         if (child == null
             || !bringChildrenToFrontWhenRequestFocus
@@ -57,7 +57,7 @@ class BringToFrontHelper private constructor(
         child.bringToFront()
     }
 
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun bringChildToFront(child: View?) {
         performChildrenBringToFront(child)
         performDuplicateBringToFront()
@@ -70,7 +70,7 @@ class BringToFrontHelper private constructor(
      * @param drawingPosition 当前绘制位置
      * @return 最终绘制位置
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     fun getChildDrawingOrder(childCount: Int, drawingPosition: Int): Int {
         if (frontChildIndex < 0) {
             //禁用、或数据不正确时，返回默认位置
