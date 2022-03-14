@@ -1,4 +1,4 @@
-package bas.leanback.core;
+package bas.lib.core.lang.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

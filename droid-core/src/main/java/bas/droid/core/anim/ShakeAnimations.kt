@@ -1,13 +1,13 @@
 /**
  * Created by Lucio on 2021/11/30.
  */
-package bas.leanback.effect
+package bas.droid.core.anim
 
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.TranslateAnimation
-
+import bas.droid.core.R
 
 
 /**
@@ -16,17 +16,15 @@ import android.view.animation.TranslateAnimation
 @JvmField
 var SHAKE_DURATION = 500L
 
-private const val SHAKE_X_ANIM_OFFSET = 0x11
-private const val SHAKE_Y_ANIM_OFFSET = 0x12
 
 fun View.shakeX() {
-    startAnim(this.hashCode() + SHAKE_X_ANIM_OFFSET) {
+    startAnim(R.id.shake_x_anim_tag_bas) {
         ShakeXAnimation()
     }
 }
 
 fun View.shakeY() {
-    startAnim(this.hashCode() + SHAKE_Y_ANIM_OFFSET) {
+    startAnim(R.id.shake_y_anim_tag_bas) {
         ShakeYAnimation()
     }
 }
@@ -34,15 +32,6 @@ fun View.shakeY() {
 /**
  * @param cycles 循环次数，默认3次
  */
-fun ShakeAnimation(cycles: Float = 3f): Animation {
-    return TranslateAnimation(0.0f, 4.0f, 1.0f, 1.0f)
-        .also {
-            it.duration = SHAKE_DURATION
-            it.interpolator = CycleInterpolator(cycles)
-        }
-
-}
-
 fun ShakeXAnimation(cycles: Float = 3f): Animation {
     return TranslateAnimation(0.0f, 4.0f, 0.0f, 0.0f)
         .also {
@@ -52,6 +41,9 @@ fun ShakeXAnimation(cycles: Float = 3f): Animation {
 
 }
 
+/**
+ * @param cycles 循环次数，默认3次
+ */
 fun ShakeYAnimation(cycles: Float = 3f): Animation {
     return TranslateAnimation(0.0f, 0.0f, 0.0f, 4.0f)
         .also {
@@ -60,3 +52,5 @@ fun ShakeYAnimation(cycles: Float = 3f): Animation {
         }
 
 }
+
+

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="shake_x_anim_tag_bas" type="id"/>
+    <item name="shake_y_anim_tag_bas" type="id"/>
+
+</resources>

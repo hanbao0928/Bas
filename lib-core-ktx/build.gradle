@@ -13,12 +13,12 @@ java {
 
 dependencies {
 
-
 //    api project(path: ':lib-core')
-    api("bas.base:lib-core:0.0.1")
+    api("bas.lib:lib-core:0.0.3")
 
     /*kotlin基础库*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     /**
      * Kotlin-协程 https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
      * */
@@ -65,7 +65,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'lib-core-ktx'
-def PROJECT_VERSION = '0.0.1'
+def PROJECT_VERSION = '0.0.3'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'lib-core-ktx'
 

@@ -55,7 +55,7 @@ dependencies {
 
     /*基础代码库*/
     debugApi project(path: ':lib-core-ktx')
-    releaseApi("bas.lib:lib-core-ktx:0.0.1")
+    releaseApi("bas.lib:lib-core-ktx:0.0.3")
 
     debugApi project(path: ':adapter-imageloader')
     releaseApi("bas.droid:adapter-imageloader:0.0.1")
@@ -129,7 +129,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'droid-core'
-def PROJECT_VERSION = '0.0.1'
+def PROJECT_VERSION = '0.0.3'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'droid-core'
 

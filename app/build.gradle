@@ -54,7 +54,7 @@ dependencies {
 
     /*基础核心库*/
     debugApi project(path: ':lib-core-ktx')
-    releaseApi("bas.base:lib-core-ktx:0.0.1")
+    releaseApi("bas.lib:lib-core-ktx:0.0.1")
 //    implementation project(path: ':lib-core')
 //    implementation project(path: ':lib-core-ktx')
 
@@ -62,7 +62,7 @@ dependencies {
 
     implementation project(path: ':bas-binding-ext')
 
-    implementation project(path: ':bas-leanback-core')
+    implementation project(path: ':leanback-effectlayout')
 
     implementation project(path: ':arch')
 

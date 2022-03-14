@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import bas.lib.core.data.smartObservable
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -92,7 +93,7 @@ open class MemoryHelper private constructor(
      * child请求焦点
      * 在自定义[ViewGroup.requestChildFocus]对应方法中回调该方法
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     open fun requestChildFocus(child: View?, focused: View?) {
         onChildRequestFocused(child, focused)
     }
@@ -120,7 +121,7 @@ open class MemoryHelper private constructor(
      * 在自定义[ViewGroup.onViewRemoved]对应方法中回调该方法
      * @param child the removed child view
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     open fun onViewRemoved(child: View?) {
         if (memoryView == child) {
             memoryView = null
@@ -132,7 +133,7 @@ open class MemoryHelper private constructor(
      * 在自定义[ViewGroup.addFocusables]对应方法中回调该方法
      * @return 如果处理了焦点记忆，则返回true，否则返回false
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     open fun addFocusables(views: ArrayList<View>?, direction: Int, focusableMode: Int): Boolean {
         if (!shouldHandleFocusMemory()) {
             logd("addFocusables：不启用焦点记忆")
@@ -152,7 +153,7 @@ open class MemoryHelper private constructor(
     /**
      * @return 处理了焦点分发则返回true，否则返回false
      */
-    @CallByOwner
+    @bas.lib.core.lang.annotation.CallByOwner
     open fun onRequestFocusInDescendants(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         if (!shouldHandleFocusMemory()) {
             logd("onRequestFocusInDescendants：不启用焦点记忆分发")

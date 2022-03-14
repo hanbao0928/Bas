@@ -84,7 +84,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'lib-core'
-def PROJECT_VERSION = '0.0.1'
+def PROJECT_VERSION = '0.0.3'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'lib-core'
 
