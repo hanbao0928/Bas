@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep public class bas.leanback.layout.**{
+-keep public class bas.leanback.effect.**{
     public *;
     protected * ;
 }

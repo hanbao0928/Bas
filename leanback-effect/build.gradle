@@ -29,6 +29,8 @@ android {
         }
     }
     compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_1_7
+//        targetCompatibility = JavaVersion.VERSION_1_7
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -39,26 +41,23 @@ android {
 
 dependencies {
 
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-//    implementation 'androidx.core:core-ktx:1.2.0'
-//    implementation 'androidx.appcompat:appcompat:1.1.0'
-//    implementation 'com.google.android.material:material:1.1.0'
+    /*使用了一些函数*/
+    implementation "androidx.core:core-ktx:$androidx_core_ktx_verson"
+
+    //约束布局
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    //自动生成LeanbackLayout系列
+//    compileOnly project(path: ':leanback-effect-annotation')
+    compileOnly "bas.droid:leanback-effect-annotation:0.0.1"
+//    kapt project(path: ':leanback-effect-compiler')
+    kapt "bas.droid:leanback-effect-compiler:0.0.1"
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    //自动生成LeanbackLayout系列
-    implementation("bas.droid:leanback-core:0.0.3")
-//    implementation project(path: ':leanback-core')
-    compileOnly("bas.droid:leanback-layout-annotation:0.0.1")
-    kapt "bas.droid:leanback-layout-compiler:0.0.1"
-//    kapt project(path: ':leanback-layout-compiler')
-//    annotationProcessor("bas.droid:leanback-layout-compiler:0.0.1")
-//    implementation("bas.droid:leanback-layout-annotation:0.0.1")
-
-    //约束布局:添加用于预先注入
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 }
+
 
 // kotlin android javadoc
 task generateSourcesJar(type: Jar) {
@@ -88,10 +87,10 @@ artifacts {
     archives generateSourcesJar
 }
 
-def PROJECT_NAME = 'leanback-layout'
+def PROJECT_NAME = 'leanback-effect'
 def PROJECT_VERSION = '0.0.3'
 def PROJECT_DESC = ''
-def ARTIFACT_ID = 'leanback-layout'
+def ARTIFACT_ID = 'leanback-effect'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())

@@ -1,3 +1,4 @@
+include ':leanback-recyclerview'
 include ':leanback-core'
 
 include ':lib-compiler'
@@ -27,6 +28,11 @@ include ':systemui'
 //已发布，需要修改代码时再配置进来
 //include ':leanback-flexbox'
 
+//已发布，需要修改代码时再配置进来
+include ':leanback-effect'
+//include ':leanback-effect-compiler'
+//include ':leanback-effect-annotation'
+
 include ':droid-theme'
 
 include ':bas-and-arch'
@@ -34,9 +40,7 @@ include ':tvarch'
 include ':player'
 include ':arch'
 include ':core'
-include ':leanback-effectlayout'
-include ':bas-leanback-layout-compiler'
-include ':bas-leanback-layout-annotation'
+
 include ':bas-leanback-compat'
 include ':bas-leanback-paging'
 
