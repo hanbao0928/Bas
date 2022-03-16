@@ -92,7 +92,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'binding-ext'
-def PROJECT_VERSION = '0.0.1'
+def PROJECT_VERSION = '0.0.2'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'binding-ext'
 

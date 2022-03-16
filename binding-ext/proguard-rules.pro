@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep public class com.bas.android.binding.**{
+-keep public class bas.droid.binding.**{
     public *;
     protected * ;
 }

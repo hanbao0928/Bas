@@ -1,4 +1,4 @@
--keep public class com.bas.android.binding.**{
+-keep public class bas.droid.binding.**{
     public *;
     protected * ;
 }

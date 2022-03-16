@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+//
 //    buildFeatures {
 //        dataBinding = true
 //    }
@@ -35,7 +35,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.3.2'
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation project(path: ':binding-ext')
+
     /**
      * 编译依赖SystemUi，需要该功能的需要自行引入
      */
