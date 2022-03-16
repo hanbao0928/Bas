@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bas.droid.adapter.mediaplayer.sys.VideoViewCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone">
+    <!--利用布局家在播放器主要是为了预防播放器一开始就获取焦点-->
+</bas.droid.adapter.mediaplayer.sys.VideoViewCompat>

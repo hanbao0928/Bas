@@ -7,7 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import bas.droid.core.app.BasActivityStack
+import bas.droid.core.app.ActivityStack
 import bas.droid.core.app.BasApplicationManager
 
 /**
@@ -50,7 +50,7 @@ internal object ApplicationManagerImpl : BasApplicationManager {
     override var isForeground = false
         private set
 
-    override val activityStack: BasActivityStack = ActivityStackImpl()
+    override val activityStack: ActivityStack = ActivityStackImpl()
 
     /**
      * 初始化

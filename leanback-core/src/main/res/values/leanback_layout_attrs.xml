@@ -21,7 +21,29 @@
         <attr name="lb_focusMemoryStateType" />
     </declare-styleable>
 
-    <!--###############这部分属性适用于任何的ViewGroup-->
+
+    <!--缩放帮助类所需的缩放等级属性-->
+    <item name="lb_focus_zoom_factor_xxsmall_bas" type="fraction">103%</item>
+
+    <attr name="zoomFactor">
+        <!--无-->
+        <enum name="none" value="0" />
+
+        <!--自定义资源：amtv_focus_zoom_factor_xxsmal 103%-->
+        <enum name="xxsmall" value="99" />
+
+        <!--对应系统资源：lb_focus_zoom_factor_xsmall 106%-->
+        <enum name="xsmall" value="4" />
+
+        <!--对应系统资源：lb_focus_zoom_factor_small 110%-->
+        <enum name="small" value="1" />
+
+        <!--对应系统资源：lb_focus_zoom_factor_medium 114%-->
+        <enum name="medium" value="2" />
+
+        <!--对应系统资源：lb_focus_zoom_factor_large 118%-->
+        <enum name="large" value="3" />
+    </attr>
 
 
 

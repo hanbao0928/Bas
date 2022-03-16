@@ -14,7 +14,7 @@ interface BasApplicationManager {
     /**
      * activity堆栈
      */
-    val activityStack: BasActivityStack
+    val activityStack: ActivityStack
 
     /**
      * 绑定状态变化监听

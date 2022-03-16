@@ -10,8 +10,10 @@ buildscript {
         globalTargetSdkVersion30 = 30
         globalMinSdkVersion17 = 17
 
+        droid_core_version = "0.0.3"
+
         kotlin_version = "1.4.20"
-        kotlinx_coroutines_core_version = "1.4.2"
+        kotlinx_coroutines_core_version = "1.5.2"
         gson_version = "2.8.7"
         jackson_version = "2.9.6"
         fastjson_version = "1.2.10"
@@ -22,7 +24,8 @@ buildscript {
         lifecycle_version = "2.4.0-alpha03"
         flexbox_version = "3.0.0"
         androidx_annotation_version = "1.1.0"
-
+        /*1.1.0-beta01*/
+        leanback_version = "1.2.0-alpha01"
     }
 
     repositories {

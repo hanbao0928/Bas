@@ -1,0 +1,125 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+
+    /*用于kotlin生成javadoc*/
+    id 'org.jetbrains.dokka-android'
+    /*用于上传maven*/
+    id 'maven'
+}
+
+android {
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.globalMinSdkVersion17
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion30
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation 'androidx.core:core-ktx:1.2.0'
+//    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    implementation 'com.google.android.material:material:1.2.1'
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+      /*droid核心库*/
+//    debugApi project(path: ':droid-core')
+//    releaseApi("bas.droid:droid-core:$droid_core_version")
+    /*使用了核心工具库的一些方法*/
+    implementation("bas.droid:droid-core:$droid_core_version")
+
+    /*七牛播放器*/
+    api files('libs/pldroid-player-2.2.6.jar')
+    /*腾讯云播放器：https://cloud.tencent.com/document/product/881/20216 9.1.10566*/
+    api 'com.tencent.liteav:LiteAVSDK_Professional:9.1.10566'
+}
+
+
+// kotlin android javadoc
+task generateSourcesJar(type: Jar) {
+    group = 'jar'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = javadoc.destinationDir
+}
+
+task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+    group = 'jar'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives generateJavadoc
+    archives generateSourcesJar
+}
+
+
+def PROJECT_NAME = 'adapter-mediaplayer'
+def PROJECT_VERSION = '0.0.1'
+def PROJECT_DESC = ''
+def ARTIFACT_ID = 'adapter-mediaplayer'
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_URL) {
+                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+            }
+            pom.project {
+                name PROJECT_NAME
+                version PROJECT_VERSION
+                artifactId ARTIFACT_ID
+                groupId 'bas.droid'
+                packaging 'aar'
+                description PROJECT_DESC
+            }
+        }
+    }
+}

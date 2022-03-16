@@ -47,7 +47,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "bas.droid:droid-core:0.0.3"
+    implementation "bas.droid:droid-core:$droid_core_version"
+
+    implementation "androidx.leanback:leanback:$leanback_version"
 }
 
 // kotlin android javadoc
@@ -79,7 +81,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'leanback-core'
-def PROJECT_VERSION = '0.0.3'
+def PROJECT_VERSION = '0.0.4'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'leanback-core'
 

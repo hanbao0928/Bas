@@ -85,16 +85,17 @@ dependencies {
 //    debugImplementation project(path: ':leanback-tab')
 //    releaseImplementation("bas.droid:leanback-tab:0.0.1")
 
+    implementation("bas.droid:leanback-effect:0.0.3")
+//    debugImplementation project(path: ':leanback-effect')
+//    releaseImplementation("bas.droid:leanback-effect:0.0.3")
 
-    implementation project(path: ':bas-binding-ext')
+    implementation project(path: ':binding-ext')
 
-    implementation project(path: ':leanback-effectlayout')
 
     implementation project(path: ':arch')
 
 
-    api project(path: ':bas-adapter-mediaplayer')
-    api project(path: ':bas-leanback')
+    api project(path: ':adapter-mediaplayer')
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

@@ -1,14 +1,14 @@
 package bas.droid.core.app.internal
 
 import android.app.Activity
-import bas.droid.core.app.BasActivityStack
+import bas.droid.core.app.ActivityStack
 import java.util.*
 
 /**
  * Created by Lucio on 2019/1/28.
  * Activity堆栈
  */
-internal class ActivityStackImpl : BasActivityStack {
+internal class ActivityStackImpl : ActivityStack {
 
     private val mStack: Stack<Activity> = Stack<Activity>()
 

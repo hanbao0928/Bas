@@ -3,8 +3,12 @@ include ':leanback-core'
 
 include ':lib-compiler'
 
+include ':binding-ext'
+
 //已发布，需要修改代码时再配置进来
 include ':adapter-imageloader'
+
+include ':adapter-mediaplayer'
 
 //已发布，需要修改代码时再配置进来
 //include ':labelview'
@@ -29,13 +33,13 @@ include ':systemui'
 //include ':leanback-flexbox'
 
 //已发布，需要修改代码时再配置进来
-include ':leanback-effect'
+//include ':leanback-effect'
 //include ':leanback-effect-compiler'
 //include ':leanback-effect-annotation'
 
 include ':droid-theme'
 
-include ':bas-and-arch'
+include ':droid-arch'
 include ':tvarch'
 include ':player'
 include ':arch'
@@ -45,11 +49,10 @@ include ':bas-leanback-compat'
 include ':bas-leanback-paging'
 
 
-include ':bas-binding-ext'
 
 
-include ':bas-leanback'
-include ':bas-adapter-mediaplayer'
+
+
 include ':droid-core'
 include ':lib-core-ktx'
 include ':lib-core'
