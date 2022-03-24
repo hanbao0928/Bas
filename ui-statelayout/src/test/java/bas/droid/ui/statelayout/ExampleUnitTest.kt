@@ -1,4 +1,4 @@
-package bas.droid.arch
+package bas.droid.ui.statelayout
 
 import org.junit.Test
 

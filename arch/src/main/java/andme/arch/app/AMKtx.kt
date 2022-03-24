@@ -47,8 +47,8 @@ inline fun <reified T : ViewModel> Fragment.obtainViewModel(): T {
         return this.obtainViewModel(T::class.java)
     }else{
         return ViewModelProvider(
-                this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        ).get(T::class.java)
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[T::class.java]
     }
 }

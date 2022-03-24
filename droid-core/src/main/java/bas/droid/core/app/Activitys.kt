@@ -1,3 +1,7 @@
+/**
+ * Created by Lucio on 2021/12/1.
+ */
+
 package bas.droid.core.app
 
 import android.app.Activity
@@ -8,9 +12,6 @@ import bas.droid.core.util.checkValidationOrThrow
 import bas.lib.core.lang.onCatch
 import bas.lib.core.lang.tryIgnore
 
-/**
- * Created by Lucio on 2021/12/1.
- */
 
 /**
  * 快速运行一个Activity

@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import androidx.annotation.RequiresApi
-import bas.droid.core.logi
 import bas.droid.core.util.activityManager
 import java.io.BufferedReader
 import java.io.FileReader
@@ -33,8 +32,6 @@ fun getSupportABIs(): String {
             val abi2 = getSystemPropertyByReflect("ro.product.cpu.abi2", defValue)
             val abi32 = getSystemPropertyByReflect("ro.product.cpu.abilist32", defValue)
             val abi64 = getSystemPropertyByReflect("ro.product.cpu.abilist64", defValue)
-
-            logi("abi=${abi1} abi=${abi2} abi32=${abi32} abi64=${abi64}")
 
             val abiSet = LinkedHashSet<String>()
             if (!abi1.isInvalidPropertyValue(defValue)) {

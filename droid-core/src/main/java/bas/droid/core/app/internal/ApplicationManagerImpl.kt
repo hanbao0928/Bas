@@ -8,20 +8,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import bas.droid.core.app.ActivityStack
-import bas.droid.core.app.BasApplicationManager
+import bas.droid.core.app.ApplicationManager
 
 /**
  * Created by Lucio on 18/3/16.
  * 确定App是前台还是后台状态
  */
 @TargetApi(14)
-internal object ApplicationManagerImpl : BasApplicationManager {
+internal object ApplicationManagerImpl : ApplicationManager {
 
     override var isDebuggable: Boolean
         set(value) {
-            bas.droid.core.isDebuggable = value
+            bas.droid.core.debuggable = value
         }
-        get() = bas.droid.core.isDebuggable
+        get() = bas.droid.core.debuggable
 
     private const val TAG: String = "AppManagerImpl"
 
@@ -39,7 +39,7 @@ internal object ApplicationManagerImpl : BasApplicationManager {
 
     private var _checkRunnable: Runnable? = null
 
-    private var _stateListeners: MutableList<BasApplicationManager.OnAppStateChangedListener>? =
+    private var _stateListeners: MutableList<ApplicationManager.OnAppStateChangedListener>? =
         null
 
     /**
@@ -79,7 +79,7 @@ internal object ApplicationManagerImpl : BasApplicationManager {
     /**
      * 绑定App运行状态改变监听
      */
-    override fun registerAppStateChangedListener(listener: BasApplicationManager.OnAppStateChangedListener) {
+    override fun registerAppStateChangedListener(listener: ApplicationManager.OnAppStateChangedListener) {
         if (_stateListeners == null) {
             _stateListeners = mutableListOf()
         }
@@ -89,7 +89,7 @@ internal object ApplicationManagerImpl : BasApplicationManager {
     /**
      * 解绑App运行状态改变监听
      */
-    override fun unregisterAppStateChangedListener(listener: BasApplicationManager.OnAppStateChangedListener) {
+    override fun unregisterAppStateChangedListener(listener: ApplicationManager.OnAppStateChangedListener) {
         _stateListeners?.remove(listener)
     }
 

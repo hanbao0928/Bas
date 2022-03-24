@@ -36,17 +36,6 @@ fun ViewModel.launch(
     return viewModelScope.launch(context, start, block)
 }
 
-fun ViewModel.launchWithDelay(
-    delay:Long,
-    context: CoroutineContext = EmptyCoroutineContext,
-    start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
-) {
-    viewModelScope.launch(context, start){
-        delay(1000)
-        block.invoke(this)
-    }
-}
 
 inline fun AMViewModel.tryUi(func: AMViewModel.() -> Unit): Throwable? {
     return try {

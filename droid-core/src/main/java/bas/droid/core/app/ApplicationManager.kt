@@ -1,10 +1,15 @@
-package bas.droid.core.app
-
 /**
  * Created by Lucio on 2020-02-13.
  * app管理接口
  */
-interface BasApplicationManager {
+package bas.droid.core.app
+
+import bas.droid.core.app.internal.ApplicationManagerImpl
+
+@JvmField
+val AppManager: ApplicationManager = ApplicationManagerImpl
+
+interface ApplicationManager {
 
     /**
      * 当前app是否前台可见

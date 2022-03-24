@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "31.0.0"
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -41,11 +41,4 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    def paging_version = "3.0.1"
-
-    implementation("androidx.paging:paging-runtime:$paging_version")
-
-    //leanback 专用的paging https://developer.android.google.cn/training/tv/start/libraries?hl=zh_cn
-    implementation "androidx.leanback:leanback-paging:1.1.0-alpha09"
 }
