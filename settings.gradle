@@ -41,8 +41,6 @@ include ':systemui'
 include ':droid-theme'
 
 include ':droid-arch'
-include ':tvarch'
-include ':player'
 include ':arch'
 include ':core'
 

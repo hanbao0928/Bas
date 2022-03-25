@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <item name="amtv_presenter_item_click" type="id"/>
-
-    <item name="amtv_presenter_item_focus_changed" type="id"/>
-
-    <item name="am_focus_memory_flag" type="id"/>
-</resources>

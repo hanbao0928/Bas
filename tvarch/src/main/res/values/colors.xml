@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-
-
-    <!--默认控件背景色 8% 白色-->
-    <color name="default_slt_color">#4C000000</color>
-
-</resources>
