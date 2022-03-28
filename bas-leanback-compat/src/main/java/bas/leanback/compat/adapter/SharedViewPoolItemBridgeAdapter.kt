@@ -25,6 +25,6 @@ class SharedViewPoolItemBridgeAdapter : ItemBridgeAdapter {
     }
 
     override fun setAdapterListener(listener: AdapterListener?) {
-        viewPoolShareHelper.chainAdapterListener = listener
+        viewPoolShareHelper.setAdapterListener(listener)
     }
 }

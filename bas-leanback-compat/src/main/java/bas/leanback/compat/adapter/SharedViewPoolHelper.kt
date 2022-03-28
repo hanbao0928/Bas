@@ -5,6 +5,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.Presenter
 import androidx.leanback.widget.RowPresenter
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.reflect.Field
 import java.util.*
 
 /**
@@ -13,11 +14,32 @@ import java.util.*
  */
 internal class SharedViewPoolHelper : ItemBridgeAdapter.AdapterListener() {
 
-    private var recycledViewPool: RecyclerView.RecycledViewPool? = null
+    /**
+     * 用于[ListRowPresenter.ViewHolder.getGridView]共享view pool
+     */
+    private var sharedRecycledViewPool: RecyclerView.RecycledViewPool? = null
 
-    private var mPresenterMapper: ArrayList<Presenter>? = null
+    /**
+     * 用于[ListRowPresenter.ViewHolder.getBridgeAdapter]共享presenters
+     */
+    private var sharedPresenterMapper: ArrayList<Presenter>? = null
 
-    var chainAdapterListener: ItemBridgeAdapter.AdapterListener? = null
+    private var chainAdapterListener: ItemBridgeAdapter.AdapterListener? = null
+
+
+    /**
+     * 设置共享的Presenters，用于设置每一个[ListRowPresenter.ViewHolder.getBridgeAdapter]持有的Presenters
+     */
+    fun setPresenterMapper(presenterMapper: ArrayList<Presenter>) {
+        this.sharedPresenterMapper = presenterMapper
+    }
+
+    /**
+     * 设置Adapter监听
+     */
+    fun setAdapterListener(listener: ItemBridgeAdapter.AdapterListener?) {
+        this.chainAdapterListener = listener
+    }
 
     override fun onAddPresenter(presenter: Presenter?, type: Int) {
         super.onAddPresenter(presenter, type)
@@ -64,22 +86,24 @@ internal class SharedViewPoolHelper : ItemBridgeAdapter.AdapterListener() {
             //让所有的ListRow都用同一个ViewPool，用同一个PresenterMapper，这是共享的关键
             val view = rowViewHolder.gridView
             // Recycled view pool is shared between all list rows
-            if (recycledViewPool == null) {
-                recycledViewPool = view.recycledViewPool
+            if (sharedRecycledViewPool == null) {
+                sharedRecycledViewPool = view.recycledViewPool
             } else {
-                view.setRecycledViewPool(recycledViewPool)
+                view.setRecycledViewPool(sharedRecycledViewPool)
             }
+
+            // presenters is shared between all list rows
             val bridgeAdapter = rowViewHolder.bridgeAdapter
-            if (mPresenterMapper == null) {
-                mPresenterMapper = bridgeAdapter.presenterMapper
+            if (sharedPresenterMapper == null) {
+                sharedPresenterMapper = bridgeAdapter.presenterMapper
             } else {
-                bridgeAdapter.presenterMapper = mPresenterMapper
+                bridgeAdapter.presenterMapper = sharedPresenterMapper
             }
         }
     }
 
 
-    companion object{
+    companion object {
 
         /**
          * 注意，该方法会替换[ItemBridgeAdapter.setAdapterListener],所以适合没有设置AdapterListener的情况，
@@ -87,10 +111,31 @@ internal class SharedViewPoolHelper : ItemBridgeAdapter.AdapterListener() {
          */
         @Deprecated("建议使用[SharedViewPoolItemBridgeAdapter]")
         @JvmStatic
-        fun apply(adapter:ItemBridgeAdapter){
-            adapter.setAdapterListener(SharedViewPoolHelper())
+        fun apply(adapter: ItemBridgeAdapter) {
+            try {
+                val clazz: Class<ItemBridgeAdapter> = adapter.javaClass
+                val fPop: Field = clazz.getField("mAdapterListener")
+                fPop.isAccessible = true
+                val userAdapterListener = fPop.get(clazz) as ItemBridgeAdapter.AdapterListener?
+                apply(adapter, userAdapterListener)
+            } catch (e: Exception) {
+                adapter.setAdapterListener(SharedViewPoolHelper())
+            }
         }
 
+        /**
+         * @param adapter
+         * @param userAdapterListener 用户的[ItemBridgeAdapter.AdapterListener]
+         */
+        @JvmStatic
+        fun apply(
+            adapter: ItemBridgeAdapter,
+            userAdapterListener: ItemBridgeAdapter.AdapterListener? = null
+        ) {
+            adapter.setAdapterListener(SharedViewPoolHelper().also {
+                it.setAdapterListener(userAdapterListener)
+            })
+        }
     }
 
 }
