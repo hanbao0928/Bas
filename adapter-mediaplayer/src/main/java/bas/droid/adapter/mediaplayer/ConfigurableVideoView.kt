@@ -3,12 +3,10 @@ package bas.droid.adapter.mediaplayer
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import bas.droid.adapter.mediaplayer.qn.QNVideoView
 import bas.droid.adapter.mediaplayer.sys.SysVideoView
 import bas.droid.adapter.mediaplayer.tencent.TXVideoView
-import bas.droid.core.util.Logger
-import bas.droid.core.view.extensions.removeSelfFromParent
-import bas.lib.core.lang.orDefault
 
 /**
  * Created by Lucio on 2021/9/22.
@@ -22,13 +20,9 @@ class ConfigurableVideoView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseVideoView(context, attrs, defStyleAttr), MediaPlayer {
+) : AbstractVideoView(context, attrs, defStyleAttr), MediaPlayer {
 
-    companion object {
-        private const val TAG = "ConfigurableVideoView"
-    }
-
-    private var kernelView: BaseVideoView? = null
+    private var kernelView: AbstractVideoView? = null
 
     @KernelType
     private var kernelType: Int = KernelType.SYS
@@ -49,11 +43,11 @@ class ConfigurableVideoView @JvmOverloads constructor(
             addKernelVideoView(kernelType)
         }
     }
-    
+
     fun requireQNPlayer(): QNVideoView {
         return kernelView as QNVideoView
     }
-    
+
     fun requireSysPlayer(): SysVideoView {
         return kernelView as SysVideoView
     }
@@ -65,7 +59,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
     //提醒kernel video view不可用
     private fun warnKernelVideoViewValidation(actionName: String) {
         if (kernelView == null) {
-            Logger.w(TAG, "real video view is null,action '$actionName' is ignore.")
+            logw("real video view is null,action '$actionName' is ignore.")
         }
     }
 
@@ -74,29 +68,23 @@ class ConfigurableVideoView @JvmOverloads constructor(
      */
     fun setKernelVideoView(@KernelType type: Int) {
         if (type == this.kernelType && kernelView != null) {
-            Logger.i(
-                TAG,
-                "switch kernel video view fail,the type value is same with current type value${type}."
-            )
+            logi("switch kernel video view fail,the type value is same with current type value${type}.")
             return
         }
-        Logger.i(
-            TAG,
-            "当前使用播放器类型=${type}."
-        )
+        logi("当前使用播放器类型=${type}.")
         resetKernelVideoView()
         addKernelVideoView(type)
     }
 
     //添加内部播放器
-    private fun addKernelVideoView(@KernelType type: Int){
-        val kernelView = KernelViewFactory.createVideoView(context, type)
+    private fun addKernelVideoView(@KernelType type: Int) {
+        val kernelView = AdapterMediaPlayer.createVideoView(context, type)
         kernelView.id = R.id.video_view_id_bas
         addView(kernelView, generateDefaultKernelViewLayoutParams(context))
         this.kernelType = type
         this.kernelView = kernelView
         //重新绑定当前已经设置的监听器：避免切换播放器内核之后之前设置的监听器无效
-        if(listeners.isNotEmpty()){
+        if (listeners.isNotEmpty()) {
             listeners.forEach {
                 kernelView.addPlayerListener(it)
             }
@@ -104,13 +92,14 @@ class ConfigurableVideoView @JvmOverloads constructor(
     }
 
     //重置内部播放器
-    private fun resetKernelVideoView(){
+    private fun resetKernelVideoView() {
         kernelView?.let {
-            Logger.i(TAG, "resetKernelVideoView: 释放之前的播放器")
+            logi("resetKernelVideoView: 释放之前的播放器")
             it.release()
-            it.removeSelfFromParent()
-            listeners.forEach {
-                listener->
+            //从parent view group 中移除自己
+            (it.parent as? ViewGroup)?.removeView(it)
+
+            listeners.forEach { listener ->
                 it.removePlayerListener(listener)
             }
         }
@@ -176,7 +165,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
      */
     override fun isPlaying(): Boolean {
         warnKernelVideoViewValidation("isPlaying()")
-        return kernelView?.isPlaying().orDefault()
+        return kernelView?.isPlaying() == true
     }
 
     /**
@@ -194,7 +183,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
      */
     override fun getDuration(): Int {
         warnKernelVideoViewValidation("getDuration()")
-        return kernelView?.getDuration().orDefault()
+        return kernelView?.getDuration() ?: 0
     }
 
     /**
@@ -203,7 +192,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
      */
     override fun getCurrentPosition(): Int {
         warnKernelVideoViewValidation("getCurrentPosition()")
-        return kernelView?.getCurrentPosition().orDefault()
+        return kernelView?.getCurrentPosition() ?: 0
     }
 
     /**
@@ -244,7 +233,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
      */
     override fun getBufferPercentage(): Int {
         warnKernelVideoViewValidation("getBufferPercentage()")
-        return kernelView?.getBufferPercentage().orDefault()
+        return kernelView?.getBufferPercentage() ?: 0
     }
 
     /**

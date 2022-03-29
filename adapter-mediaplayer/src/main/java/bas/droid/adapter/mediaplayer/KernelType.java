@@ -5,15 +5,11 @@ import androidx.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static bas.droid.adapter.mediaplayer.KernelType.QN;
-import static bas.droid.adapter.mediaplayer.KernelType.SYS;
-import static bas.droid.adapter.mediaplayer.KernelType.TX;
-
 /**
  * Created by Lucio on 2021/9/28.
  */
 
-@IntDef({SYS, TX, QN})
+@IntDef({KernelType.LAZY, KernelType.SYS, KernelType.TX, KernelType.QN})
 @Retention(RetentionPolicy.SOURCE)
 public @interface KernelType {
 

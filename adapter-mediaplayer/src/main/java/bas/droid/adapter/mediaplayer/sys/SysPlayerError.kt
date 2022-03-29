@@ -1,10 +1,9 @@
 package bas.droid.adapter.mediaplayer.sys
 
+import android.content.Context
 import android.media.MediaPlayer
-import bas.droid.core.ctxBas
-import bas.droid.core.util.isNetworkConnected
 import bas.droid.adapter.mediaplayer.MediaPlayerError
-import bas.lib.core.lang.orDefaultIfNullOrEmpty
+import bas.droid.adapter.mediaplayer.isNetworkConnected
 
 /**
  * Created by Lucio on 2021/9/18.
@@ -18,39 +17,43 @@ class SysPlayerError private constructor(val what: Int, val extra: Int) :
         fun new(what: Int, extra: Int): SysPlayerError {
             return SysPlayerError(what, extra)
         }
-    }
 
-    override fun getFriendlyMessage(isLive: Boolean): String {
-        if (isLive) {
-            return getLiveFriendlyMessage()
-        } else {
-            return getVodFriendlyMessage()
+        @JvmStatic
+        fun getFriendlyMessage(context: Context, what: Int, extra: Int, isLive: Boolean): String {
+            if (isLive) {
+                return getLiveFriendlyMessage(context, what, extra)
+            } else {
+                return getVodFriendlyMessage(context, what, extra)
+            }
         }
-    }
 
-    private fun getLiveFriendlyMessage(): String {
-        return when (what) {
-            MediaPlayer.MEDIA_ERROR_IO -> {
-                if (ctxBas.isNetworkConnected()) {
-                    "直播已断开"
-                } else {
-                    "连接失败（网络错误或服务器已断开）"
+        @JvmStatic
+        private fun getLiveFriendlyMessage(context: Context, what: Int, extra: Int): String {
+            return when (what) {
+                MediaPlayer.MEDIA_ERROR_IO -> {
+                    if (context.isNetworkConnected) {
+                        "直播已断开"
+                    } else {
+                        "连接失败（网络错误或服务器已断开）"
+                    }
+                }
+                else -> {
+                    "what=${what} extra=${extra}"
                 }
             }
-            else -> {
-                message.orDefaultIfNullOrEmpty("未知异常")
+        }
+
+        private fun getVodFriendlyMessage(context: Context, what: Int, extra: Int): String {
+            return when (what) {
+                MediaPlayer.MEDIA_ERROR_IO -> {
+                    "连接失败（网络错误或服务器已断开）"
+                }
+                else -> {
+                    "what=${what} extra=${extra}"
+                }
             }
         }
     }
 
-    private fun getVodFriendlyMessage(): String {
-        return when (what) {
-            MediaPlayer.MEDIA_ERROR_IO -> {
-                "连接失败（网络错误或服务器已断开）"
-            }
-            else -> {
-                message.orDefaultIfNullOrEmpty("未知异常")
-            }
-        }
-    }
+
 }

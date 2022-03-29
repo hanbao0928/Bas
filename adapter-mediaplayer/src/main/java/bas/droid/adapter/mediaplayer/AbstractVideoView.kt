@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 /**
  * Created by Lucio on 2021/9/22.
  */
-abstract class BaseVideoView @JvmOverloads constructor(
+abstract class AbstractVideoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), MediaPlayer {
 

@@ -1,31 +1,44 @@
 package bas.droid.adapter.mediaplayer.qn
 
-import bas.droid.core.ctxBas
-import bas.droid.core.util.isNetworkConnected
+import android.content.Context
 import bas.droid.adapter.mediaplayer.MediaPlayerError
+import bas.droid.adapter.mediaplayer.isNetworkConnected
 import com.pili.pldroid.player.PLOnErrorListener
 
 /**
  * Created by Lucio on 2021/9/19.
  */
-class QNPlayerError(val errorCode: Int) :
-    MediaPlayerError(getFriendlyMessage(errorCode, false)) {
+class QNPlayerError private constructor(val errorCode: Int, message: String) :
+    MediaPlayerError(message) {
 
     companion object {
+
         @JvmStatic
-        fun new(errorCode: Int): QNPlayerError {
-            return QNPlayerError(errorCode)
+        fun new(context: Context, errorCode: Int, isLive: Boolean = false): QNPlayerError {
+            return QNPlayerError(errorCode, getFriendlyMessage(context, errorCode, isLive))
         }
 
         @JvmStatic
-        private fun getFriendlyMessage(errorCode: Int, isLive: Boolean): String {
+        fun new(
+            errorCode: Int,
+            message: String
+        ): QNPlayerError {
+            return QNPlayerError(errorCode, message)
+        }
+
+        @JvmStatic
+        internal fun getFriendlyMessage(
+            context: Context,
+            errorCode: Int,
+            isLive: Boolean
+        ): String {
             return when (errorCode) {
                 PLOnErrorListener.ERROR_CODE_OPEN_FAILED -> {
                     "播放器打开失败"
                 }
                 PLOnErrorListener.ERROR_CODE_IO_ERROR -> {
                     if (isLive) {
-                        if (ctxBas.isNetworkConnected()) {
+                        if (context.isNetworkConnected) {
                             "直播已断开"
                         } else {
                             "连接失败（网络错误或服务器已断开）"
@@ -56,10 +69,5 @@ class QNPlayerError(val errorCode: Int) :
         }
 
     }
-
-    override fun getFriendlyMessage(isLive: Boolean): String {
-        return getFriendlyMessage(errorCode, isLive)
-    }
-
 
 }

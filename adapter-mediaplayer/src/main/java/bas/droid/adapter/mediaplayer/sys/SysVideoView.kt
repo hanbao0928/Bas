@@ -4,15 +4,11 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.VideoView
 import androidx.annotation.RequiresApi
-import bas.droid.adapter.mediaplayer.BaseVideoView
-import bas.droid.adapter.mediaplayer.KernelViewFactory
-import bas.droid.adapter.mediaplayer.MediaPlayer
-import bas.droid.core.util.Logger
-import bas.droid.core.util.layoutInflater
-import bas.droid.adapter.mediaplayer.R
+import bas.droid.adapter.mediaplayer.*
 import java.util.concurrent.CopyOnWriteArrayList
 import android.media.MediaPlayer as SysMediaPlayer
 
@@ -21,7 +17,7 @@ import android.media.MediaPlayer as SysMediaPlayer
  */
 class SysVideoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : BaseVideoView(context, attrs, defStyleAttr), MediaPlayer {
+) : AbstractVideoView(context, attrs, defStyleAttr), MediaPlayer {
 
     val kernelView: VideoView
 
@@ -79,7 +75,7 @@ class SysVideoView @JvmOverloads constructor(
 
     init {
         kernelView =
-            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoViewCompat(
+            if (AdapterMediaPlayer.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoViewCompat(
                 context
             )
         kernelView.id = R.id.video_view_kernel_id_bas
@@ -88,6 +84,10 @@ class SysVideoView @JvmOverloads constructor(
         kernelView.setOnErrorListener(internalErrorListener)
         kernelView.setOnPreparedListener(internalPreparedListener)
         kernelView.setOnInfoListener(internalInfoListener)
+    }
+
+    private fun log(msg: String) {
+        Log.d("SysVideoView",msg)
     }
 
     protected open fun createKernelViewFromXmlForLeanback(): VideoView {
@@ -117,10 +117,6 @@ class SysVideoView @JvmOverloads constructor(
             loadingAssistPosition = duration
             postDelayed(this, 1000)
         }
-    }
-
-    private fun log(msg: String) {
-        Logger.d("SysVideoView", msg)
     }
 
     /**

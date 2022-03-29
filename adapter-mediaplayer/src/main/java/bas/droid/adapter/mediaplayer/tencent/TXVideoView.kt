@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.IntRange
-import bas.droid.adapter.mediaplayer.BaseVideoView
+import bas.droid.adapter.mediaplayer.AbstractVideoView
 import bas.droid.adapter.mediaplayer.MediaPlayer
-import bas.droid.core.util.Logger
-import bas.lib.core.converter.toJson
-import bas.lib.core.lang.annotation.Compat
-import bas.lib.core.lang.annotation.CompatNote
 import bas.droid.adapter.mediaplayer.R
 import com.tencent.rtmp.ITXVodPlayListener
 import com.tencent.rtmp.TXLiveConstants
@@ -23,13 +20,13 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Created by Lucio on 2021/9/20.
+ * "版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏"
  */
-@CompatNote(message = "版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏")
 class TXVideoView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseVideoView(context, attrs, defStyleAttr), MediaPlayer {
+) : AbstractVideoView(context, attrs, defStyleAttr), MediaPlayer {
 
     private val kernelView: TXCloudVideoView
     private val kernel: TXVodPlayer
@@ -76,11 +73,11 @@ class TXVideoView @JvmOverloads constructor(
     }
 
     private fun logi(msg: String) {
-        Logger.i("TXMediaPlayer", msg)
+        Log.i("TXMediaPlayer", msg)
     }
 
     private fun logw(msg: String) {
-        Logger.w("TXMediaPlayer", msg)
+        Log.w("TXMediaPlayer", msg)
     }
 
     /**
@@ -145,7 +142,7 @@ class TXVideoView @JvmOverloads constructor(
                 onPlayCompleteCompat()
                 //网络断连,且经多次重连亦不能恢复,更多重试请自行重启播放
                 listeners.forEach {
-                    it.onPlayError(TXPlayerError(event))
+                    it.onPlayError(TXPlayerError.new(context, event))
                 }
             }
             TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL -> {
@@ -160,7 +157,7 @@ class TXVideoView @JvmOverloads constructor(
                 onPlayCompleteCompat()
                 //HLS 解密 key 获取失败
                 listeners.forEach {
-                    it.onPlayError(TXPlayerError(event))
+                    it.onPlayError(TXPlayerError.new(context, event))
                 }
             }
         }
@@ -170,8 +167,9 @@ class TXVideoView @JvmOverloads constructor(
      *  版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏
      *  提交工单跟腾讯客户沟通之后，对方给出的回复：您好，这个日志前面看了，调用流程是没问题的，和后台确认了，结论也是说应该是机器性能不一致引起的。
      *  两个机器虽然Ram都是1G，但他们的系统优化层都可能会影响到，sdk不会自动去回收资源，需要您这边手动调用stopPlay去释放资源解决这个问题的
+     *
+     *  @note 版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏
      */
-    @Compat(message = "版本：9.1.10566 部分盒子上，在ViewPager2中使用，当第一个Item视频正常播放结束之后切换到下一个，整个盒子卡死甚至花屏")
     private fun onPlayCompleteCompat() {
         logi("执行部分盒子卡死花屏的兼容代码")
         kernel.stopPlay(true)
@@ -226,7 +224,7 @@ class TXVideoView @JvmOverloads constructor(
             it.setAutoPlay(autoPlay)
             it.startPlay(url)
         }
-        logi("setKernelParams \nurl=${url} \nstartTime=$startTime \nheaders=${headers.toJson()} \nautoPlay=$autoPlay")
+        logi("setKernelParams \nurl=${url} \nstartTime=$startTime \nheaders=${headers.toString()} \nautoPlay=$autoPlay")
     }
 
     /**

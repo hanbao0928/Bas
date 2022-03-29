@@ -15,5 +15,4 @@ abstract class MediaPlayerError : RuntimeException{
         writableStackTrace: Boolean
     ) : super(message, cause, enableSuppression, writableStackTrace)
 
-    abstract fun getFriendlyMessage(isLive:Boolean): String
 }

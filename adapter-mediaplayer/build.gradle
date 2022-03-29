@@ -27,7 +27,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -43,6 +43,8 @@ android {
 
 dependencies {
 
+
+
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //    implementation 'androidx.core:core-ktx:1.2.0'
 //    implementation   implementation "androidx.appcompat:appcompat:$appcompat_version"
@@ -52,12 +54,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-      /*droid核心库*/
+    /*droid核心库*/
 //    debugApi project(path: ':droid-core')
 //    releaseApi("bas.droid:droid-core:$droid_core_version")
     /*使用了核心工具库的一些方法*/
-    gradle.ext.depImplementation(this,'droid-core')
+//    gradle.ext.depImplementation(this, 'droid-core')
 //    implementation("bas.droid:droid-core:$droid_core_version")
+
+    implementation "androidx.annotation:annotation:$androidx_annotation_version"
 
     /*七牛播放器*/
     api files('libs/pldroid-player-2.2.6.jar')
@@ -96,7 +100,7 @@ artifacts {
 
 
 def PROJECT_NAME = 'adapter-mediaplayer'
-def PROJECT_VERSION = '0.0.1'
+def PROJECT_VERSION = '0.0.2'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'adapter-mediaplayer'
 

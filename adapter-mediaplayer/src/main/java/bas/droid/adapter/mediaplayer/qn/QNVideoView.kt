@@ -3,11 +3,7 @@ package bas.droid.adapter.mediaplayer.qn
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import bas.droid.adapter.mediaplayer.BaseVideoView
-import bas.droid.adapter.mediaplayer.KernelViewFactory
-import bas.droid.adapter.mediaplayer.MediaPlayer
-import bas.droid.core.util.layoutInflater
-import bas.droid.adapter.mediaplayer.R
+import bas.droid.adapter.mediaplayer.*
 import com.pili.pldroid.player.*
 import com.pili.pldroid.player.widget.PLVideoView
 import java.util.concurrent.CopyOnWriteArrayList
@@ -19,7 +15,7 @@ class QNVideoView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : BaseVideoView(
+) : AbstractVideoView(
     context,
     attrs,
     defStyleAttr
@@ -44,17 +40,17 @@ class QNVideoView @JvmOverloads constructor(
         }
     }
 
-    private val internalErrorListener = PLOnErrorListener { what,obj ->
+    private val internalErrorListener = PLOnErrorListener { what, obj ->
         //忽略拖动失败异常
         if (what == PLOnErrorListener.ERROR_CODE_SEEK_FAILED)
             return@PLOnErrorListener true
         listeners.forEach {
-            it.onPlayError(QNPlayerError(what))
+            it.onPlayError(QNPlayerError.new(context, what))
         }
         true
     }
 
-    private val internalInfoListener = PLOnInfoListener { what, extra ,obj->
+    private val internalInfoListener = PLOnInfoListener { what, extra, obj ->
         when (what) {
             PLOnInfoListener.MEDIA_INFO_BUFFERING_START -> {
                 listeners.forEach {
@@ -77,7 +73,7 @@ class QNVideoView @JvmOverloads constructor(
 
     init {
         kernelView =
-            if (KernelViewFactory.isLeanbackMode) createKernelViewFromXmlForLeanback() else PLVideoView(
+            if (AdapterMediaPlayer.isLeanbackMode) createKernelViewFromXmlForLeanback() else PLVideoView(
                 context
             )
 
