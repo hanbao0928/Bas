@@ -59,33 +59,47 @@ dependencies {
 //    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     /*droid核心库*/
-
-    /*基础核心库*/
-
-    debugImplementation project(path: ':droid-core')
-    releaseImplementation("bas.droid:droid-core:0.0.3")
+    implementation project(":droid-arch")
 
     /*基本不会怎么变化，已从settings.gradle中移除*/
-    implementation("bas.droid:leanback-flexbox:0.0.3")
+    gradle.ext.depApiInert(this,'compat-multidex')
+//    implementation("bas.droid:compat-multidex:0.0.1")
+//    debugImplementation project(path: ':compat-multidex')
+//    releaseImplementation("bas.droid:compat-multidex:0.0.1")
+
+    /*基础核心库*/
+    gradle.ext.depApi(this,'droid-core')
+    gradle.ext.depApiInert(this,'droid-theme')
+    gradle.ext.depApiInert(this,'systemui')
+//    debugImplementation project(path: ':droid-core')
+//    releaseImplementation("bas.droid:droid-core:0.0.3")
+
+    gradle.ext.depImplementationInert(this,'adapter-mediaplayer')
+//    api project(path: ':adapter-mediaplayer')
+
+    gradle.ext.depImplementation(this,'leanback-core')
+
+    gradle.ext.depImplementationInert(this,'leanback-layout')
+
+    /*基本不会怎么变化，已从settings.gradle中移除*/
+    gradle.ext.depImplementationInert(this,'leanback-flexbox')
+//    implementation("bas.droid:leanback-flexbox:0.0.3")
 //    debugImplementation project(path: ':leanback-flexbox')
 //    releaseImplementation("bas.droid:leanback-flexbox:0.0.3")
 
     /*基本不会怎么变化，已从settings.gradle中移除*/
-    implementation("bas.droid:compat-multidex:0.0.1")
-//    debugImplementation project(path: ':compat-multidex')
-//    releaseImplementation("bas.droid:compat-multidex:0.0.1")
-
-    /*基本不会怎么变化，已从settings.gradle中移除*/
-    implementation("bas.droid:labelview:0.0.1")
+    gradle.ext.depApiInert(this,'labelview')
+//    implementation("bas.droid:labelview:0.0.1")
 //    debugImplementation project(path: ':labelview')
 //    releaseImplementation("bas.droid:labelview:0.0.1")
 
     /*基本不会怎么变化，已从settings.gradle中移除*/
-    implementation("bas.droid:leanback-tab:0.0.1")
+    gradle.ext.depImplementationInert(this,'leanback-tab')
+//    implementation("bas.droid:leanback-tab:0.0.1")
 //    debugImplementation project(path: ':leanback-tab')
 //    releaseImplementation("bas.droid:leanback-tab:0.0.1")
-
-    implementation("bas.droid:leanback-effect:0.0.3")
+    gradle.ext.depImplementationInert(this,'leanback-effect')
+//    implementation("bas.droid:leanback-effect:0.0.3")
 //    debugImplementation project(path: ':leanback-effect')
 //    releaseImplementation("bas.droid:leanback-effect:0.0.3")
 
@@ -95,7 +109,6 @@ dependencies {
     implementation project(path: ':arch')
 
 
-    api project(path: ':adapter-mediaplayer')
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

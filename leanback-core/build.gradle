@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 
     /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka-android'
+    id 'org.jetbrains.dokka'
     /*用于上传maven*/
     id 'maven'
 }
@@ -46,8 +46,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    gradle.ext.depImplementation(this,'droid-core')
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "bas.droid:droid-core:$droid_core_version"
+//    implementation "bas.droid:droid-core:$droid_core_version"
 
     implementation "androidx.leanback:leanback:$leanback_version"
 }
@@ -64,10 +65,10 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'

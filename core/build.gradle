@@ -30,10 +30,11 @@ android {
 
 dependencies {
 
+
     //    debugApi project(path: ':droid-core')
 //    releaseApi("bas.droid:droid-core:$droid_core_version")
-    api("bas.droid:droid-core:$droid_core_version")
-
+//    api("bas.droid:droid-core:$droid_core_version")
+    gradle.ext.depImplementation(this, 'droid-core')
     api project(path: ':ui-statelayout')
 
     testImplementation 'junit:junit:4.12'
@@ -144,7 +145,7 @@ dependencies {
      */
     compileOnly "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-    api ("com.squareup.retrofit2:converter-jackson:$retrofit_version"){
+    api("com.squareup.retrofit2:converter-jackson:$retrofit_version") {
         exclude group: "com.fasterxml.jackson.core"
     }
     api "com.fasterxml.jackson.core:jackson-databind:2.9.6"

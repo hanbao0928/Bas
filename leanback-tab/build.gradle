@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 
     /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka-android'
+    id 'org.jetbrains.dokka'
     /*用于上传maven*/
     id 'maven'
 }
@@ -47,9 +47,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation "androidx.core:core-ktx:${androidx_core_ktx_verson}"
 //      implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation "com.google.android.material:material:${material_version}"
 
 
 //官方提供的leanback-tab : https://developer.android.google.cn/training/tv/start/libraries#leanback-tabs-library
@@ -69,10 +69,10 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'

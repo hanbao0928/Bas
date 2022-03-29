@@ -49,53 +49,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.bas.android.leanback.widget.scalable.ScalableTextView
+        <bas.leanback.effect.EffectFrameLayout
             android:id="@+id/btn_r_1"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="#00ffff"
-            android:text="ButtonR1"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#00ffff"
+                android:text="ButtonR1" />
+
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:id="@+id/btn_r_4"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/btn_r_1"
-            android:background="#ffff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img2"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.2">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="#ffff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img2"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:id="@+id/btn_r_2"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/btn_r_4"
-            android:background="#00ff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.2">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/btn_r_4"
+                android:background="#00ff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:id="@+id/btn_r_3"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/btn_r_2"
-            android:background="#ffff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img2"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.2">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="#ffff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img2"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+
     </RelativeLayout>
 
 
@@ -110,28 +143,49 @@
         android:orientation="horizontal"
         app:lb_focusMemoryEnable="true">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:background="#ffff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img2"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/btn_r_2"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.2">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:background="#ffff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img2"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_gravity="right"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/btn_r_1"
-            android:background="#00ff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:layout_toRightOf="@id/btn_r_2"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.2">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/btn_r_1"
+                android:background="#00ff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+
     </bas.leanback.layout.LeanbackFrameLayout>
 
     <TextView
@@ -144,37 +198,59 @@
         android:layout_marginTop="4dp"
         android:orientation="horizontal">
 
-        <com.bas.android.leanback.widget.scalable.ScalableTextView
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="#00ffff"
-            android:text="ButtonR1"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#00ffff"
+                android:text="ButtonR1" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/btn_r_2"
-            android:background="#ffff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img2"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+
+                android:background="#ffff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img2"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/btn_r_1"
-            android:background="#00ff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="#00ff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
     </LinearLayout>
 
     <TextView
@@ -187,36 +263,58 @@
         android:layout_marginTop="4dp"
         android:orientation="horizontal">
 
-        <com.bas.android.leanback.widget.scalable.ScalableTextView
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="#00ffff"
-            android:text="ButtonR1"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#00ffff"
+                android:text="ButtonR1" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/btn_r_2"
-            android:background="#ffff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img2"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
 
-        <com.bas.android.leanback.widget.scalable.ScalableImageView
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+
+                android:background="#ffff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img2"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
+        <bas.leanback.effect.EffectFrameLayout
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/btn_r_1"
-            android:background="#00ff00"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_img"
-            android:text="ButtonR2"
-            app:bringToFrontOnFocus="true"
-            app:zoomFactor="large" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:bringToFrontOnFocus_bas="self"
+            app:scaleFactor_bas="1.4">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="#00ff00"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_img"
+                android:text="ButtonR2" />
+        </bas.leanback.effect.EffectFrameLayout>
+
     </bas.leanback.layout.LeanbackLinearLayout>
 </bas.leanback.layout.LeanbackLinearLayout>

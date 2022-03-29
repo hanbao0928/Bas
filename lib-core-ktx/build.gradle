@@ -17,7 +17,7 @@ java {
 dependencies {
 
 //    api project(path: ':lib-core')
-    api("bas.lib:lib-core:0.0.3")
+    gradle.ext.depApi(this, 'lib-core')
 
     /*kotlin基础库*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -51,10 +51,10 @@ task generateSourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'

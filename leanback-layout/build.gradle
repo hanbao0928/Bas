@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
 
     /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka-android'
+    id 'org.jetbrains.dokka'
     /*用于上传maven*/
     id 'maven'
 }
@@ -47,8 +47,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //自动生成LeanbackLayout系列
-    implementation("bas.droid:leanback-core:0.0.3")
+//    //自动生成LeanbackLayout系列
+//    gradle.ext.depImplementation(this, 'leanback-core')
+    implementation("bas.droid:leanback-core:0.0.4")
 //    implementation project(path: ':leanback-core')
     compileOnly("bas.droid:leanback-layout-annotation:0.0.1")
     kapt "bas.droid:leanback-layout-compiler:0.0.1"
@@ -72,10 +73,10 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'
@@ -89,7 +90,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'leanback-layout'
-def PROJECT_VERSION = '0.0.3'
+def PROJECT_VERSION = '0.0.4'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'leanback-layout'
 

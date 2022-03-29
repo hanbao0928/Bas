@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.bas.adapter.mediaplayer.ConfigurableVideoView
+    <bas.droid.adapter.mediaplayer.ConfigurableVideoView
         android:id="@+id/player"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -16,7 +16,7 @@
         app:layout_constraintRight_toLeftOf="@id/player2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.bas.adapter.mediaplayer.ConfigurableVideoView
+    <bas.droid.adapter.mediaplayer.ConfigurableVideoView
         android:id="@+id/player2"
         android:layout_width="0dp"
         android:layout_height="0dp"

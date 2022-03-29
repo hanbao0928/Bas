@@ -3,10 +3,8 @@ package com.bas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.widget.LinearLayoutCompat
-import com.bas.adapter.mediaplayer.ConfigurableVideoView
-import com.bas.adapter.mediaplayer.MediaPlayer
-import com.pili.pldroid.player.widget.PLVideoView
+import bas.droid.adapter.mediaplayer.ConfigurableVideoView
+import bas.droid.adapter.mediaplayer.MediaPlayer
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val url = ""
         findViewById<ConfigurableVideoView>(R.id.player).also {
-            it.addPlayerListener(object:MediaPlayer.PlayerListener{
+            it.addPlayerListener(object: MediaPlayer.PlayerListener{
                 override fun onPlayPrepared() {
                     super.onPlayPrepared()
                     it.start()

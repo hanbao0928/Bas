@@ -43,8 +43,6 @@ dependencies {
 //   使用远程依赖
     compileOnly "bas.droid:systemui:0.0.1"
 
-    api project(path: ':droid-arch')
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

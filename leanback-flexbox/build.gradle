@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
 
     /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka-android'
+    id 'org.jetbrains.dokka'
     /*用于上传maven*/
     id 'maven'
 }
@@ -44,7 +44,8 @@ dependencies {
 
     api "com.google.android.flexbox:flexbox:$flexbox_version"
 
-    implementation("bas.droid:leanback-layout:0.0.3")
+    gradle.ext.depImplementationInert(this, 'leanback-layout')
+//    implementation("bas.droid:leanback-layout:$droid_leanback_layout_version")
 
     compileOnly("bas.droid:leanback-layout-annotation:0.0.1")
     annotationProcessor "bas.droid:leanback-layout-compiler:0.0.1"
@@ -63,10 +64,10 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'

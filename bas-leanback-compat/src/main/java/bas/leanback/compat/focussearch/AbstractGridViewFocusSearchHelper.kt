@@ -10,7 +10,6 @@ import androidx.leanback.widget.BaseGridView
 import androidx.leanback.widget.VerticalGridView
 import bas.leanback.compat.R
 import bas.leanback.compat.logd
-import bas.lib.core.lang.annotation.CallByOwner
 
 /**
  * Created by Lucio on 2021/11/28.

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import bas.droid.core.util.dp
-import bas.leanback.layout.EffectFrameLayout
+import bas.leanback.effect.EffectFrameLayout
 import com.bas.R
 
 /**
@@ -31,10 +31,9 @@ class EffectLayoutActivity:AppCompatActivity(R.layout.activity_effect_layout) {
         when(view.id){
             R.id.test_remove->{
                 val v1 = findViewById<EffectFrameLayout>(R.id.square)
-                if(v1.childCount > 1){
-                    v1.removeViewAt(v1.childCount - 1)
+                v1.findViewById<View>(R.id.to_remove_image)?.let {
+                    v1.removeView(it)
                 }
-
             }
             R.id.test_front->{
                 findViewById<View>(R.id.circle1_image).bringToFront()

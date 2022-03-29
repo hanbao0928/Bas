@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <bas.leanback.layout.EffectFrameLayout
+    <bas.leanback.effect.EffectFrameLayout
         android:id="@+id/square"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,13 +29,14 @@
         app:strokeWidth_bas="3dp">
 
         <ImageView
+            android:id="@+id/to_remove_image"
             android:layout_width="80dp"
             android:layout_height="320dp"
             android:scaleType="centerCrop"
             android:src="@drawable/test_img" />
-    </bas.leanback.layout.EffectFrameLayout>
+    </bas.leanback.effect.EffectFrameLayout>
 
-    <bas.leanback.layout.EffectConstraintLayout
+    <bas.leanback.effect.EffectConstraintLayout
         android:id="@+id/circle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,13 +44,13 @@
         android:layout_marginBottom="20dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        app:childrenOffsetMargin_bas="18dp"
         app:cornerSize_bas="58dp"
         app:layout_constraintBottom_toBottomOf="@id/center"
         app:layout_constraintLeft_toRightOf="@id/center"
         app:shadowColor_bas="#5900be60"
         app:shadowWidth_bas="20dp"
         app:strokeColor_bas="#5900be60"
-        app:childrenOffsetMargin_bas="18dp"
         app:strokeWidth_bas="4dp">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -57,13 +58,13 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/test_img"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/test_img"
             app:shapeAppearance="@style/CircleImage" />
-    </bas.leanback.layout.EffectConstraintLayout>
+    </bas.leanback.effect.EffectConstraintLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,7 +76,7 @@
         app:layout_constraintLeft_toLeftOf="@id/circle1"
         app:layout_constraintRight_toRightOf="@id/circle1" />
 
-    <bas.leanback.layout.EffectFrameLayout
+    <bas.leanback.effect.EffectFrameLayout
         android:id="@+id/circle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +96,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/test_img"
             app:shapeAppearance="@style/CircleImage" />
-    </bas.leanback.layout.EffectFrameLayout>
+    </bas.leanback.effect.EffectFrameLayout>
 
 
     <TextView
@@ -108,7 +109,7 @@
         app:layout_constraintRight_toRightOf="@id/circle2"
         app:layout_constraintTop_toBottomOf="@id/circle2" />
 
-    <bas.leanback.layout.EffectFrameLayout
+    <bas.leanback.effect.EffectFrameLayout
         android:id="@+id/rounded1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,9 +132,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/test_img"
             app:shapeAppearance="@style/RoundedImage" />
+    </bas.leanback.effect.EffectFrameLayout>
 
-
-    </bas.leanback.layout.EffectFrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -145,15 +145,15 @@
         app:layout_constraintRight_toRightOf="@id/rounded1"
         app:layout_constraintTop_toBottomOf="@id/rounded1" />
 
-    <bas.leanback.layout.EffectRelativeLayout
+    <bas.leanback.effect.EffectRelativeLayout
         android:id="@+id/rounded2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:cornerSize_bas="@dimen/test_rounding_radius"
         android:orientation="horizontal"
+        app:cornerSize_bas="@dimen/test_rounding_radius"
         app:layout_constraintRight_toLeftOf="@id/rounded1"
         app:layout_constraintTop_toBottomOf="@id/center"
         app:shadowColor_bas="#5900be60"
@@ -166,8 +166,7 @@
             android:src="@drawable/test_img"
             app:shapeAppearance="@style/RoundedImage" />
 
-
-    </bas.leanback.layout.EffectRelativeLayout>
+    </bas.leanback.effect.EffectRelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -179,7 +178,7 @@
         app:layout_constraintRight_toRightOf="@id/rounded1"
         app:layout_constraintTop_toBottomOf="@id/rounded1" />
 
-    <bas.leanback.layout.EffectRelativeLayout
+    <bas.leanback.effect.EffectRelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -200,7 +199,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/test_img"
             app:shapeAppearance="@style/Test2Image" />
-    </bas.leanback.layout.EffectRelativeLayout>
+    </bas.leanback.effect.EffectRelativeLayout>
 
     <bas.leanback.layout.LeanbackLinearLayout
         android:layout_width="wrap_content"
@@ -211,22 +210,22 @@
             android:id="@+id/test_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试第一个View移除EffectView"
-            android:onClick="onBtnClick"/>
+            android:onClick="onBtnClick"
+            android:text="测试第一个View移除EffectView" />
 
         <Button
             android:id="@+id/test_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试第二个View ImageBringToFront"
-            android:onClick="onBtnClick"/>
+            android:onClick="onBtnClick"
+            android:text="测试第二个View ImageBringToFront" />
 
         <Button
             android:id="@+id/test_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试第三个View 修改大小"
-            android:onClick="onBtnClick"/>
+            android:onClick="onBtnClick"
+            android:text="测试第三个View 修改大小" />
     </bas.leanback.layout.LeanbackLinearLayout>
 
 

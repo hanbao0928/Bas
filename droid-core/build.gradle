@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 
     /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka-android'
+    id 'org.jetbrains.dokka'
     /*用于上传maven*/
     id 'maven'
 }
@@ -54,17 +54,21 @@ dependencies {
 
 
     /*基础代码库*/
-    debugApi project(path: ':lib-core-ktx')
-    releaseApi("bas.lib:lib-core-ktx:0.0.3")
+    gradle.ext.depApi(this,'lib-core-ktx')
+//    debugApi project(path: ':lib-core-ktx')
+//    releaseApi("bas.lib:lib-core-ktx:0.0.3")
 
-    debugApi project(path: ':adapter-imageloader')
-    releaseApi("bas.droid:adapter-imageloader:0.0.1")
+    gradle.ext.depApiInert(this,'adapter-imageloader')
+//    debugApi project(path: ':adapter-imageloader')
+//    releaseApi("bas.droid:adapter-imageloader:0.0.1")
 
-    debugApi project(path: ':systemui')
-    releaseApi "bas.droid:systemui:0.0.1"
+    gradle.ext.depApiInert(this,'systemui')
+//    debugApi project(path: ':systemui')
+//    releaseApi "bas.droid:systemui:0.0.1"
 
-    releaseApi "bas.droid:droid-theme:0.0.1"
-    debugApi project(path: ':droid-theme')
+    gradle.ext.depApiInert(this,'droid-theme')
+//    releaseApi "bas.droid:droid-theme:0.0.1"
+//    debugApi project(path: ':droid-theme')
 
     /*lifecycle */
     /**
@@ -95,8 +99,6 @@ dependencies {
 //    compileOnly "com.squareup.retrofit2:converter-jackson:$retrofit_version"
 //    compileOnly "com.squareup.retrofit2:converter-gson:$retrofit_version"
 //    compileOnly 'org.ligboy.retrofit2:converter-fastjson:2.0.2'
-
-
 }
 
 
@@ -112,10 +114,10 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "javadoc"
-    outputDirectory = javadoc.destinationDir
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = "javadoc"
+//    outputDirectory = javadoc.destinationDir
+//}
 
 task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
     group = 'jar'

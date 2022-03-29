@@ -11,7 +11,6 @@ import androidx.leanback.widget.VerticalGridView
 import bas.leanback.compat.focussearch.AbstractGridViewFocusSearchHelper
 import bas.leanback.compat.memory.GridViewMemoryHelper
 import bas.leanback.core.MemoryState
-import bas.droid.core.view.extensions.isScrolling
 import java.util.*
 
 /**
@@ -134,5 +133,10 @@ class LeanbackVerticalGridView @JvmOverloads constructor(
         }
 
         return super.dispatchKeyEvent(event)
+    }
+
+
+    private fun isScrolling(): Boolean {
+        return scrollState != SCROLL_STATE_IDLE
     }
 }

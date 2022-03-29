@@ -1,34 +1,151 @@
-include ':ui-statelayout'
-include ':leanback-recyclerview'
-include ':leanback-core'
-
-include ':lib-compiler'
-
-include ':binding-ext'
+apply from : './module_dependon.gradle'
+//gradle.ext.useModule = false
+//
+//
+//class ExcludeInfo {
+//    String group
+//    String module
+//
+//    ExcludeInfo(group, module) {
+//        this.group = group
+//        this.module = module
+//    }
+//}
+//
+//def excludeInfo = {
+//    group, module ->
+//        return new ExcludeInfo(group, module)
+//}
+//
+//class ModuleInfo {
+//    String group
+//    String version
+//    List excludes
+//    boolean supportMaven
+//
+//    ModuleInfo(group, version, List excludes, supportMaven) {
+//        this.group = group
+//        this.version = version
+//        this.excludes = excludes
+//        this.supportMaven = supportMaven
+//    }
+//}
+//
+//def moduleInfo = {
+//    group, version, excludes, supportMaven ->
+//        return new ModuleInfo(group, version, excludes, supportMaven)
+//}
+//
+//def module_config = [
+//        /*顶端库*/
+//        'droid-theme'        : moduleInfo("bas.droid", "0.0.1", null, true),
+//        'systemui'           : moduleInfo("bas.droid", "0.0.1", null, true),
+//        'adapter-imageloader': moduleInfo("bas.droid", "0.0.1", null, true),
+//        'lib-core'           : moduleInfo("bas.lib", "0.0.3", null, true),
+//        /*核心中间库*/
+//        'lib-core-ktx'       : moduleInfo("bas.lib", "0.0.3", [
+//                excludeInfo("bas.lib", "lib-core")
+//        ], true),
+//
+//        'droid-core'         : moduleInfo("bas.droid", "0.0.3", [
+//                excludeInfo("bas.lib", "lib-core-ktx"),
+//                excludeInfo("bas.droid", "adapter-imageloader"),
+//                excludeInfo("bas.droid", "systemui"),
+//                excludeInfo("bas.droid", "droid-theme")
+//        ], true),
+//        'leanback-core'      : moduleInfo("bas.droid", "0.0.4", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], true),
+//        'leanback-layout'    : moduleInfo("bas.droid", "0.0.3", [
+//                excludeInfo("bas.droid", "leanback-core")
+//        ], true),
+//        'leanback-flexbox'   : moduleInfo("bas.droid", "0.0.3", [
+//                excludeInfo("bas.droid", "leanback-layout")
+//        ], true),
+//        'leanback-effect'    : moduleInfo("bas.droid", "0.0.3", null, true),
+//        'adapter-mediaplayer': moduleInfo("bas.droid", "0.0.1", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], true),
+//        'binding-ext'        : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "adapter-imageloader")
+//        ], false),
+//        'bas-leanback-compat': moduleInfo("", "", [
+//                excludeInfo("bas.droid", "leanback-core")
+//        ], false),
+//        'core'               : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], false),
+//        'arch'               : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "systemui")
+//        ], false),
+//        'droid-arch'         : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], false)
+//
+//]
+//
+//module_config.each { name, value ->
+//    if (gradle.ext.useModule) {
+//        include ":${name}"
+////        project(":${name}").projectDir = new File(rootDir.getParent(), "../Bas/${name}")
+//    }
+//}
+//
+//
+//gradle.ext.dependonApi = { project, name ->
+//    def handler = project.dependencies
+//    def module = (ModuleInfo) module_config.getAt(name)
+//    if (gradle.ext.useModule || module == null) {
+//        handler.api project.project(":$name")
+//    } else {
+////        System.out.println("module:$name" + module.group + " ")
+//        if (module.excludes != null && !module.excludes.isEmpty()) {
+//            if (module.supportMaven) {
+//                handler.api("${module.group}:$name:${module.version}") {
+//                    module.excludes.forEach {
+//                        excludeItem ->
+//                            exclude group: excludeItem.group, module: excludeItem.module
+//                    }
+//                }
+//            } else {
+//                handler.api project.project(":$name") {
+//                    module.excludes.forEach {
+//                        excludeItem ->
+//                            exclude group: excludeItem.group, module: excludeItem.module
+//                    }
+//                }
+//            }
+//
+//        } else {
+//            if (module.supportMaven) {
+//                handler.api "${module.group}:$name:${module.version}"
+//            } else {
+//                handler.api project.project(":$name")
+//            }
+//        }
+//    }
+//}
 
 //已发布，需要修改代码时再配置进来
-include ':adapter-imageloader'
-
-include ':adapter-mediaplayer'
-
-//已发布，需要修改代码时再配置进来
+//include ':lib-compiler'
+//include ':lib-core-ktx'
+//include ':lib-core'
+//include ':systemui'
+//include ':adapter-imageloader'
+//include ':droid-theme'
 //include ':labelview'
 //include ':labelview-annotation'
 //include ':labelview-compiler'
-
-//已发布，需要修改代码时再配置进来
-include ':systemui'
-
-//已发布，需要修改代码时再配置进来
 //include ':compat-multidex'
-
-//已发布，需要修改代码时再配置进来
+//include ':droid-core'
+//include ':adapter-mediaplayer'
+//include ':leanback-core'
 //include ':leanback-tab'
 
 //已发布，需要修改代码时再配置进来
 //include ':leanback-layout-annotation'
 //include ':leanback-layout-compiler'
-//include ':leanback-layout'
+include ':leanback-layout'
 
 //已发布，需要修改代码时再配置进来
 //include ':leanback-flexbox'
@@ -38,22 +155,14 @@ include ':systemui'
 //include ':leanback-effect-compiler'
 //include ':leanback-effect-annotation'
 
-include ':droid-theme'
+include ':ui-statelayout'
+include ':leanback-recyclerview'
+include ':binding-ext'
 
 include ':droid-arch'
 include ':arch'
 include ':core'
-
 include ':bas-leanback-compat'
 include ':bas-leanback-paging'
-
-
-
-
-
-
-include ':droid-core'
-include ':lib-core-ktx'
-include ':lib-core'
 include ':app'
-rootProject.name = "Basic"
+rootProject.name = "Bas"

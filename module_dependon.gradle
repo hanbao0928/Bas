@@ -1,0 +1,352 @@
+//是否使用module依赖，如果不使用module依赖则使用远程依赖
+gradle.ext.useModule = false
+
+def useModuleDep = {
+    gradle.ext.useModule || it == null || !it.version
+}
+
+def useModuleDepInert = {
+    gradle.ext.forceUseModule || it == null || it.useModule || !it.version
+}
+
+def modules = [
+        'lib-core'     : [
+                group  : 'bas.lib',
+                version: '0.0.3'
+        ],
+        'lib-core-ktx' : [
+                group   : 'bas.lib',
+                version : '0.0.3',
+                excludes: [
+                        [
+                                group : 'bas.lib',
+                                module: 'lib-core'
+                        ]
+                ]
+        ],
+        'droid-core'   : [
+                group   : 'bas.droid',
+                version : '0.0.3',
+                excludes: [
+                        [
+                                group : 'bas.droid',
+                                module: 'adapter-imageloader'
+                        ],
+                        [
+                                group : 'bas.droid',
+                                module: 'systemui'
+                        ],
+                        [
+                                group : 'bas.droid',
+                                module: 'droid-theme'
+                        ]
+                ]
+        ],
+        'leanback-core': [
+                group   : 'bas.droid',
+                version : '0.0.4',
+                excludes: [
+                        [
+                                group : 'bas.droid',
+                                module: 'droid-core'
+                        ]
+                ]
+        ],
+]
+
+/*配置settings*/
+modules.each { name, module ->
+    if (useModuleDep(module)) {
+        include ":${name}"
+        if (!module.path) {
+            //没有指定路径，使用默认路径
+            project(":${name}").projectDir = new File(rootDir.getParent(), "../Bas/${name}")
+        } else {
+            project(":${name}").projectDir = new File(module.path)
+        }
+    }
+}
+
+/*是否强制惰性Module强制使用本地module模式，如果为false，则读取单个module的配置信息进行配置*/
+gradle.ext.forceUseModule = false
+
+/*配置惰性module：一般末端和顶端module不经常变动，适合放在这个位置*/
+def inertModules = [
+        'adapter-imageloader': [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'systemui'           : [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'droid-theme'        : [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'labelview'          : [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'compat-multidex'    : [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'adapter-mediaplayer': [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false,
+                excludes : [
+                        [
+                                group : 'bas.droid',
+                                module: 'droid-core'
+                        ]
+                ]
+        ],
+        'leanback-layout'    : [
+                group    : 'bas.droid',
+                version  : '0.0.4',
+                useModule: false,
+                excludes : [
+                        [
+                                group : 'bas.droid',
+                                module: 'leanback-core'
+                        ]
+                ]
+        ],
+        'leanback-flexbox'   : [
+                group    : 'bas.droid',
+                version  : '0.0.3',
+                useModule: false,
+                excludes : [
+                        [
+                                group : 'bas.droid',
+                                module: 'leanback-layout'
+                        ]
+                ]
+        ],
+        'leanback-tab'       : [
+                group    : 'bas.droid',
+                version  : '0.0.1',
+                useModule: false
+        ],
+        'leanback-effect'    : [
+                group    : 'bas.droid',
+                version  : '0.0.3',
+                useModule: false
+        ]
+]
+inertModules.each { name, module ->
+    if (useModuleDepInert(module)) {
+        //如果设置使用本地module或者module为空（即没有在配置：modules变量中找到对用的module）、或者没有设置版本号，则视为本地依赖
+        include ":${name}"
+        if (!module.path) {
+            //没有指定路径，使用默认路径
+            project(":${name}").projectDir = new File(rootDir.getParent(), "../Bas/${name}")
+        } else {
+            project(":${name}").projectDir = new File(module.path)
+        }
+    }
+}
+
+gradle.ext.depApiInert = { project, name ->
+    def handler = project.dependencies
+    def module = inertModules[name]
+    if (useModuleDepInert(module)) {
+        handler.api project.project(":$name")
+    } else {
+        if (module.excludes != null && !module.excludes.isEmpty()) {
+            handler.api("${module.group}:$name:${module.version}") {
+                module.excludes.forEach {
+                    excludeItem ->
+                        exclude group: excludeItem.group, module: excludeItem.module
+                }
+            }
+        } else {
+            handler.api("${module.group}:$name:${module.version}")
+        }
+    }
+}
+
+gradle.ext.depImplementationInert = { project, name ->
+    def handler = project.dependencies
+    def module = inertModules[name]
+    if (useModuleDepInert(module)) {
+        handler.api project.project(":$name")
+    } else {
+        if (module.excludes != null && !module.excludes.isEmpty()) {
+            handler.api("${module.group}:$name:${module.version}") {
+                module.excludes.forEach {
+                    excludeItem ->
+                        exclude group: excludeItem.group, module: excludeItem.module
+                }
+            }
+        } else {
+            handler.api("${module.group}:$name:${module.version}")
+        }
+    }
+}
+
+gradle.ext.depApi = { project, name ->
+    def handler = project.dependencies
+    def module = modules[name]
+    if (useModuleDep(module)) {
+        handler.api project.project(":$name")
+    } else {
+        if (module.excludes != null && !module.excludes.isEmpty()) {
+            handler.api("${module.group}:$name:${module.version}") {
+                module.excludes.forEach {
+                    excludeItem ->
+                        exclude group: excludeItem.group, module: excludeItem.module
+                }
+            }
+
+        } else {
+            handler.api("${module.group}:$name:${module.version}")
+        }
+    }
+}
+
+gradle.ext.depImplementation = { project, name ->
+    def handler = project.dependencies
+    def module = modules[name]
+    if (useModuleDep(module)) {
+        handler.api project.project(":$name")
+    } else {
+        if (module.excludes != null && !module.excludes.isEmpty()) {
+            handler.api("${module.group}:$name:${module.version}") {
+                module.excludes.forEach {
+                    excludeItem ->
+                        exclude group: excludeItem.group, module: excludeItem.module
+                }
+            }
+
+        } else {
+            handler.api("${module.group}:$name:${module.version}")
+        }
+    }
+}
+//
+////def modules = [
+////        'lib-core':
+////]
+//
+///*需要排除的依赖信息*/
+//
+//class ExcludeInfo {
+//    String group
+//    String module
+//
+//    ExcludeInfo(group, module) {
+//        this.group = group
+//        this.module = module
+//    }
+//}
+//
+//def excludeInfo = {
+//    group, module ->
+//        return new ExcludeInfo(group, module)
+//}
+//
+//
+//class ModuleInfo {
+//    String group
+//    String version
+//    List excludes
+//    boolean supportMaven
+//
+//    ModuleInfo(group, version, List excludes, supportMaven) {
+//        this.group = group
+//        this.version = version
+//        this.excludes = excludes
+//        this.supportMaven = supportMaven
+//    }
+//}
+//
+//def moduleInfo = {
+//    group, version, excludes, supportMaven ->
+//        return new ModuleInfo(group, version, excludes, supportMaven)
+//}
+//
+//def module_config = [
+//        /*顶端库*/
+//        'droid-theme'        : moduleInfo("bas.droid", "0.0.1", null, true),
+//        'systemui'           : moduleInfo("bas.droid", "0.0.1", null, true),
+//        'adapter-imageloader': moduleInfo("bas.droid", "0.0.1", null, true),
+//        'lib-core'           : moduleInfo("bas.lib", "0.0.3", null, true),
+//        /*核心中间库*/
+//        'lib-core-ktx'       : moduleInfo("bas.lib", "0.0.3", [
+//                excludeInfo("bas.lib", "lib-core")
+//        ], true),
+//
+//        'droid-core'         : moduleInfo("bas.droid", "0.0.3", [
+//                excludeInfo("bas.lib", "lib-core-ktx"),
+//                excludeInfo("bas.droid", "adapter-imageloader"),
+//                excludeInfo("bas.droid", "systemui"),
+//                excludeInfo("bas.droid", "droid-theme")
+//        ], true),
+//
+//
+//        'leanback-effect'    : moduleInfo("bas.droid", "0.0.3", null, true),
+//        'adapter-mediaplayer': moduleInfo("bas.droid", "0.0.1", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], true),
+//        'binding-ext'        : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "adapter-imageloader")
+//        ], false),
+//        'bas-leanback-compat': moduleInfo("", "", [
+//                excludeInfo("bas.droid", "leanback-core")
+//        ], false),
+//        'core'               : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], false),
+//        'arch'               : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "systemui")
+//        ], false),
+//        'droid-arch'         : moduleInfo("", "", [
+//                excludeInfo("bas.droid", "droid-core")
+//        ], false)
+//
+//]
+//
+//
+//gradle.ext.dependonApi = { project, name ->
+//    System.out.println("${project}")
+//    def handler = project.dependencies
+//    def module = (ModuleInfo) module_config.getAt(name)
+//    if (gradle.ext.useModule || module == null) {
+//        handler.api project.project(":$name")
+//    } else {
+////        System.out.println("module:$name" + module.group + " ")
+//        if (module.excludes != null && !module.excludes.isEmpty()) {
+//            if (module.supportMaven) {
+//                handler.api("${module.group}:$name:${module.version}") {
+//                    module.excludes.forEach {
+//                        excludeItem ->
+//                            exclude group: excludeItem.group, module: excludeItem.module
+//                    }
+//                }
+//            } else {
+//                handler.api project.project(":$name")
+////                {
+////                    module.excludes.forEach {
+////                        excludeItem ->
+////                            exclude group: excludeItem.group, module: excludeItem.module
+////                    }
+////                }
+//            }
+//
+//        } else {
+//            if (module.supportMaven) {
+//                handler.api "${module.group}:$name:${module.version}"
+//            } else {
+//                handler.api project.project(":$name")
+//            }
+//        }
+//    }
+//}

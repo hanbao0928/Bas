@@ -34,7 +34,10 @@ android {
 
 dependencies {
 //    implementation project(path: ':leanback-core')
-    implementation "bas.droid:leanback-core:0.0.3"
+    gradle.ext.depImplementation(this,'leanback-core')
+    gradle.ext.depImplementation(this,'droid-core')
+    gradle.ext.depApiInert(this,'adapter-imageloader')
+//    implementation "bas.droid:leanback-core:0.0.3"
     /*查看地址：https://developer.android.google.cn/jetpack/androidx/releases/leanback?hl=zh_cn*/
     api 'androidx.leanback:leanback:1.2.0-alpha01'/*1.1.0-beta01*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

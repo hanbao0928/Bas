@@ -2,6 +2,9 @@
 buildscript {
 
     ext {
+        kotlin_version = '1.4.20'
+        dokka_version = '1.6.10'
+
         globalCompileSdkVersion = 31
         globalBuildToolsVersion = "31.0.0"
         globalTargetSdkVersion = 31
@@ -10,9 +13,10 @@ buildscript {
         globalTargetSdkVersion30 = 30
         globalMinSdkVersion17 = 17
 
-        droid_core_version = "0.0.3"
+        droid_core_version = "0.0.4"
+        droid_leanback_layout_version = "0.0.3"
 
-        kotlin_version = "1.4.20"
+
         kotlinx_coroutines_core_version = "1.5.2"
         gson_version = "2.8.7"
         jackson_version = "2.9.6"
@@ -41,8 +45,11 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16'
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}")
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16'
+
 //        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
