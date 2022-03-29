@@ -73,7 +73,7 @@ class QNVideoView @JvmOverloads constructor(
 
     init {
         kernelView =
-            if (AdapterMediaPlayer.isLeanbackMode) createKernelViewFromXmlForLeanback() else PLVideoView(
+            if (MediaPlayerAdapter.isLeanbackMode) createKernelViewFromXmlForLeanback() else PLVideoView(
                 context
             )
 

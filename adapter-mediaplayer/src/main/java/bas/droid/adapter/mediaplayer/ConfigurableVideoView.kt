@@ -78,7 +78,7 @@ class ConfigurableVideoView @JvmOverloads constructor(
 
     //添加内部播放器
     private fun addKernelVideoView(@KernelType type: Int) {
-        val kernelView = AdapterMediaPlayer.createVideoView(context, type)
+        val kernelView = MediaPlayerAdapter.createVideoView(context, type)
         kernelView.id = R.id.video_view_id_bas
         addView(kernelView, generateDefaultKernelViewLayoutParams(context))
         this.kernelType = type

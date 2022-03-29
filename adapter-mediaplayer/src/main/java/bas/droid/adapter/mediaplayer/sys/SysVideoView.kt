@@ -75,7 +75,7 @@ class SysVideoView @JvmOverloads constructor(
 
     init {
         kernelView =
-            if (AdapterMediaPlayer.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoViewCompat(
+            if (MediaPlayerAdapter.isLeanbackMode) createKernelViewFromXmlForLeanback() else VideoViewCompat(
                 context
             )
         kernelView.id = R.id.video_view_kernel_id_bas

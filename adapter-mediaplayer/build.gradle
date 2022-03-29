@@ -100,7 +100,7 @@ artifacts {
 
 
 def PROJECT_NAME = 'adapter-mediaplayer'
-def PROJECT_VERSION = '0.0.2'
+def PROJECT_VERSION = '0.0.3'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'adapter-mediaplayer'
 

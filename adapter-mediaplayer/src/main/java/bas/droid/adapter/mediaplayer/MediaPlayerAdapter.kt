@@ -8,7 +8,7 @@ import bas.droid.adapter.mediaplayer.tencent.TXVideoView
 /**
  * Created by Lucio on 2021/9/27.
  */
-object AdapterMediaPlayer {
+object MediaPlayerAdapter {
 
     /**
      * 是否运行在tv之上

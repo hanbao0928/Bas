@@ -27,7 +27,7 @@ class QNPlayerError private constructor(val errorCode: Int, message: String) :
         }
 
         @JvmStatic
-        internal fun getFriendlyMessage(
+        fun getFriendlyMessage(
             context: Context,
             errorCode: Int,
             isLive: Boolean
