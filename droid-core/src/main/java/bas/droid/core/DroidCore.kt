@@ -7,12 +7,10 @@ package bas.droid.core
 
 import android.app.Application
 import android.content.Context
-import android.util.Base64
 import bas.droid.core.app.internal.ApplicationManagerImpl
 import bas.droid.core.io.Storage
 import bas.droid.core.io.storage
 import bas.droid.core.net.URLCoderDroid
-import bas.droid.core.util.Base64CoderDroid
 import bas.droid.systemui.SystemUi
 import bas.droid.systemui.systemUiHandler
 import bas.lib.core.BasConfigurator
@@ -41,7 +39,7 @@ fun initDroidCore(app: Application) {
     BasConfigurator.setURLCoder(URLCoderDroid)
 
     //设置base64编解码
-    val base64Coder = Base64CoderDroid(Base64.NO_WRAP)
+    val base64Coder = bas.droid.core.util.Base64(Base64.NO_WRAP)
     BasConfigurator.setBase64Encoder(base64Coder)
     BasConfigurator.setBase64Decoder(base64Coder)
 

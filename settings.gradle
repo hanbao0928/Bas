@@ -145,7 +145,7 @@ apply from : './module_dependon.gradle'
 //已发布，需要修改代码时再配置进来
 //include ':leanback-layout-annotation'
 //include ':leanback-layout-compiler'
-include ':leanback-layout'
+//include ':leanback-layout'
 
 //已发布，需要修改代码时再配置进来
 //include ':leanback-flexbox'

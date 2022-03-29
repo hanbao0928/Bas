@@ -1,5 +1,5 @@
 //是否使用module依赖，如果不使用module依赖则使用远程依赖
-gradle.ext.useModule = false
+gradle.ext.useModule = true
 
 def useModuleDep = {
     gradle.ext.useModule || it == null || !it.version
@@ -60,7 +60,7 @@ modules.each { name, module ->
         include ":${name}"
         if (!module.path) {
             //没有指定路径，使用默认路径
-            project(":${name}").projectDir = new File(rootDir.getParent(), "../Bas/${name}")
+            project(":${name}").projectDir = new File(rootDir.getParent(), "/Bas/${name}")
         } else {
             project(":${name}").projectDir = new File(module.path)
         }

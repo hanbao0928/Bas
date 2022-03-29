@@ -3,7 +3,7 @@ package bas.droid.core.android
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import bas.lib.core.BasConfigurator
 import bas.droid.core.net.URLCoderDroid
-import bas.droid.core.util.Base64CoderDroid
+import bas.droid.core.util.Base64
 import bas.lib.core.lang.*
 import org.junit.Assert
 import org.junit.Test
@@ -34,8 +34,8 @@ class CoderTest {
 
     @Test
     fun testBase64CoderImpl() {
-        val defaultCoder = Base64CoderDroid(android.util.Base64.DEFAULT)
-        val nowrapCoder = Base64CoderDroid(android.util.Base64.NO_WRAP)
+        val defaultCoder = Base64(android.util.Base64.DEFAULT)
+        val nowrapCoder = Base64(android.util.Base64.NO_WRAP)
         Coder.setBase64Encoder(nowrapCoder)
         Coder.setBase64Decoder(nowrapCoder)
         val sourceValue = "euc-kr代表说明网站是采用的编码是韩文; ...等等有很多编码euc-kr代表说明网站是采用的编码是韩文; ...等等有很多编码"

@@ -1,10 +1,9 @@
 package bas.lib.core.lang
 
-import sun.misc.BASE64Decoder
-import sun.misc.BASE64Encoder
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import java.util.*
 
 /**
  * Created by Lucio on 2022/2/23.
@@ -144,6 +143,7 @@ object Coder {
             return encodeToString(input).toByteArray()
         }
 
+        @Suppress("NewApi")
         override fun encodeToString(input: ByteArray): String {
 
             /**
@@ -153,7 +153,8 @@ object Coder {
              *
              * 参考：https://www.cnblogs.com/wudage/p/7680261.html
              */
-            val encoded = BASE64Encoder().encode(input)
+//            val encoded = BASE64Encoder().encode(input)
+            val encoded = Base64.getEncoder().encodeToString(input)
             if (flag == NO_WRAP) {
                 return replaceAllWrap(encoded)
             }
@@ -163,8 +164,10 @@ object Coder {
 
     class Base64DecoderJava : Base64Decoder {
 
+        @Suppress("NewApi")
         override fun decode(input: ByteArray): ByteArray {
-            return BASE64Decoder().decodeBuffer(String(input))
+            return Base64.getDecoder().decode(input)
+//            return BASE64Decoder().decodeBuffer(String(input))
         }
 
         override fun decodeToString(input: ByteArray): String {

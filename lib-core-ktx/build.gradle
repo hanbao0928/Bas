@@ -3,6 +3,7 @@ plugins {
     id 'kotlin'
 
     /*用于上传maven*/
+    id 'org.jetbrains.dokka'
     id 'maven'
 }
 
