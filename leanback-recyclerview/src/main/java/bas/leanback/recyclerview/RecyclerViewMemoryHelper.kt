@@ -65,10 +65,6 @@ class RecyclerViewMemoryHelper(
         ta.recycle()
     }
 
-    private fun log(msg: String) {
-        Log.d(TAG, msg)
-    }
-
     protected open fun onMemoryEnableChanged() {
         //notify changed :nothing
     }
@@ -216,6 +212,9 @@ class RecyclerViewMemoryHelper(
         return false
     }
 
+    private fun log(msg: String) {
+        Log.d(TAG, msg)
+    }
 
     companion object {
 

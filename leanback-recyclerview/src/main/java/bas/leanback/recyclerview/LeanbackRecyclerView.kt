@@ -13,23 +13,18 @@ import java.util.*
 
 /**
  * Created by Lucio on 2022/2/8.
+ *
+ * 支持如下功能：
+ * 1、焦点记忆（和焦点记忆类型）
+ * 2、处理按键过快滑动过快导致的NPE问题
+ * 3、支持item click&focusChange listener设置
+ * 4、支持滚动或平滑滚动到指定位置并设置获取焦点的位置
+ * @see [scrollToPositionAndRequestFocus]
+ * @see [smoothScrollToPositionAndRequestFocus]
  */
 open class LeanbackRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.recyclerViewStyle
 ) : RecyclerView(context, attrs, defStyleAttr) {
-
-    fun interface OnItemClickListener {
-        fun onItemClick(parent: LeanbackRecyclerView, itemView: View, position: Int)
-    }
-
-    fun interface OnItemFocusChangedListener {
-        fun onItemFocusChanged(
-            parent: LeanbackRecyclerView,
-            itemView: View,
-            position: Int,
-            hasFocus: Boolean
-        )
-    }
 
     private var itemClickListener: OnItemClickListener? = null
     private var itemFocusChangeListener: OnItemFocusChangedListener? = null
@@ -204,5 +199,18 @@ open class LeanbackRecyclerView @JvmOverloads constructor(
 
     private fun isScrolling(): Boolean {
         return scrollState != SCROLL_STATE_IDLE
+    }
+
+    fun interface OnItemClickListener {
+        fun onItemClick(parent: LeanbackRecyclerView, itemView: View, position: Int)
+    }
+
+    fun interface OnItemFocusChangedListener {
+        fun onItemFocusChanged(
+            parent: LeanbackRecyclerView,
+            itemView: View,
+            position: Int,
+            hasFocus: Boolean
+        )
     }
 }
