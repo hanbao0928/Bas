@@ -48,8 +48,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    //自动生成LeanbackLayout系列
-//    gradle.ext.depImplementation(this, 'leanback-core')
-    implementation("bas.droid:leanback-core:0.0.4")
+    gradle.ext.depImplementation(this, 'leanback-core')
+//    implementation("bas.droid:leanback-core:$droid_leanback_core_version")
 //    implementation project(path: ':leanback-core')
     compileOnly("bas.droid:leanback-layout-annotation:0.0.1")
     kapt "bas.droid:leanback-layout-compiler:0.0.1"

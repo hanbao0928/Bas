@@ -24,7 +24,7 @@ public class JacksonConverter implements JsonConverter {
     private final ObjectMapper objectMapper;
 
     public JacksonConverter() {
-        this(createDefaultObjectMapper());
+        this(createPreferredObjectMapper());
     }
 
     public JacksonConverter(@NotNull ObjectMapper mapper) {
@@ -72,7 +72,7 @@ public class JacksonConverter implements JsonConverter {
         }
     }
 
-    public static ObjectMapper createDefaultObjectMapper() {
+    public static ObjectMapper createPreferredObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         //不存在属性字段时不发生错误
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

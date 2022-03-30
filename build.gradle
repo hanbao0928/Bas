@@ -9,8 +9,9 @@ buildscript {
         globalTargetSdkVersion30 = 30
         globalMinSdkVersion17 = 17
 
-//        droid_core_version = "0.0.4"
-//        droid_leanback_layout_version = "0.0.3"
+        droid_core_version = '0.0.4'
+        droid_leanback_layout_version = '0.0.4'
+        droid_leanback_core_version = '0.0.4'
 
         dokka_version = '1.6.10'
         kotlin_version = '1.4.20'

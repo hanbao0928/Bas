@@ -4,7 +4,7 @@ package andme.core.content
 import andme.core.DEVICE_UNIQUE_ID
 import andme.core.sharedPrefAM
 import android.os.Build
-import bas.droid.core.appManagerBas
+import bas.droid.core.app.AppManager
 import bas.droid.core.content.edit
 import java.util.*
 import bas.lib.core.lang.security.toMD5
@@ -19,7 +19,7 @@ import bas.lib.core.lang.security.toMD5
 val appUniqueDeviceId: String
     get() {
 
-        if(appManagerBas.isDebuggable){
+        if(AppManager.isDebuggable){
             return "super_luo_debug"
         }
 

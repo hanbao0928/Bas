@@ -3,15 +3,15 @@ package bas.droid.arch
 
 import android.app.Activity
 import android.app.Application
-import bas.droid.core.app.BasApplicationManager
-import bas.droid.core.appManagerBas
+import bas.droid.core.app.AppManager
+import bas.droid.core.app.ApplicationManager
 import bas.droid.core.os.processName
 import bas.droid.core.util.Logger
 
 /**
  * Created by Lucio on 2020-11-01.
  */
-abstract class AppArch : Application(), BasApplicationManager by appManagerBas {
+abstract class AppArch : Application(), ApplicationManager by AppManager {
 
     final override fun onCreate() {
         super.onCreate()

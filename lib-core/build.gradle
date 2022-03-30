@@ -59,7 +59,24 @@ dependencies {
     * */
     compileOnly "com.alibaba:fastjson:$fastjson_version"
 
+
+    /**
+     * https://github.com/square/moshi
+     * 临时引入
+     */
+    compileOnly "com.squareup.moshi:moshi:1.8.0"
+
 }
+
+//解决问题：Cannot inline bytecode built with JVM target 1.8 into bytecode that is being built with JVM target 1.6
+// 参考来源： https://blog.csdn.net/sweet_smile5/article/details/98858919?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_antiscanv2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_antiscanv2&utm_relevant_index=3
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+/*以下为maven发布配置*/
 
 task generateSourcesJar(type: Jar) {
     group = 'jar'
@@ -84,7 +101,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'lib-core'
-def PROJECT_VERSION = '0.0.3'
+def PROJECT_VERSION = '0.0.4'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'lib-core'
 

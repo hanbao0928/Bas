@@ -12,17 +12,7 @@ def useModuleDepInert = {
 def modules = [
         'lib-core'     : [
                 group  : 'bas.lib',
-                version: '0.0.3'
-        ],
-        'lib-core-ktx' : [
-                group   : 'bas.lib',
-                version : '0.0.3',
-                excludes: [
-                        [
-                                group : 'bas.lib',
-                                module: 'lib-core'
-                        ]
-                ]
+                version: '0.0.4'
         ],
         'droid-core'   : [
                 group   : 'bas.droid',
@@ -72,11 +62,7 @@ gradle.ext.forceUseModule = false
 
 /*配置惰性module：一般末端和顶端module不经常变动，适合放在这个位置*/
 def inertModules = [
-        'adapter-imageloader': [
-                group    : 'bas.droid',
-                version  : '0.0.2',
-                useModule: false
-        ],
+
         'systemui'           : [
                 group    : 'bas.droid',
                 version  : '0.0.1',
@@ -97,16 +83,33 @@ def inertModules = [
                 version  : '0.0.1',
                 useModule: false
         ],
+        'adapter-imageloader': [
+                group     : 'bas.droid',
+                version   : '0.0.2',
+                useModule : false,
+                /*无依赖，独立组件*/
+                isIndepend: true
+        ],
         'adapter-mediaplayer': [
-                group    : 'bas.droid',
-                version  : '0.0.3',
-                useModule: false,
-//                excludes : [
-//                        [
-//                                group : 'bas.droid',
-//                                module: 'droid-core'
-//                        ]
-//                ]
+                group     : 'bas.droid',
+                version   : '0.0.3',
+                useModule : false,
+                /*无依赖，独立组件*/
+                isIndepend: true
+        ],
+        'leanback-tab'       : [
+                group     : 'bas.droid',
+                version   : '0.0.1',
+                useModule : false,
+                /*无依赖，独立组件*/
+                isIndepend: true
+        ],
+        'leanback-effect'    : [
+                group     : 'bas.droid',
+                version   : '0.0.3',
+                useModule : false,
+                /*无依赖，独立组件*/
+                isIndepend: true
         ],
         'leanback-layout'    : [
                 group    : 'bas.droid',
@@ -121,7 +124,7 @@ def inertModules = [
         ],
         'leanback-flexbox'   : [
                 group    : 'bas.droid',
-                version  : '0.0.3',
+                version  : '0.0.4',
                 useModule: false,
                 excludes : [
                         [
@@ -129,16 +132,6 @@ def inertModules = [
                                 module: 'leanback-layout'
                         ]
                 ]
-        ],
-        'leanback-tab'       : [
-                group    : 'bas.droid',
-                version  : '0.0.1',
-                useModule: false
-        ],
-        'leanback-effect'    : [
-                group    : 'bas.droid',
-                version  : '0.0.3',
-                useModule: false
         ]
 ]
 inertModules.each { name, module ->

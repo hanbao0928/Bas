@@ -98,7 +98,7 @@ open class MemoryHelper private constructor(
         onChildRequestFocused(child, focused)
     }
 
-    protected fun onChildRequestFocused(child: View?,focused: View?){
+    protected fun onChildRequestFocused(child: View?, focused: View?) {
         if (!isMemoryEnabled) {
             memoryView = null
             return

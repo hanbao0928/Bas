@@ -39,7 +39,7 @@ fun initDroidCore(app: Application) {
     BasConfigurator.setURLCoder(URLCoderDroid)
 
     //设置base64编解码
-    val base64Coder = bas.droid.core.util.Base64(Base64.NO_WRAP)
+    val base64Coder = bas.droid.core.util.Base64(android.util.Base64.NO_WRAP)
     BasConfigurator.setBase64Encoder(base64Coder)
     BasConfigurator.setBase64Decoder(base64Coder)
 

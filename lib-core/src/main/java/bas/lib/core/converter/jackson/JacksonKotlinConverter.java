@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class JacksonKotlinConverter extends JacksonConverter {
 
     public JacksonKotlinConverter() {
-        this(createDefaultKotlinObjectMapper());
+        this(createPreferredKotlinObjectMapper());
     }
 
     public JacksonKotlinConverter(@NotNull KotlinModule module) {
@@ -26,7 +26,7 @@ public class JacksonKotlinConverter extends JacksonConverter {
         super(mapper);
     }
 
-    public static ObjectMapper createDefaultKotlinObjectMapper() {
+    public static ObjectMapper createPreferredKotlinObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper = com.fasterxml.jackson.module.kotlin.ExtensionsKt.registerKotlinModule(mapper);
         //不存在属性字段时不发生错误

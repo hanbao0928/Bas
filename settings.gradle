@@ -162,7 +162,6 @@ include ':binding-ext'
 include ':droid-arch'
 include ':arch'
 include ':core'
-include ':bas-leanback-compat'
 include ':bas-leanback-paging'
 include ':app'
 rootProject.name = "Bas"

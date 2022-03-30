@@ -54,9 +54,9 @@ dependencies {
 
 
     /*基础代码库*/
-    gradle.ext.depApi(this,'lib-core-ktx')
-//    debugApi project(path: ':lib-core-ktx')
-//    releaseApi("bas.lib:lib-core-ktx:0.0.3")
+    gradle.ext.depApi(this,'lib-core')
+//    debugApi project(path: ':lib-core')
+//    releaseApi("bas.lib:lib-core:0.0.3")
 
     gradle.ext.depApiInert(this,'adapter-imageloader')
 //    debugApi project(path: ':adapter-imageloader')

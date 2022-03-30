@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--从官方库中copy出来,用于解决隐藏属性不可访问的问题,解决在xml属性不提示的问题-->
+    <declare-styleable name="BaseGridView">
+        <!-- Allow DPAD key to navigate out at the front of the View (where position = 0),
+             default is false  -->
+        <attr format="boolean" name="focusOutFront"/>
+        <!-- Allow DPAD key to navigate out at the end of the view, default is false -->
+        <attr format="boolean" name="focusOutEnd"/>
+        <!-- Allow DPAD key to navigate out of first row, for HorizontalGridView, it's the
+             top edge, for VerticalGridView it's the "start" edge.  Default value is true.  -->
+        <attr format="boolean" name="focusOutSideStart"/>
+        <!-- Allow DPAD key to navigate out of last row, for HorizontalGridView, it's the
+             bottom edge, for VerticalGridView it's the "end" edge.  Default value is true.  -->
+        <attr format="boolean" name="focusOutSideEnd"/>
+        <!-- Deprecated, use android:horizontalSpacing -->
+        <attr format="dimension" name="horizontalMargin"/>
+        <!-- Deprecated, use android:verticalSpacing -->
+        <attr format="dimension" name="verticalMargin"/>
+        <!-- Defining space between two items horizontally -->
+        <attr name="android:horizontalSpacing"/>
+        <!-- Defining space between two items vertically -->
+        <attr name="android:verticalSpacing"/>
+        <!-- Defining gravity of child view -->
+        <attr name="android:gravity"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="LeanbackVerticalGridView">
+        <!--默认不开启-->
+        <attr name="lb_focusMemoryEnable"/>
+        <!--焦点状态类型-->
+        <attr name="lb_focusMemoryStateType"/>
+    </declare-styleable>
+
+
+</resources>

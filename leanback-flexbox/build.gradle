@@ -44,8 +44,8 @@ dependencies {
 
     api "com.google.android.flexbox:flexbox:$flexbox_version"
 
-    gradle.ext.depImplementationInert(this, 'leanback-layout')
-//    implementation("bas.droid:leanback-layout:$droid_leanback_layout_version")
+//    gradle.ext.depImplementationInert(this, 'leanback-layout')
+    implementation("bas.droid:leanback-layout:$droid_leanback_layout_version")
 
     compileOnly("bas.droid:leanback-layout-annotation:0.0.1")
     annotationProcessor "bas.droid:leanback-layout-compiler:0.0.1"
@@ -81,7 +81,7 @@ artifacts {
 }
 
 def PROJECT_NAME = 'leanback-flexbox'
-def PROJECT_VERSION = '0.0.3'
+def PROJECT_VERSION = '0.0.4'
 def PROJECT_DESC = ''
 def ARTIFACT_ID = 'leanback-flexbox'
 

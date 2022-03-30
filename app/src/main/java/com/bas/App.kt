@@ -3,7 +3,7 @@ package com.bas
 import android.content.Context
 import bas.droid.compat.multidex.MultiDexCompat
 import bas.droid.arch.AppArch
-import bas.droid.core.initBasCore
+import bas.droid.core.initDroidCore
 
 /**
  * Created by Lucio on 2021/9/24.
@@ -11,7 +11,7 @@ import bas.droid.core.initBasCore
 class App : AppArch() {
 
     override fun onCreateMainProcess(processName: String) {
-        initBasCore(this)
+        initDroidCore(this)
     }
 
     /**
