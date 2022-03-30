@@ -2,34 +2,35 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.4.20'
-        dokka_version = '1.6.10'
-
         globalCompileSdkVersion = 31
         globalBuildToolsVersion = "31.0.0"
         globalTargetSdkVersion = 31
         globalMinSdkVersion = 16
-
         globalTargetSdkVersion30 = 30
         globalMinSdkVersion17 = 17
 
-        droid_core_version = "0.0.4"
-        droid_leanback_layout_version = "0.0.3"
+//        droid_core_version = "0.0.4"
+//        droid_leanback_layout_version = "0.0.3"
 
-
+        dokka_version = '1.6.10'
+        kotlin_version = '1.4.20'
         kotlinx_coroutines_core_version = "1.5.2"
+
+        /*android  jetpack*/
+        androidx_annotation_version = "1.1.0"
+        androidx_core_ktx_verson = "1.3.2"
+        appcompat_version = "1.1.0"
+        material_version = "1.2.1"
+        lifecycle_version = "2.4.0-alpha03"
+        constraintlayout_version = "2.0.3"
+        flexbox_version = "3.0.0"
+        /*1.1.0-beta01*/
+        leanback_version = "1.2.0-alpha01"
+
         gson_version = "2.8.7"
         jackson_version = "2.9.6"
         fastjson_version = "1.2.10"
-        androidx_core_ktx_verson = "1.2.0"
-        appcompat_version = "1.1.0"
-        material_version = "1.2.1"
-        constraintlayout_version = "2.0.3"
-        lifecycle_version = "2.4.0-alpha03"
-        flexbox_version = "3.0.0"
-        androidx_annotation_version = "1.1.0"
-        /*1.1.0-beta01*/
-        leanback_version = "1.2.0-alpha01"
+        
     }
 
     repositories {

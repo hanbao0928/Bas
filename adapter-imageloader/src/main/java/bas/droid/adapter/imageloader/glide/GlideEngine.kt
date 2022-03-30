@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import bas.droid.adapter.imageloader.DEBUG
-import bas.droid.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.ImageLoaderAdapter
 import bas.droid.adapter.imageloader.ImageLoaderEngine
 import bas.droid.adapter.imageloader.logw
 import com.bumptech.glide.Glide
@@ -61,7 +61,7 @@ object GlideEngine : ImageLoaderEngine {
     private inline fun ensureDefaultRequestOptions() {
         if (isDefaultRequestOptionInit)
             return
-        setDefaultRequestOptions(RequestOptionsBas())
+        setDefaultRequestOptions(RequestOptionsAIL())
     }
 
     internal fun setDefaultRequestOptions(options: RequestOptions) {
@@ -71,7 +71,7 @@ object GlideEngine : ImageLoaderEngine {
             transform(centerCrop, circleCrop)
         }
         defaultRoundedRequestOptions = options.clone().apply {
-            transform(centerCrop, RoundedCorners(ImageLoader.defaultRoundedImageRadius))
+            transform(centerCrop, RoundedCorners(ImageLoaderAdapter.defaultRoundedImageRadius))
         }
     }
 
@@ -221,7 +221,7 @@ object GlideEngine : ImageLoaderEngine {
      * @param roundingRadius 圆角半径，单位px
      */
     override fun loadRounded(imageView: ImageView, url: String?, roundingRadius: Int) {
-        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+        if (roundingRadius == ImageLoaderAdapter.defaultRoundedImageRadius) {
             RoundedRequest(imageView)
                 .load(url)
                 .into(imageView)
@@ -239,7 +239,7 @@ object GlideEngine : ImageLoaderEngine {
         roundingRadius: Int,
         placeHolder: Int
     ) {
-        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+        if (roundingRadius == ImageLoaderAdapter.defaultRoundedImageRadius) {
             RoundedRequest(imageView)
                 .load(url)
                 .placeholder(placeHolder)
@@ -259,7 +259,7 @@ object GlideEngine : ImageLoaderEngine {
         roundingRadius: Int,
         placeHolder: Drawable?
     ) {
-        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+        if (roundingRadius == ImageLoaderAdapter.defaultRoundedImageRadius) {
             RoundedRequest(imageView)
                 .load(url)
                 .placeholder(placeHolder)
@@ -280,7 +280,7 @@ object GlideEngine : ImageLoaderEngine {
         placeHolder: Drawable?,
         error: Drawable?
     ) {
-        if (roundingRadius == ImageLoader.defaultRoundedImageRadius) {
+        if (roundingRadius == ImageLoaderAdapter.defaultRoundedImageRadius) {
             RoundedRequest(imageView)
                 .load(url)
                 .placeholder(placeHolder)

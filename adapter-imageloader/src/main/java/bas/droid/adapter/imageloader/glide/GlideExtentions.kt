@@ -4,7 +4,7 @@
 package bas.droid.adapter.imageloader.glide
 
 import bas.droid.adapter.imageloader.DEBUG
-import bas.droid.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.ImageLoaderAdapter
 import bas.droid.adapter.imageloader.logi
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -30,13 +30,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 /**
  * 创建请求参数
  */
-fun RequestOptionsBas(): com.bumptech.glide.request.RequestOptions {
+fun RequestOptionsAIL(): com.bumptech.glide.request.RequestOptions {
     if(DEBUG){
-        logi("create RequestOptionsBas")
+        logi("create RequestOptionsAIL")
     }
     return com.bumptech.glide.request.RequestOptions()
-        .skipMemoryCache(ImageLoader.config.isMemoryCacheEnabled)
-        .diskCacheStrategy(if (!ImageLoader.config.isDiskCacheEnabled) DiskCacheStrategy.NONE else DiskCacheStrategy.AUTOMATIC)
+        .skipMemoryCache(ImageLoaderAdapter.config.isMemoryCacheEnabled)
+        .diskCacheStrategy(if (!ImageLoaderAdapter.config.isDiskCacheEnabled) DiskCacheStrategy.NONE else DiskCacheStrategy.AUTOMATIC)
         .format(
             com.bumptech.glide.load.DecodeFormat.PREFER_RGB_565
         )

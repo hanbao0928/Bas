@@ -8,7 +8,7 @@ import androidx.annotation.DrawableRes
 /**
  * Created by Lucio on 2021/11/4.
  */
-object ImageLoader : ImageLoaderEngine by engine {
+object ImageLoaderAdapter : ImageLoaderEngine by engine {
 
     @JvmStatic
     var config: Config = Config()
@@ -17,14 +17,16 @@ object ImageLoader : ImageLoaderEngine by engine {
     /**
      * 默认图片圆角半径
      * [Config]中未提供该属性，主要是考虑通过代码设置的值无法写入默认的圆角图片资源（shape xml）中，
-     * 所以修改该值可以通过提供 资源<dimen name="image_rounded_radius_bas"></dimen>覆盖。
+     * 所以修改该值可以通过提供 资源<dimen name="image_corner_radius_ail"></dimen>覆盖。
      */
+    @JvmStatic
     var defaultRoundedImageRadius: Int = 12
         private set
 
+    @JvmStatic
     fun init(ctx: Context) {
         defaultRoundedImageRadius =
-            ctx.resources.getDimensionPixelSize(R.dimen.image_rounded_radius_bas)
+            ctx.resources.getDimensionPixelSize(R.dimen.image_corner_radius_ail)
 
         if (DEBUG) {
             logi("init: defaultImageRoundingRadius=$defaultRoundedImageRadius")
@@ -36,7 +38,7 @@ object ImageLoader : ImageLoaderEngine by engine {
      */
     @JvmStatic
     fun setConfig(config: Config) {
-        ImageLoader.config = config
+        ImageLoaderAdapter.config = config
     }
 
     /**

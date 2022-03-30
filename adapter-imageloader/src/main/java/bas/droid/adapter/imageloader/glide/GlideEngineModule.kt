@@ -1,7 +1,7 @@
 package bas.droid.adapter.imageloader.glide
 
 import android.content.Context
-import bas.droid.adapter.imageloader.ImageLoader
+import bas.droid.adapter.imageloader.ImageLoaderAdapter
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory
 import com.bumptech.glide.module.AppGlideModule
@@ -36,18 +36,18 @@ abstract class GlideEngineModule : AppGlideModule() {
     }
 
     protected open fun createDefaultRequestOptions(): RequestOptions {
-        return RequestOptionsBas()
+        return RequestOptionsAIL()
     }
 
     protected open fun applyDiskCacheConfig(context: Context, builder: GlideBuilder) {
-        val dirName = ImageLoader.config.diskCacheFolderName
+        val dirName = ImageLoaderAdapter.config.diskCacheFolderName
         if (dirName.isNullOrEmpty()) {
             builder.setDiskCache(ExternalPreferredCacheDiskCacheFactory(context))
         } else {
             builder.setDiskCache(
                 ExternalPreferredCacheDiskCacheFactory(
                     context, dirName,
-                    ImageLoader.DEFAULT_DISK_CACHE_SIZE
+                    ImageLoaderAdapter.DEFAULT_DISK_CACHE_SIZE
                 )
             )
         }

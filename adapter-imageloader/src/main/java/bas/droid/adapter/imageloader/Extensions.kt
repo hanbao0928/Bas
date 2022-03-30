@@ -11,31 +11,31 @@ import androidx.annotation.DrawableRes
  * 默认图片资源
  */
 @get:DrawableRes
-inline val defaultImageResBas: Int get() = ImageLoader.config.defaultImageRes
+inline val defaultImageResBas: Int get() = ImageLoaderAdapter.config.defaultImageRes
 
 /**
  * 默认圆角图片
  */
 @get:DrawableRes
-inline val defaultRoundedImageResBas: Int get() = ImageLoader.config.defaultRoundedImageRes
+inline val defaultRoundedImageResBas: Int get() = ImageLoaderAdapter.config.defaultRoundedImageRes
 
 /**
  * 默认圆形图片
  */
 @get:DrawableRes
-inline val defaultCircleImageResBas: Int get() = ImageLoader.config.defaultCircleImageRes
+inline val defaultCircleImageResBas: Int get() = ImageLoaderAdapter.config.defaultCircleImageRes
 
 /**
  * 图片圆角半径
  */
 @get:DrawableRes
-inline val defaultRoundedImageRadius: Int get() = ImageLoader.defaultRoundedImageRadius
+inline val defaultRoundedImageRadius: Int get() = ImageLoaderAdapter.defaultRoundedImageRadius
 
 /**
  * 加载图片（不会使用默认占位图）
  */
 inline fun ImageView.load0(url: String?) {
-    ImageLoader.load(this, url)
+    ImageLoaderAdapter.load(this, url)
 }
 
 /**
@@ -43,11 +43,11 @@ inline fun ImageView.load0(url: String?) {
  */
 @JvmOverloads
 inline fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = defaultImageResBas) {
-    ImageLoader.load(this, url, placeHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder)
 }
 
 inline fun ImageView.load(url: String?, placeHolder: Drawable?) {
-    ImageLoader.load(this, url, placeHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder)
 }
 
 inline fun ImageView.load(
@@ -55,7 +55,7 @@ inline fun ImageView.load(
     @DrawableRes placeHolder: Int,
     @DrawableRes errorPlaceHolder: Int
 ) {
-    ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder, errorPlaceHolder)
 }
 
 inline fun ImageView.load(
@@ -63,7 +63,7 @@ inline fun ImageView.load(
     placeHolder: Drawable?,
     errorPlaceHolder: Drawable?
 ) {
-    ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder, errorPlaceHolder)
 }
 
 inline fun ImageView.load(
@@ -71,7 +71,7 @@ inline fun ImageView.load(
     @DrawableRes placeHolder: Int,
     errorPlaceHolder: Drawable?
 ) {
-    ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder, errorPlaceHolder)
 }
 
 inline fun ImageView.load(
@@ -79,7 +79,7 @@ inline fun ImageView.load(
     placeHolder: Drawable?,
     @DrawableRes errorPlaceHolder: Int
 ) {
-    ImageLoader.load(this, url, placeHolder, errorPlaceHolder)
+    ImageLoaderAdapter.load(this, url, placeHolder, errorPlaceHolder)
 }
 
 /**
@@ -90,7 +90,7 @@ inline fun ImageView.loadRounded0(
     url: String?,
     roundingRadius: Int
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius)
 }
 
 /**
@@ -103,7 +103,7 @@ inline fun ImageView.loadRounded(
     roundingRadius: Int = defaultRoundedImageRadius,
     @DrawableRes placeHolder: Int = defaultRoundedImageResBas
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius, placeHolder)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius, placeHolder)
 }
 
 inline fun ImageView.loadRounded(
@@ -111,7 +111,7 @@ inline fun ImageView.loadRounded(
     roundingRadius: Int,
     placeHolder: Drawable?
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius, placeHolder)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius, placeHolder)
 }
 
 inline fun ImageView.loadRounded(
@@ -120,7 +120,7 @@ inline fun ImageView.loadRounded(
     placeHolder: Drawable?,
     error:Drawable?
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius, placeHolder,error)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius, placeHolder,error)
 }
 
 
@@ -133,7 +133,7 @@ inline fun ImageView.loadRoundedStrict(
     roundingRadius: Int,
     @DrawableRes placeHolder: Int
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius, placeHolder, true)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius, placeHolder, true)
 }
 
 /**
@@ -145,14 +145,14 @@ inline fun ImageView.loadRoundedStrict(
     roundingRadius: Int,
     placeHolder: Drawable?
 ) {
-    ImageLoader.loadRounded(this, url, roundingRadius, placeHolder, true)
+    ImageLoaderAdapter.loadRounded(this, url, roundingRadius, placeHolder, true)
 }
 
 
 inline fun ImageView.loadCircle0(
     url: String?
 ) {
-    ImageLoader.loadCircle(this, url)
+    ImageLoaderAdapter.loadCircle(this, url)
 }
 
 @JvmOverloads
@@ -160,14 +160,14 @@ inline fun ImageView.loadCircle(
     url: String?,
     @DrawableRes placeHolder: Int = defaultCircleImageResBas
 ) {
-    ImageLoader.loadCircle(this, url, placeHolder)
+    ImageLoaderAdapter.loadCircle(this, url, placeHolder)
 }
 
 inline fun ImageView.loadCircle(
     url: String?,
     placeHolder: Drawable?
 ) {
-    ImageLoader.loadCircle(this, url, placeHolder)
+    ImageLoaderAdapter.loadCircle(this, url, placeHolder)
 }
 
 /**
@@ -178,7 +178,7 @@ inline fun ImageView.loadCircleStrict(
     url: String?,
     @DrawableRes placeHolder: Int
 ) {
-    ImageLoader.loadCircle(this, url, placeHolder, true)
+    ImageLoaderAdapter.loadCircle(this, url, placeHolder, true)
 }
 
 /**
@@ -189,5 +189,5 @@ inline fun ImageView.loadCircleStrict(
     url: String?,
     placeHolder: Drawable?
 ) {
-    ImageLoader.loadCircle(this, url, placeHolder, true)
+    ImageLoaderAdapter.loadCircle(this, url, placeHolder, true)
 }

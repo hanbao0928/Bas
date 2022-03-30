@@ -46,10 +46,10 @@ public class MyAppGlideModule extends GlideEngineModule {
 ```
 
 <!--图片圆角半径-->
-<dimen name="image_rounded_radius_bas">6dp</dimen>
+<dimen name="image_corner_radius_ail">6dp</dimen>
 
 <!--占位图颜色-->
-<color name="image_placeholder_color_bas">#26FFFFFF</color>
+<color name="image_placeholder_color_ail">#26FFFFFF</color>
 
 <!--默认占位图文件-->
 ../drawable/image_placeholder_bas.xml
