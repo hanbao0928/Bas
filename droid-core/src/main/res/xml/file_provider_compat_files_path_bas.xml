@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <!--注意：该规则未核对，后续需调整清楚
+    参考资料： https://www.jianshu.com/p/47fcd7873f39 -->
+
+    <!--<files-path-->
+    <!--name="files"-->
+    <!--path="/"/>-->
+    <!--<cache-path-->
+    <!--name="cache"-->
+    <!--path="/"/>-->
+    <!--<external-path-->
+    <!--name="external"-->
+    <!--path="/"/>-->
+    <!--<external-files-path-->
+    <!--name="external_file_path"-->
+    <!--path="/"/>-->
+
+    <!--&lt;!&ndash;允许访问整个外部存储&ndash;&gt;-->
+    <!--<external-path path="/" name="camera_photos" />-->
+
+
+    <!--允许访问整个外部存储-->
+    <external-path path="/" name="all_extenal_path" />
+
+    <cache-path
+        name="cache_image_path"
+        path="/image"/>
+
+    <external-cache-path
+        name="external_cache_image_path"
+        path="/image"/>
+
+    <!--<external-media-path
+        name="external-media-path"
+        path=""/>-->
+</paths>
