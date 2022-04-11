@@ -2,6 +2,7 @@ package com.bas.core.android
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import bas.droid.core.content.FileProviderCompat
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +20,9 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.bas.core.android.test", appContext.packageName)
+
+        val authorities = FileProviderCompat.getAuthorities(appContext)
+        println(authorities)
+//        assertEquals("com.bas.core.android.test", appContext.packageName)
     }
 }

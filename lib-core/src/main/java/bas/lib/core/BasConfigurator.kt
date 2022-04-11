@@ -2,6 +2,12 @@ package bas.lib.core
 
 import bas.lib.core.converter.Converters
 import bas.lib.core.converter.JsonConverter
+import bas.lib.core.date.DateFormatUseCase
+import bas.lib.core.date.friendlyDateFormat
+import bas.lib.core.exception.ExceptionHandler
+import bas.lib.core.exception.ExceptionMessageTransformer
+import bas.lib.core.exception.exceptionHandler
+import bas.lib.core.exception.exceptionMessageTransformer
 import bas.lib.core.lang.Coder
 
 /**
@@ -33,6 +39,14 @@ object BasConfigurator {
     @JvmStatic
     fun setBase64Decoder(decoder: Coder.Base64Decoder) {
         Coder.setBase64Decoder(decoder)
+    }
+
+    /**
+     * 设置友好日期格式化用例
+     */
+    @JvmStatic
+    fun setFriendlyDateFormat(format:DateFormatUseCase){
+        friendlyDateFormat = format
     }
 
 }

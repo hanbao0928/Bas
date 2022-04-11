@@ -31,15 +31,15 @@ internal object ApplicationManagerImpl : ApplicationManager {
     /**
      * 是否正在暂停（用于确定A 启动 B ，A进入pause ，B进入create等中间这段时间能够更正确的表述app状态）
      */
-    private var _isPausing = false
+    private var isPausing = false
 
-    private val _handler: Handler by lazy {
+    private val handler: Handler by lazy {
         Handler()
     }
 
-    private var _checkRunnable: Runnable? = null
+    private var checkRunnable: Runnable? = null
 
-    private var _stateListeners: MutableList<ApplicationManager.OnAppStateChangedListener>? =
+    private var stateListeners: MutableList<ApplicationManager.OnAppStateChangedListener>? =
         null
 
     /**
@@ -58,42 +58,43 @@ internal object ApplicationManagerImpl : ApplicationManager {
     fun init(app: Application) {
         isDebuggable = (app.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
         //避免重复绑定
-        app.unregisterActivityLifecycleCallbacks(_activityLifecycleCallbacks)
+        app.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
         //绑定回调
-        app.registerActivityLifecycleCallbacks(_activityLifecycleCallbacks)
+        app.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
     }
 
     /**
      * 重置
      */
     fun reset(app: Application) {
-        app.unregisterActivityLifecycleCallbacks(_activityLifecycleCallbacks)
+        app.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
         isForeground = false
-        _isPausing = false
+        isPausing = false
         activityStack.clear()
-        _stateListeners?.clear()
-        _checkRunnable = null
-        _handler.removeCallbacksAndMessages(null)
+        stateListeners?.clear()
+        checkRunnable = null
+        handler.removeCallbacksAndMessages(null)
     }
 
     /**
      * 绑定App运行状态改变监听
      */
     override fun registerAppStateChangedListener(listener: ApplicationManager.OnAppStateChangedListener) {
-        if (_stateListeners == null) {
-            _stateListeners = mutableListOf()
+        if (stateListeners == null) {
+            stateListeners = mutableListOf(listener)
+        } else {
+            stateListeners!!.add(listener)
         }
-        _stateListeners!!.add(listener)
     }
 
     /**
      * 解绑App运行状态改变监听
      */
     override fun unregisterAppStateChangedListener(listener: ApplicationManager.OnAppStateChangedListener) {
-        _stateListeners?.remove(listener)
+        stateListeners?.remove(listener)
     }
 
-    private val _activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks =
+    private val activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks =
         object : Application.ActivityLifecycleCallbacks {
 
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -103,17 +104,17 @@ internal object ApplicationManagerImpl : ApplicationManager {
             override fun onActivityStarted(activity: Activity) {}
 
             override fun onActivityResumed(activity: Activity) {
-                _isPausing = false
+                isPausing = false
                 val isBackground = !isForeground
                 isForeground = true
 
-                _checkRunnable?.let {
-                    _handler.removeCallbacks(it)
+                checkRunnable?.let {
+                    handler.removeCallbacks(it)
                 }
 
                 if (isBackground) {
                     Log.d(TAG, "background became foreground")
-                    _stateListeners?.forEach {
+                    stateListeners?.forEach {
                         try {
                             it.onAppBecameForeground()
                         } catch (e: Exception) {
@@ -126,17 +127,17 @@ internal object ApplicationManagerImpl : ApplicationManager {
             }
 
             override fun onActivityPaused(activity: Activity) {
-                _isPausing = true
-                _checkRunnable?.let {
-                    _handler.removeCallbacks(it)
+                isPausing = true
+                checkRunnable?.let {
+                    handler.removeCallbacks(it)
                 }
-                _checkRunnable = Runnable {
-                    if (isForeground && _isPausing) {
+                checkRunnable = Runnable {
+                    if (isForeground && isPausing) {
                         isForeground = false
                         Log.d(TAG, "became background")
-                        if (_stateListeners == null)
+                        if (stateListeners == null)
                             return@Runnable
-                        for (listener in _stateListeners!!) {
+                        for (listener in stateListeners!!) {
                             try {
                                 listener.onAppBecameBackground()
                             } catch (e: Exception) {
@@ -148,8 +149,8 @@ internal object ApplicationManagerImpl : ApplicationManager {
                         Log.d(TAG, "still foreground")
                     }
                 }
-                _handler.postDelayed(
-                    _checkRunnable!!,
+                handler.postDelayed(
+                    checkRunnable!!,
                     PAUSE_STATE_CHECK_DELAY_TIME
                 )
             }

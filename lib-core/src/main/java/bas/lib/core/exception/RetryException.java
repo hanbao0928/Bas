@@ -1,4 +1,4 @@
-package bas.lib.core.lang.exception;
+package bas.lib.core.exception;
 
 /**
  * Created by Lucio on 2021/11/10.

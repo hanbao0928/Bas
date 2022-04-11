@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.IntRange
+import java.io.File
 import kotlin.properties.Delegates
 import kotlin.properties.ReadWriteProperty
 
@@ -90,4 +91,22 @@ interface SharedPreferencesProvider {
  */
 fun interface OnSharedPrefUpgradeListener {
     fun onSharedPrefUpgrade(sp: SharedPreferences, oldVersion: Long, newVersion: Long)
+}
+
+
+/**
+ * 删除SharedPreferences文件
+ * @param fileName 文件名
+ */
+fun deleteSharedPreferenceFile(context: Context, fileName: String): Boolean {
+    val sb = StringBuilder()
+    sb.append(context.applicationContext.filesDir.parent)
+        .append("/shared_prefs/")
+        .append(fileName)
+        .append(".xml")
+    val file = File(sb.toString())
+    if (file.exists()) {
+        return file.delete()
+    }
+    return true
 }

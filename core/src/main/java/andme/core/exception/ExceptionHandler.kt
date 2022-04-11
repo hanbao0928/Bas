@@ -14,8 +14,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.view.View
 import androidx.fragment.app.Fragment
-import bas.lib.core.lang.exception.IgnoreException
-import bas.lib.core.lang.exception.SilentException
+import bas.lib.core.exception.IgnoreException
+import bas.lib.core.exception.SilentException
 
 /**
  * 异常处理器,用于处理程序中相关的各种类型的异常

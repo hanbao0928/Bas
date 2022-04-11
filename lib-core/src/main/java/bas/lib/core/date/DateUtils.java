@@ -1,5 +1,7 @@
 package bas.lib.core.date;
 
+import static bas.lib.core.date.DatesKt.ONE_DAY_TIME;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +12,6 @@ import java.util.TimeZone;
 
 import bas.lib.core.lang.StringUtils;
 
-import static bas.lib.core.date.DateKt.ONE_DAY_TIME;
 
 /**
  * Created by Lucio on 2021/8/31.

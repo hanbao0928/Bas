@@ -12,6 +12,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import bas.droid.core.util.dipInt
+import bas.droid.core.util.spInt
 import kotlin.math.ceil
 
 /**
@@ -102,9 +104,9 @@ class FloatSeekBar @JvmOverloads constructor(
 
     init {
 
-        mFloatTextHorizontalPadding = dip(4)
-        mFloatTextVerticalPadding = dip(2)
-        mFloatBgRoundedRadius = dip(5)
+        mFloatTextHorizontalPadding = dipInt(4)
+        mFloatTextVerticalPadding = dipInt(2)
+        mFloatBgRoundedRadius = dipInt(5)
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.FloatSeekBar, defStyleAttr, 0
         )
@@ -113,12 +115,12 @@ class FloatSeekBar @JvmOverloads constructor(
         mBgColor = a.getColor(R.styleable.FloatSeekBar_fsb_bgColor, Color.LTGRAY)
         mFgColor = a.getColor(R.styleable.FloatSeekBar_fsb_fgColor, Color.DKGRAY)
         mBarHeight = a.getDimensionPixelSize(
-            R.styleable.FloatSeekBar_fsb_progressBarHeight, dip(
+            R.styleable.FloatSeekBar_fsb_progressBarHeight, dipInt(
                 4
             )
         )
         mMarginSize = a.getDimensionPixelSize(
-            R.styleable.FloatSeekBar_fsb_marginSize, dip(
+            R.styleable.FloatSeekBar_fsb_marginSize, dipInt(
                 2
             )
         )
@@ -129,7 +131,7 @@ class FloatSeekBar @JvmOverloads constructor(
         )
         mIndicatorRadius = a.getDimensionPixelSize(
             R.styleable.FloatSeekBar_fsb_indicatorRadius,
-            dip(5)
+            dipInt(5)
         ).toFloat()
 
         mIndicatorInnerColor = a.getColor(
@@ -142,18 +144,18 @@ class FloatSeekBar @JvmOverloads constructor(
         )
 
         mTriangleHeight = a.getDimensionPixelSize(
-            R.styleable.FloatSeekBar_fsb_triangleHeight, dip(
+            R.styleable.FloatSeekBar_fsb_triangleHeight, dipInt(
                 6
             )
         )
 
         mTriangleWidth = a.getDimensionPixelSize(
-            R.styleable.FloatSeekBar_fsb_triangleWidth, dip(5)
+            R.styleable.FloatSeekBar_fsb_triangleWidth, dipInt(5)
         )
 
         mFloatTextSize = a.getDimensionPixelSize(
             R.styleable.FloatSeekBar_fsb_floatTextSize,
-            sp(14)
+            spInt(14)
         )
         mFloatTextColor = a.getColor(
             R.styleable.FloatSeekBar_fsb_floatTextColor,

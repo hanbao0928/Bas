@@ -8,9 +8,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import bas.droid.core.util.checkValidationOrThrow
-import bas.lib.core.lang.onCatch
-import bas.lib.core.lang.tryIgnore
+import bas.droid.core.content.checkValidationOrThrow
+import bas.lib.core.exception.onCatch
+import bas.lib.core.exception.tryIgnore
 
 
 /**

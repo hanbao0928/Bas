@@ -3,7 +3,7 @@ package bas.droid.core.android
 import bas.lib.core.coroutines.asyncRetryable
 import bas.lib.core.coroutines.launchRetryable
 import bas.lib.core.date.now
-import bas.lib.core.lang.exception.RetryException
+import bas.lib.core.exception.RetryException
 import bas.lib.core.date.dateTimeFormatCN
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking

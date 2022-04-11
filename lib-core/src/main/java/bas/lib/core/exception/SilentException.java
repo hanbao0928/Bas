@@ -1,11 +1,12 @@
-package bas.lib.core.lang.exception;
+package bas.lib.core.exception;
 
 /**
  * Created by Lucio on 2021/7/27.
-
+ * <p>
  * 静默异常，捕获之后不做显示提示处理
  */
-public class SilentException extends RuntimeException{
+public class SilentException extends RuntimeException {
+
     public SilentException() {
     }
 

@@ -64,11 +64,11 @@ open class NetworkChangedReceiver private constructor(val listener: OnNetworkCha
             val msg: Message = this._handler.obtainMessage(if (isConnected) WHAT_NETWORK_CONNECTED else WHAT_NETWORK_LOST)
 
             //延迟发送消息
-            this._handler.sendMessageDelayed(msg, _SEND_DELAY_MS)
+            this._handler.sendMessageDelayed(msg, MESSAGE_DELAY_SEND_TIME_MS)
         } catch (e: Exception) {
             e.printStackTrace()
             val msg = this._handler.obtainMessage(WHAT_NETWORK_ERROR, e)
-            this._handler.sendMessageDelayed(msg, _SEND_DELAY_MS)
+            this._handler.sendMessageDelayed(msg, MESSAGE_DELAY_SEND_TIME_MS)
         }
 
     }
@@ -79,7 +79,7 @@ open class NetworkChangedReceiver private constructor(val listener: OnNetworkCha
         private const val WHAT_NETWORK_CONNECTED = 100
         private const val WHAT_NETWORK_ERROR = -1
 
-        private const val _SEND_DELAY_MS = 500L
+        private const val MESSAGE_DELAY_SEND_TIME_MS = 500L
 
         /**
          * 注册广播

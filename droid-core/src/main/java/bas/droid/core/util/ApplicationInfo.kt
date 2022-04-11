@@ -1,4 +1,4 @@
-@file:JvmName("AMApk")
+@file:JvmName("ApplicationInfoKt")
 
 package bas.droid.core.util
 
@@ -56,9 +56,11 @@ fun Context.isServiceRunning(className: String): Boolean {
  * @return 如果没有获取成功(没有对应值，或者异常)，则返回值为空
  */
 inline fun Context.getMetaData(key: String): String? {
-    val applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+    val applicationInfo =
+        packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
     return applicationInfo.metaData?.getString(key)
 }
+
 
 /**
  * 获得渠道号
@@ -77,31 +79,30 @@ inline fun Context.getVersionName(): String {
 }
 
 /**
- * 获取应用程序名称
- */
-inline fun Context.getAppName(): String? {
-    try {
-        val packageInfo = packageManager.getPackageInfo(packageName, 0)
-        val labelRes = packageInfo.applicationInfo.labelRes
-        return resources.getString(labelRes)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    }
-}
-
-/**
  * 获取版本号
  * @return
  */
 inline fun Context.getVersionCode(): Long {
     val packInfo = packageManager.getPackageInfo(packageName, 0)
-    if (Build.VERSION.SDK_INT >= 28) {
-        return packInfo.longVersionCode
+    return if (Build.VERSION.SDK_INT >= 28) {
+        packInfo.longVersionCode
     } else {
-        return packInfo.versionCode.toLong()
+        packInfo.versionCode.toLong()
     }
+}
 
+/**
+ * 获取应用程序名称
+ */
+inline fun Context.getAppName(): String {
+    return try {
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        val labelRes = packageInfo.applicationInfo.labelRes
+        resources.getString(labelRes)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
 }
 
 /**
@@ -123,7 +124,7 @@ inline fun Context.getLastUpdateTime(): Long {
 /**
  * 获取目标版本
  */
-inline fun getTargetSdkVersion(ctx: Context): Int {
+inline fun Context.getTargetSdkVersion(ctx: Context): Int {
     val packInfo = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
     return packInfo.applicationInfo.targetSdkVersion
 }

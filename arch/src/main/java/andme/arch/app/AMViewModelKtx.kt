@@ -1,6 +1,5 @@
 package andme.arch.app
 
-import bas.lib.core.lang.exception.RetryException
 import andme.core.exceptionHandlerAM
 import bas.lib.core.coroutines.launchRetryable
 import andme.core.support.ui.showAlertDialog

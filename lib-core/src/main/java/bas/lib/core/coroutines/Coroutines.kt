@@ -5,7 +5,7 @@
 
 package bas.lib.core.coroutines
 
-import bas.lib.core.lang.exception.RetryException
+import bas.lib.core.exception.RetryException
 import kotlinx.coroutines.*
 import java.io.Closeable
 import kotlin.coroutines.CoroutineContext

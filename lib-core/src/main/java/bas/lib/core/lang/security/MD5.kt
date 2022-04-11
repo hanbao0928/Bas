@@ -1,6 +1,7 @@
 /**
  * Created by Lucio on 2021/11/10.
  */
+@file:JvmName("MD5Kt")
 
 package bas.lib.core.lang.security
 

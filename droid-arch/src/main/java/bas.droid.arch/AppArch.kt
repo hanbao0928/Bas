@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import bas.droid.core.app.AppManager
 import bas.droid.core.app.ApplicationManager
+import bas.droid.core.initDroidCore
 import bas.droid.core.os.processName
 import bas.droid.core.util.Logger
 
@@ -13,8 +14,9 @@ import bas.droid.core.util.Logger
  */
 abstract class AppArch : Application(), ApplicationManager by AppManager {
 
-    final override fun onCreate() {
+    override fun onCreate() {
         super.onCreate()
+        initDroidCore(this)
         val processName = this.processName
         val packageName = this.packageName
         log("processName = $processName  packageName=$packageName")
@@ -25,10 +27,11 @@ abstract class AppArch : Application(), ApplicationManager by AppManager {
             log("invoke onCreateOtherProcess")
             onCreateOtherProcess(processName)
         }
+
     }
 
-    private fun log(msg:String){
-        Logger.i("AbstractApp",msg)
+    private fun log(msg: String) {
+        Logger.i("AppArch", msg)
     }
 
     /**

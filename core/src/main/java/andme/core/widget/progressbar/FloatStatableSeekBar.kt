@@ -15,6 +15,8 @@ import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.content.res.ResourcesCompat
+import bas.droid.core.util.dipInt
+import bas.droid.core.util.spInt
 import kotlin.math.ceil
 
 /**
@@ -156,9 +158,9 @@ class FloatStatableSeekBar @JvmOverloads constructor(
 
     init {
 
-        val dip4 = dip(4)
+        val dip4 = dipInt(4)
         val dip2 = dip4 / 2
-        val dip5 = dip(5)
+        val dip5 = dipInt(5)
 
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.FloatStatableSeekBar, defStyleAttr, 0
@@ -231,7 +233,7 @@ class FloatStatableSeekBar @JvmOverloads constructor(
 
         mFloatTextSize = a.getDimensionPixelSize(
             R.styleable.FloatStatableSeekBar_fssb_floatTextSize,
-            sp(14)
+            spInt(14)
         )
         mFloatTextColor = a.getColor(
             R.styleable.FloatStatableSeekBar_fssb_floatTextColor,

@@ -1,7 +1,7 @@
 /**
  * Created by Lucio on 2020-03-10.
  */
-@file:JvmName("Networks")
+@file:JvmName("NetworksKt")
 @file:JvmMultifileClass
 
 package bas.droid.core.util

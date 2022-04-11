@@ -8,6 +8,7 @@ package bas.droid.core.view.extensions
 
 import android.view.View
 import android.view.ViewGroup
+import bas.lib.core.lang.orDefault
 
 inline var View.isVisible: Boolean
     get() = visibility == View.VISIBLE
@@ -36,3 +37,13 @@ inline fun View?.removeSelfFromParent() {
  */
 val View.canTakeFocus: Boolean
     get() = isFocusable && isVisible && isEnabled
+
+
+
+inline fun View.updateLayoutParamsOrDefault(block: ViewGroup.LayoutParams.() -> Unit) {
+    var lp = layoutParams.orDefault {
+        ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+    block(lp)
+    layoutParams = lp
+}

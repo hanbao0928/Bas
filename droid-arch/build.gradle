@@ -38,6 +38,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //permission: 个人权限处理框架
+    implementation 'halo.android:permission:1.0.5-rc'
+
     gradle.ext.depImplementation(this,'droid-core')
     //    debugImplementation project(path: ':droid-core')
 //    releaseImplementation("bas.droid:droid-core:$droid_core_version")
@@ -59,5 +62,37 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core_version"
 
 
+    /*START - retrofit*/
+    /**
+     *  [Retrofit]  Http客户端实现
+     *  <proguard>
+     *  https://github.com/square/retrofit
+     *  Retrofit requires at minimum Java 8+ or Android API 21+.
+     *      间接引入：
+     *       [OkHttp] <proguard>
+     *       [Okio] <proguard>
+     *
+     */
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    /**
+     *  [logging-interceptor] okhttp请求日志打印拦截器，版本号与okhttp版本一致
+     *  https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
+     */
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+
+    /**
+     *  [Retrofit Converter Gson] 使用Gson作为Retrofit的序列化和反序列化工具
+     *  <proguard>
+     *  https://github.com/square/retrofit/wiki/Converters
+     *  https://github.com/google/gson
+     */
+    compileOnly "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    api "com.squareup.retrofit2:converter-jackson:$retrofit_version"
+
+    compileOnly 'org.ligboy.retrofit2:converter-fastjson:2.0.2'
+
+    /*END - Retrofit*/
 
 }

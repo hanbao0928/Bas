@@ -53,6 +53,9 @@ dependencies {
 //    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core_version"
 
 
+    //permission: 个人权限处理框架
+    implementation 'halo.android:permission:1.0.5-rc'
+
     /*基础代码库*/
     gradle.ext.depApi(this,'lib-core')
 //    debugApi project(path: ':lib-core')

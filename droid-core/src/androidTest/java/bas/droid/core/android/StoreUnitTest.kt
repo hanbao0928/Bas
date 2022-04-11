@@ -1,9 +1,11 @@
 package bas.droid.core.android
 
 
+import android.app.Application
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import bas.droid.core.ctxBas
-import bas.droid.core.storage
+import bas.droid.core.io.storage
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -14,12 +16,12 @@ import java.io.File
 /**
  * Created by Lucio on 2020-02-28.
  */
-@RunWith(JUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class AMStoreTest {
 
     @Test
     fun getPaths() = runBlocking {
-        ctxBas = InstrumentationRegistry.getInstrumentation().targetContext
+        ctxBas = InstrumentationRegistry.getInstrumentation().targetContext as Application
         println("isExternalStorageAvailable=${storage.isExternalStorageAvailable}")
         println("CacheDirectory=${storage.getCacheDirectory().absolutePath}")
         println("InnerCacheDirectory=${storage.getInnerCacheDirectory().absolutePath}")

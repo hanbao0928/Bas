@@ -9,6 +9,8 @@ import android.graphics.Paint.FontMetricsInt
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.IntRange
+import bas.droid.core.util.dipInt
+import bas.droid.core.util.spInt
 import kotlin.math.ceil
 
 /**
@@ -89,9 +91,9 @@ class FloatIndicatorProgressBar @JvmOverloads constructor(
 
     init {
 
-        mFloatTextHorizontalPadding = dip(4)
-        mFloatTextVerticalPadding = dip(2)
-        mFloatBgRoundedRadius = dip(5)
+        mFloatTextHorizontalPadding = dipInt(4)
+        mFloatTextVerticalPadding = dipInt(2)
+        mFloatBgRoundedRadius = dipInt(5)
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.FloatIndicatorProgressBar, defStyleAttr, 0
         )
@@ -101,12 +103,12 @@ class FloatIndicatorProgressBar @JvmOverloads constructor(
         mBgColor = a.getColor(R.styleable.FloatIndicatorProgressBar_fpb_bgColor, Color.LTGRAY)
         mFgColor = a.getColor(R.styleable.FloatIndicatorProgressBar_fpb_fgColor, Color.DKGRAY)
         mBarHeight = a.getDimensionPixelSize(
-            R.styleable.FloatIndicatorProgressBar_fpb_progressBarHeight, dip(
+            R.styleable.FloatIndicatorProgressBar_fpb_progressBarHeight, dipInt(
                 8
             )
         )
         mMarginSize = a.getDimensionPixelSize(
-            R.styleable.FloatIndicatorProgressBar_fpb_marginSize, dip(
+            R.styleable.FloatIndicatorProgressBar_fpb_marginSize, dipInt(
                 2
             )
         )
@@ -119,20 +121,20 @@ class FloatIndicatorProgressBar @JvmOverloads constructor(
         )
         mIndicatorWidth = a.getDimensionPixelSize(
             R.styleable.FloatIndicatorProgressBar_fpb_barIndicatorWidth,
-            dip(6)
+            dipInt(6)
         )
         mIndicatorHeightThanBar = a.getDimensionPixelSize(
-            R.styleable.FloatIndicatorProgressBar_fpb_barIndicatorHeightThanBar, dip(4)
+            R.styleable.FloatIndicatorProgressBar_fpb_barIndicatorHeightThanBar, dipInt(4)
         )
 
         mTriangleHeight = a.getDimensionPixelSize(
-            R.styleable.FloatIndicatorProgressBar_fpb_triangleHeight, dip(
+            R.styleable.FloatIndicatorProgressBar_fpb_triangleHeight, dipInt(
                 6
             )
         )
 
         mTriangleWidth = a.getDimensionPixelSize(
-            R.styleable.FloatIndicatorProgressBar_fpb_triangleWidth, dip(5)
+            R.styleable.FloatIndicatorProgressBar_fpb_triangleWidth, dipInt(5)
         )
 
 
@@ -140,7 +142,7 @@ class FloatIndicatorProgressBar @JvmOverloads constructor(
 
         mFloatTextSize = a.getDimensionPixelSize(
             R.styleable.FloatIndicatorProgressBar_fpb_floatTextSize,
-            sp(14)
+            spInt(14)
         )
         mFloatTextColor = a.getColor(
             R.styleable.FloatIndicatorProgressBar_fpb_floatTextColor,

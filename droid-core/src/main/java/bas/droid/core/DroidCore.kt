@@ -15,7 +15,10 @@ import bas.droid.systemui.SystemUi
 import bas.droid.systemui.systemUiHandler
 import bas.lib.core.BasConfigurator
 
-lateinit var ctxBas: Context
+lateinit var ctxBas: Application
+
+val appInstance: Application
+    get() = ctxBas
 
 /**
  * 是否开启调试模式
@@ -46,6 +49,15 @@ fun initDroidCore(app: Application) {
     ApplicationManagerImpl.init(app)
 }
 
+/**
+ * 调试执行代码
+ */
+inline fun <T> T.runOnDebug(action: () -> Unit): T {
+    if (debuggable) {
+        action()
+    }
+    return this
+}
 
 /**
  * 设置自定义[SystemUi]
