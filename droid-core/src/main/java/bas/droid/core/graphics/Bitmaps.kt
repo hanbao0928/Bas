@@ -8,7 +8,6 @@ import android.graphics.*
 import android.graphics.Bitmap.CompressFormat
 import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -17,7 +16,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.DateFormat
 import java.util.*
-import kotlin.math.max
 
 /**
  * 读取图片拍摄日期
@@ -46,24 +44,28 @@ fun readPictureTakeDate(path: String): Date? {
  * @return 图片旋转的角度值（0,90,180,270）
  */
 fun readPictureDegree(path: String): Int {
-    val exifInterface = ExifInterface(path)
-    val orientation = exifInterface.getAttributeInt(
-        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-    )
-    return when (orientation) {
-        ExifInterface.ORIENTATION_TRANSPOSE, ExifInterface.ORIENTATION_ROTATE_90 -> 90
-        ExifInterface.ORIENTATION_ROTATE_180, ExifInterface.ORIENTATION_FLIP_VERTICAL -> 180
-        ExifInterface.ORIENTATION_TRANSVERSE, ExifInterface.ORIENTATION_ROTATE_270 -> 270
-        else -> 0
+    return try {
+        val exifInterface = ExifInterface(path)
+        val orientation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        when (orientation) {
+            ExifInterface.ORIENTATION_TRANSPOSE, ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180, ExifInterface.ORIENTATION_FLIP_VERTICAL -> 180
+            ExifInterface.ORIENTATION_TRANSVERSE, ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
+        }
+    } catch (e: Exception) {
+        0
     }
 }
 
 /**
- * 获取缩放之后的图片(是按照InSampleSize进行缩放)
+ * 获取缩放之后的图片(是按照InSampleSize进行缩放，因此图片的宽度不会超过指定的[maxWidth]和[maxHeight],具体请了解InSampleSize的原理)
  * @param path 图片路径
  * @param maxWidth 需求宽
  * @param maxHeight 需求高
-
  */
 @JvmOverloads
 fun scaledBitmap(
@@ -72,7 +74,7 @@ fun scaledBitmap(
     maxHeight: Int
 ): Bitmap? {
     //创建用于缩放的Options
-    val options = BitmapOptions(path, maxWidth, maxHeight)
+    val options = newBitmapOptionsForDecode(path, maxWidth, maxHeight)
     //解析出图片
     return decodeBitmap(path, options)
 }
@@ -96,7 +98,7 @@ fun scaledCompressedBitmapData(
 ): ByteArray {
     val bmp = scaledBitmap(path, reqWidth, reqHeight)
     requireNotNull(bmp) {
-        "bitmap is null,please check your path is right."
+        "bitmap is null(or file not found),please check your path is right."
     }
     val results = bmp.toByteArray(format, quality)
     bmp.recycle()
@@ -108,115 +110,40 @@ fun scaledCompressedBitmapData(
  * @param path
  * @return
  */
+@JvmOverloads
 fun correctedScaledCompressedBitmapData(
     path: String,
     maxWidth: Int,
     maxHeight: Int,
-    quality: Int = 100,
+    quality: Int = DEFAULT_BITMAP_COMPRESS_QUALITY,
     format: CompressFormat = CompressFormat.JPEG
 ): ByteArray {
     //获取偏转角度
-    val degree = ImageRotateDegree(path)
+    val degree = readPictureDegree(path)
     if (degree == 0) {
         return scaledCompressedBitmapData(path, maxWidth, maxHeight, quality)
     } else {
         //创建用于缩放的Options
-        val options = BitmapOptions(path, maxWidth, maxHeight)
+        val options = newBitmapOptionsForDecode(path, maxWidth, maxHeight)
         //解析出图片
         val bitmap = decodeBitmap(path, options)
         requireNotNull(bitmap) {
             "bitmap is null,please check your path is right."
         }
-        val fixedBmp = rotateBitmap(bitmap, degree)
+        //旋转图片
+        val rotatedBmp = rotateBitmap(bitmap, degree)
         bitmap.recycle()
-        val results = fixedBmp.toByteArray(format, quality)
-        fixedBmp.recycle()
+        val results = rotatedBmp.toByteArray(format, quality)
+        rotatedBmp.recycle()
         return results
     }
 }
 
-/**
- * 通过需求的宽和高简单计算适当的InSampleSize
- *
- * @param imgWidth 图片宽
- * @param imgHeight 图片高
- * @param maxWidth  需求宽
- * @param maxHeight 需求高
- * @return
- */
-fun InSampleSizeSimple(imgWidth: Int, imgHeight: Int, maxWidth: Int, maxHeight: Int): Int {
-    val calResult = max(imgWidth * 1.0 / maxWidth, imgHeight * 1.0 / maxHeight).toInt()
-    return max(1, calResult)
-}
-
-/**
- * 解析Bitmap的公用方法. 数据源只需提供一种
- */
-fun decodeBitmap(path: String, options: BitmapFactory.Options): Bitmap? {
-    return BitmapFactory.decodeFile(path, options)
-}
-
-/**
- * 获取缩放之后的图片
- * @param maxWidth 目标宽度
- * @param maxHeight 目标高度
- * @param imagePath 图片路径
- * @param config 压缩配置，默认[Bitmap.Config.RGB_565],所占内存最少
- */
-fun decodeBitmap(
-    imagePath: String,
-    maxWidth: Int,
-    maxHeight: Int,
-    config: Bitmap.Config = Bitmap.Config.RGB_565
-): Bitmap? {
-    val bmOptions = BitmapOptions(imagePath, maxWidth, maxHeight, config)
-    return decodeBitmap(imagePath, bmOptions)
-}
-
-/**
- * 解析Bitmap的公用方法. 数据源只需提供一种
- */
-fun decodeBitmap(data: ByteArray, options: BitmapFactory.Options): Bitmap? {
-    return BitmapFactory.decodeByteArray(data, 0, data.size, options)
-}
-
-/**
- * 解析Bitmap的公用方法. 数据源只需提供一种
- */
-fun decodeBitmap(ctx: Context, uri: Uri, options: BitmapFactory.Options): Bitmap? {
-    return ctx.contentResolver.openInputStream(uri)?.use {
-        BitmapFactory.decodeStream(it, null, options)
-    }
-}
 
 /**
  * 获取图片的BitmapFactory.Options
  */
-fun BitmapOptions(path: String): BitmapFactory.Options {
-    val optionsInfo = BitmapFactory.Options()
-    // 这里设置true的时候，decode时候Bitmap返回的为空，
-    // 将图片宽高读取放在Options里.
-    optionsInfo.inJustDecodeBounds = true
-    decodeBitmap(path, optionsInfo)
-    return optionsInfo
-}
-
-/**
- * 获取图片的BitmapFactory.Options
- */
-fun BitmapOptions(data: ByteArray): BitmapFactory.Options {
-    val optionsInfo = BitmapFactory.Options()
-    // 这里设置true的时候，decode时候Bitmap返回的为空，
-    // 将图片宽高读取放在Options里.
-    optionsInfo.inJustDecodeBounds = true
-    decodeBitmap(data, optionsInfo)
-    return optionsInfo
-}
-
-/**
- * 获取图片的BitmapFactory.Options
- */
-fun BitmapOptions(ctx: Context, imageUri: Uri): BitmapFactory.Options {
+fun newBitmapOptionsForDecode(ctx: Context, imageUri: Uri): BitmapFactory.Options {
     val optionsInfo = BitmapFactory.Options()
     // 这里设置true的时候，decode时候Bitmap返回的为空，
     // 将图片宽高读取放在Options里.
@@ -225,52 +152,6 @@ fun BitmapOptions(ctx: Context, imageUri: Uri): BitmapFactory.Options {
     return optionsInfo
 }
 
-/**
- * 创建一个合适的用于获取图片的BitmapFactory.Options
- * @param path
- * @param maxWidth
- * @param maxHeight
- * @param jpegQuality
- * @return
- */
-fun BitmapOptions(
-    path: String,
-    maxWidth: Int,
-    maxHeight: Int,
-    config: Bitmap.Config = Bitmap.Config.ARGB_8888
-): BitmapFactory.Options {
-    val options = BitmapOptions(path)
-    options.inSampleSize = InSampleSizeSimple(options.outWidth, options.outHeight, maxWidth, maxHeight)
-    options.inJustDecodeBounds = false
-    if (Build.VERSION.SDK_INT < 21) {
-        options.inPurgeable = true
-        options.inInputShareable = true
-    }
-    return options
-}
-
-/**
- * 获取图片的旋转角度
- * @param path 图片路径
- * @return 图片旋转的角度值（0,90,180,270）
- */
-fun ImageRotateDegree(path: String): Int {
-    return try {
-        val exifInterface = ExifInterface(path)
-        val orientation = exifInterface.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_NORMAL
-        )
-        when (orientation) {
-            ExifInterface.ORIENTATION_TRANSPOSE, ExifInterface.ORIENTATION_ROTATE_90 -> 90
-            ExifInterface.ORIENTATION_ROTATE_180, ExifInterface.ORIENTATION_FLIP_VERTICAL -> 180
-            ExifInterface.ORIENTATION_TRANSVERSE, ExifInterface.ORIENTATION_ROTATE_270 -> 270
-            else -> 0
-        }
-    } catch (e: Exception) {
-        0
-    }
-}
 
 /**
  * 生成文字图片

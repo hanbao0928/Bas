@@ -1,10 +1,13 @@
+@file:JvmName("StoragesKt")
+@file:JvmMultifileClass
+
 package bas.droid.core.io
 
 import java.io.File
+
 /**
  * 文件存储统一管理
  */
-@JvmField
 var storage: Storage = DefaultStorage
 
 
@@ -116,3 +119,4 @@ interface Storage {
         }
     }
 }
+

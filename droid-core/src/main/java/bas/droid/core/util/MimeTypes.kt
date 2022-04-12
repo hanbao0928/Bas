@@ -42,13 +42,17 @@ fun File.getSuffix(): String? {
  */
 fun File.getMimeType(): String = name.getMimeType()
 
-fun String.getMimeType(): String {
-    val suffix = this.getSuffix(missingDelimiterValue = "file/*")
+/**
+ * 获取mime type
+ */
+@JvmOverloads
+fun String.getMimeType(default: String = "file/*"): String {
+    val suffix = this.getSuffix(missingDelimiterValue = default)
     val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix)
     if (!type.isNullOrEmpty()) {
         return type
     }
-    return "file/*"
+    return default
 }
 
 
