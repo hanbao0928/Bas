@@ -43,6 +43,52 @@ fun CharSequence.toHighLight(tag: String, @ColorInt color: Int): SpannableString
     return this.toHighLight(start, end, color)
 }
 
+
+/**
+ * 转换成可点击的内容
+ */
+fun CharSequence.toClickSpan(
+    color: Int,
+    vararg spans: Pair<String, OnSpanClick>
+): SpannableStringBuilder {
+    val ssb: SpannableStringBuilder =
+        if (this is SpannableStringBuilder) this else SpannableStringBuilder(this)
+    spans.forEach {
+        val span = it.first
+        val onSpanClick = it.second
+        if (span.isNotEmpty()) {
+            val spanIndex = this.indexOf(span)
+            if (spanIndex >= 0) {
+                ssb.setSpan(
+                    ClickSpan(span, color, onSpanClick),
+                    spanIndex,
+                    spanIndex + span.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+    }
+    return ssb
+}
+
+/**
+ * 应用可点击文本
+ * @param content 文本内容
+ * @param color 可点击部分文本颜色
+ * 突出显示的文本以及点击响应的事件处理
+ */
+fun TextView.applyClickSpan(
+    content: String,
+    @ColorInt color: Int,
+    vararg spans: Pair<String, OnSpanClick>
+) {
+    enableClickSpan()
+    //设置点击颜色
+    highlightColor = Color.TRANSPARENT
+    text = content.toClickSpan( color, *spans)
+}
+
+
 /**
  * 确保TextView能够响应Span点击
  */
@@ -67,58 +113,16 @@ class ClickSpan(val content: String, @ColorInt val color: Int, val onClick: OnSp
     ClickableSpan() {
 
     override fun updateDrawState(ds: TextPaint) {
+//        super.updateDrawState(ds)
         ds.color = color
         ds.isUnderlineText = false
+//        // 清除阴影
+//        ds.clearShadowLayer()
     }
 
     override fun onClick(widget: View) {
         onClick.invoke(content, widget)
     }
-}
-
-
-/**
- * 可点击Span
- */
-fun ClickSpan(
-    content: CharSequence,
-    color: Int,
-    vararg spans: Pair<String, OnSpanClick>
-): SpannableStringBuilder {
-    return SpannableStringBuilder(content).apply {
-        spans.forEach {
-            val span = it.first
-            val onSpanClick = it.second
-            if (span.isNotEmpty()) {
-                val spanIndex = content.indexOf(span)
-                if (spanIndex >= 0) {
-                    setSpan(
-                        ClickSpan(span, color, onSpanClick),
-                        spanIndex,
-                        spanIndex + span.length,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-            }
-        }
-    }
-}
-
-/**
- * 应用可点击文本
- * @param content 文本内容
- * @param color 可点击部分文本颜色
- * 突出显示的文本以及点击响应的事件处理
- */
-fun TextView.applyClickSpan(
-    content: String,
-    @ColorInt color: Int,
-    vararg spans: Pair<String, OnSpanClick>
-) {
-    enableClickSpan()
-    //设置点击颜色
-    highlightColor = Color.TRANSPARENT
-    text = ClickSpan(content, color, *spans)
 }
 
 

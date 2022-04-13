@@ -252,6 +252,15 @@ fun SysBrowserIntent(url: String): Intent {
 }
 
 /**
+ * 系统主界面
+ */
+fun SysHomeIntent(): Intent {
+    val intent = Intent(Intent.ACTION_MAIN)
+    intent.addCategory(Intent.CATEGORY_HOME)
+    return intent
+}
+
+/**
  * 超链接意图
  */
 fun BrowserIntent(url: String): Intent {
@@ -273,15 +282,6 @@ fun GetContentIntent(type: String = "*/*"): Intent {
         intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = type
     }
-    return intent
-}
-
-/**
- * 系统主界面
- */
-fun SysHomeIntent(): Intent {
-    val intent = Intent(Intent.ACTION_MAIN)
-    intent.addCategory(Intent.CATEGORY_HOME)
     return intent
 }
 

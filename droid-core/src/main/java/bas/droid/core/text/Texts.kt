@@ -13,29 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("TextsKt")
+@file:JvmMultifileClass
 
 package bas.droid.core.text
 
 import android.graphics.Paint
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextPaint
+import android.text.TextUtils
 import android.widget.TextView
 
 /**
- * 获取文本高度
+ * 添加最大长度过滤器：用于显示输入框最多只能输入多少个字符
  */
-fun getTextHeight(textSize: Float): Int {
-    val replyPaint = TextPaint()
-    replyPaint.isAntiAlias = true
-    replyPaint.textSize = textSize
-    return replyPaint.textHeight() + 2
+fun TextView.addLengthFilter(max: Int) {
+    this.appendInputFilter(InputFilter.LengthFilter(max))
 }
 
 /**
- * 获取画笔绘制的文本高度
+ * 添加正整数输入过滤器
  */
-fun TextPaint.textHeight(): Int {
-    val fm = fontMetrics
-    return Math.ceil((fm.descent - fm.ascent).toDouble()).toInt()
+fun TextView.addPositiveNumberInputFilter() {
+    this.appendInputFilter(PositiveNumberInputFilter())
+}
+
+/**
+ * 添加金额输入过滤器
+ */
+fun TextView.addCashierInputFilter() {
+    this.appendInputFilter(CashierInputFilter())
 }
 
 /**
@@ -58,3 +66,22 @@ fun TextView.applyUnderLine() {
 fun TextView.applyBold() {
     this.paintFlags = this.paintFlags or Paint.FAKE_BOLD_TEXT_FLAG
 }
+
+/**
+ * 获取文本高度
+ */
+fun getTextHeight(textSize: Float): Int {
+    val replyPaint = TextPaint()
+    replyPaint.isAntiAlias = true
+    replyPaint.textSize = textSize
+    return replyPaint.textHeight() + 2
+}
+
+/**
+ * 获取画笔绘制的文本高度
+ */
+fun TextPaint.textHeight(): Int {
+    val fm = fontMetrics
+    return Math.ceil((fm.descent - fm.ascent).toDouble()).toInt()
+}
+
