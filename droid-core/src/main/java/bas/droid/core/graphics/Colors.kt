@@ -17,7 +17,11 @@ import androidx.core.graphics.ColorUtils
  * @param color2
  * @return 混合之后的颜色
  */
-inline fun blendARGB(@ColorInt color1: Int, @ColorInt color2: Int, @FloatRange(from = 0.0, to = 1.0) ratio: Float): Int {
+inline fun blendARGB(
+    @ColorInt color1: Int,
+    @ColorInt color2: Int,
+    @FloatRange(from = 0.0, to = 1.0) ratio: Float
+): Int {
     return ColorUtils.blendARGB(color1, color2, ratio)
 }
 
@@ -37,5 +41,10 @@ fun blendARGB(@ColorInt color: Int, @IntRange(from = 0, to = 255) alpha: Int): I
     val r = Color.red(color)
     val g = Color.green(color)
     val b = Color.blue(color)
-    return Color.argb((a * ratio).toInt(), (r * ratio).toInt(), (g * ratio).toInt(), (b * ratio).toInt())
+    return Color.argb(
+        (a * ratio).toInt(),
+        (r * ratio).toInt(),
+        (g * ratio).toInt(),
+        (b * ratio).toInt()
+    )
 }
