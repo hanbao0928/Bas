@@ -10,7 +10,6 @@ import java.io.File
  */
 var storage: Storage = DefaultStorage
 
-
 interface Storage {
 
     /**

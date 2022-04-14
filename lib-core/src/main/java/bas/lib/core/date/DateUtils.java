@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import bas.lib.core.BasConfigsKt;
 import bas.lib.core.lang.StringUtils;
 
 
@@ -112,7 +113,7 @@ public class DateUtils {
         } else if (UTC_DATETIME_PATTERN.equals(pattern)) {
             return getUTCDateTimeFormat().format(date);
         } else {
-            return new SimpleDateFormat(pattern).format(date);
+            return new SimpleDateFormat(pattern, BasConfigsKt.getGlobalLocale()).format(date);
         }
     }
 

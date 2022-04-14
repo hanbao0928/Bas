@@ -1,18 +1,5 @@
 package bas.lib.core.exception
 
-import bas.lib.core.BasConfigurator
-
-/**
- * 设置异常消息处理器
- */
-fun BasConfigurator.setExceptionHandler(handler: ExceptionHandler) {
-    exceptionHandler = handler
-}
-
-val defaultExceptionHandler: ExceptionHandler = CommonExceptionHandler()
-
-var exceptionHandler: ExceptionHandler = defaultExceptionHandler
-    private set
 
 /**
  * 异常处理
@@ -71,4 +58,7 @@ open class CommonExceptionHandler : ExceptionHandler {
         e.printStackTrace()
     }
 }
+
+internal val defaultExceptionHandler: ExceptionHandler = CommonExceptionHandler()
+
 

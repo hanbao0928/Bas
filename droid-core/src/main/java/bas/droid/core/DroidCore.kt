@@ -6,14 +6,11 @@
 package bas.droid.core
 
 import android.app.Application
-import android.content.Context
 import bas.droid.core.app.internal.ApplicationManagerImpl
-import bas.droid.core.io.Storage
-import bas.droid.core.io.storage
 import bas.droid.core.net.URLCoderDroid
-import bas.droid.systemui.SystemUi
-import bas.droid.systemui.systemUiHandler
-import bas.lib.core.BasConfigurator
+import bas.lib.core.base64Decoder
+import bas.lib.core.base64Encoder
+import bas.lib.core.urlCoder
 
 lateinit var ctxBas: Application
 
@@ -39,12 +36,12 @@ fun initDroidCore(app: Application) {
     ctxBas = app
 
     //设置URL编码
-    BasConfigurator.setURLCoder(URLCoderDroid)
+    urlCoder = URLCoderDroid
 
     //设置base64编解码
     val base64Coder = bas.droid.core.util.Base64(android.util.Base64.NO_WRAP)
-    BasConfigurator.setBase64Encoder(base64Coder)
-    BasConfigurator.setBase64Decoder(base64Coder)
+    base64Encoder = base64Coder
+    base64Decoder = base64Coder
 
     ApplicationManagerImpl.init(app)
 }
@@ -57,19 +54,5 @@ inline fun <T> T.runOnDebug(action: () -> Unit): T {
         action()
     }
     return this
-}
-
-/**
- * 设置自定义[SystemUi]
- */
-fun setCustomSystemUiHandler(handler: SystemUi) {
-    systemUiHandler = handler
-}
-
-/**
- * 设置存储类
- */
-fun setStorage(custom: Storage) {
-    storage = custom
 }
 

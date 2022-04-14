@@ -41,12 +41,9 @@ inline fun Date?.format(pattern: String): String {
     return DateUtils.format(this, pattern)
 }
 
-var friendlyDateFormat: DateFormatUseCase = FriendlyDateFormatUseCase()
-    internal set
-
 /**
  * 转换成友好字符串显示
- * @see 接收器设置为可空的目的只是为了兼容Java可能存在传递为空对象的情况
+ * @note 接收器设置为可空的目的只是为了兼容Java可能存在传递为空对象的情况
  */
 inline fun Date?.toFriendlyFormat(): String =
     if (this == null) "" else friendlyDateFormat.format(this)

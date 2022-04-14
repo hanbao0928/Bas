@@ -24,7 +24,6 @@ fun Activity.enableTouchable(enable: Boolean) {
         //设置不可触摸标记
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
-
 }
 
 /**
