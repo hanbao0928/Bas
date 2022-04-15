@@ -1,5 +1,7 @@
 package bas.lib.core.exception
 
+import bas.lib.core.exceptionHandler
+
 
 /**
  * 异常处理

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import bas.droid.core.runOnDebug
 import bas.lib.core.exception.CommonExceptionHandler
 import bas.lib.core.exception.ExceptionHandler
-import bas.lib.core.exception.exceptionMessageTransformer
+import bas.lib.core.exceptionMessageTransformer
 
 /**
  * 扩展友好消息字段，用于将异常转换成对用户比较容易理解的信息。

@@ -26,7 +26,6 @@ internal var isInit: Boolean = false
 
 /**
  * 初始化Core Lib
- * @param debuggable是否是调试模式
  */
 @Synchronized
 fun initDroidCore(app: Application) {

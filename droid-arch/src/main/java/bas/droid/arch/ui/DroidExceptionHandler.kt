@@ -1,13 +1,6 @@
 package bas.droid.arch.ui
 
-import android.app.Dialog
-import android.content.Context
-import android.view.View
-import androidx.fragment.app.Fragment
-import bas.droid.core.runOnDebug
-import bas.lib.core.exception.CommonExceptionHandler
 import bas.lib.core.exception.ExceptionMessageTransformer
-import bas.lib.core.exception.exceptionMessageTransformer
 import bas.lib.core.lang.orDefaultIfNullOrEmpty
 import retrofit2.HttpException
 import java.net.ConnectException

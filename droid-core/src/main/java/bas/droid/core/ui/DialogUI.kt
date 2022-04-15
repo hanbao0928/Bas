@@ -7,19 +7,10 @@ package bas.droid.core.ui
 import android.content.Context
 import android.content.DialogInterface
 import androidx.annotation.StringRes
-import bas.lib.core.BasConfigurator
-
-
-/**
- * 设置默认的对话框需求处理类
- */
-fun BasConfigurator.setDialogUIHandler(handler: DialogUI) {
-    dialogUI = handler
-}
 
 
 var dialogUI: DialogUI = DefaultDialogUI
-    private set
+
 
 interface DialogUI {
 
