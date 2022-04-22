@@ -10,8 +10,14 @@ import androidx.databinding.BindingAdapter
 
 @BindingAdapter("bindTextOrGone")
 fun bindTextOrGone(view: TextView, oldValue: CharSequence?, newValue: CharSequence?) {
-    if (oldValue == newValue)
+    if (oldValue == newValue) {
+        //确保都为空时运行效果
+        if (newValue.isNullOrEmpty() && view.visibility != View.GONE) {
+            view.visibility = View.GONE
+        }
         return
+    }
+
 
     if (newValue.isNullOrEmpty()) {
         view.visibility = View.GONE
@@ -24,8 +30,13 @@ fun bindTextOrGone(view: TextView, oldValue: CharSequence?, newValue: CharSequen
 
 @BindingAdapter("bindTextOrInvisible")
 fun bindTextOrInvisible(view: TextView, oldValue: CharSequence?, newValue: CharSequence?) {
-    if (oldValue == newValue)
+    if (oldValue == newValue) {
+        //确保都为空时运行效果
+        if (newValue.isNullOrEmpty() && view.visibility != View.INVISIBLE) {
+            view.visibility = View.GONE
+        }
         return
+    }
     if (newValue.isNullOrEmpty()) {
         view.visibility = View.INVISIBLE
         view.text = ""
