@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import bas.droid.core.runOnDebug
 import bas.lib.core.exception.CommonExceptionHandler
 import bas.lib.core.exception.ExceptionHandler
+import bas.lib.core.exceptionHandler
 import bas.lib.core.exceptionMessageTransformer
 
 /**
@@ -16,8 +17,14 @@ inline val Throwable.friendlyMessage: String
         this
     )
 
-val exceptionHandler: DroidExceptionHandler = DefaultDroidExceptionHandler()
+/**
+ * 初始化Droid异常帮助类：如果libcore的可用则直接使用droid，否则使用默认的handler
+ */
+internal fun initDroidExceptionHandler():DroidExceptionHandler{
+     return exceptionHandler as? DroidExceptionHandler ?: DefaultDroidExceptionHandler()
+}
 
+val droidExceptionHandler: DroidExceptionHandler = initDroidExceptionHandler()
 
 /**
  * 捕获ui异常
@@ -27,7 +34,7 @@ inline fun Context.tryUi(action: () -> Unit): Throwable? {
         action()
         null
     } catch (e: Throwable) {
-        exceptionHandler.handleUIException(this, e)
+        droidExceptionHandler.handleUIException(this, e)
         e
     }
 }
