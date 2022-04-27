@@ -44,4 +44,13 @@
         android:layout_height="wrap_content"
         android:text="测试ImageLoader"
         android:onClick="onBtnClick"/>
+
+    <Button
+        android:id="@+id/tvtest_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开TV测试"
+        android:onClick="onBtnClick"/>
+
+
 </bas.leanback.layout.LeanbackLinearLayout>

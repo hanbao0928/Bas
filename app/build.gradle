@@ -43,6 +43,17 @@ android {
         viewBinding = true
     }
 
+    packagingOptions{
+        exclude 'META-INF/lib-core-ktx.kotlin_module'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
 }
 
 dependencies {

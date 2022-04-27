@@ -12,6 +12,7 @@ import android.view.WindowManager
 import bas.droid.core.content.checkValidationOrThrow
 import bas.lib.core.exception.onCatch
 import bas.lib.core.exception.tryIgnore
+import kotlin.reflect.KClass
 
 /**
  * 设置Activity是否响应触摸；enable=true 响应。
@@ -22,22 +23,26 @@ fun Activity.enableTouchable(enable: Boolean) {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     } else {
         //设置不可触摸标记
-        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
     }
+
 }
 
 /**
  * 快速运行一个Activity
  */
-fun Context.startActivity(clazz: Class<out Activity>) {
-    val it = Intent(this, clazz)
-    if(this !is Activity)
+fun Context.startActivity(clazz: KClass<out Activity>) {
+    val it = Intent(this, clazz.java)
+    if (this !is Activity)
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(it)
 }
 
-fun Activity.startActivity(clazz: Class<out Activity>) {
-    val it = Intent(this, clazz)
+fun Activity.startActivity(clazz: KClass<out Activity>) {
+    val it = Intent(this, clazz.java)
     startActivity(it)
 }
 
