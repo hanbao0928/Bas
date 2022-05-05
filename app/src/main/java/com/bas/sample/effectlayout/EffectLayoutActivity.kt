@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import bas.droid.core.util.dp
+import bas.droid.core.util.dpInt
 import bas.leanback.effect.EffectFrameLayout
 import com.bas.R
 
@@ -40,8 +41,8 @@ class EffectLayoutActivity:AppCompatActivity(R.layout.activity_effect_layout) {
             }
             R.id.test_size->{
                 findViewById<View>(R.id.circle2_image).updateLayoutParams {
-                 width = width + 8.dp
-                 height = height + 8.dp
+                 width = width + 8.dpInt
+                 height = height + 8.dpInt
                 }
             }
         }

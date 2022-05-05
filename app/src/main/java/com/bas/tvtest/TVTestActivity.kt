@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import bas.droid.core.util.ActionIntent
+import bas.droid.core.content.ActionIntent
 import com.bas.R
 
 class TVTestActivity : AppCompatActivity() {
