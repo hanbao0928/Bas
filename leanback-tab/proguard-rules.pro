@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep public class com.bas.android.leanback.tab.**{
+-keep public class bas.leanback.tab.**{
     public *;
     protected * ;
 }

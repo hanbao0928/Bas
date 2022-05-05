@@ -1,6 +1,6 @@
 package bas.lib.core
 
-import bas.lib.core.date.FormatDateUseCase
+import bas.lib.core.date.DateFormatUseCase
 import bas.lib.core.date.WeekDateUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -14,12 +14,12 @@ class WeekUnitTest {
 
     @Test
     fun testGetWeek() = runBlocking {
-        val ft = FormatDateUseCase("yyyy-MM-dd")
+        val ft = DateFormatUseCase.newSimple("yyyy-MM-dd")
         val usecase1 = WeekDateUseCase(Calendar.MONDAY)
         val dates1 = usecase1.invoke()
         println("获取当前日期所在的周一到周日")
         dates1.forEach {
-           println(ft(it))
+           println(ft.format(it))
         }
 
 
@@ -27,7 +27,7 @@ class WeekUnitTest {
         val dates2 = usecase2.invoke()
         println("获取当前日期所在的周日、周一到周六")
         dates2.forEach {
-            println(ft(it))
+            println(ft.format(it))
         }
 
 
@@ -35,14 +35,14 @@ class WeekUnitTest {
         val dates3 = usecase3.invoke()
         println("获取当前日期所在的周四、周五、周六、周日、周一、周二、周三")
         dates3.forEach {
-            println(ft(it))
+            println(ft.format(it))
         }
 
         val usecase4 = WeekDateUseCase(Calendar.FRIDAY)
         val dates4 = usecase4.invoke()
         println("获取当前日期所在的周五、周六、周日、周一、周二、周三、周四")
         dates4.forEach {
-            println(ft(it))
+            println(ft.format(it))
         }
     }
 

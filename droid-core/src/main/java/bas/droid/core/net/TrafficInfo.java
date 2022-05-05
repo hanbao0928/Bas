@@ -148,7 +148,7 @@ public class TrafficInfo {
                     if (mRxLister != null) {
                         mRxLister.onTrafficRxNetSpeedBack(speed);
                     }
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                 }
             }

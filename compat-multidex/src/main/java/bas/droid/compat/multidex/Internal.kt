@@ -6,25 +6,27 @@ import android.util.Log
  * Created by Lucio on 2021/11/17.
  */
 
-private const val TAG = "MultiDexCompatBas"
-private const val DEBUG = true
+internal class Logger(private val tag: String) {
 
-internal fun logd(msg: String) {
-    if (!DEBUG)
-        return
-    Log.d(TAG, msg)
-}
+    var debug = true
 
-internal fun logi(msg: String) {
-    Log.i(TAG, msg)
-}
+    internal fun d(msg: String) {
+        if (!debug)
+            return
+        Log.d(tag, msg)
+    }
 
-@JvmOverloads
-internal fun logw(msg: String, e: Throwable? = null) {
-    Log.w(TAG, msg, e)
-}
+    internal fun i(msg: String) {
+        Log.i(tag, msg)
+    }
 
-@JvmOverloads
-internal fun loge(msg: String, e: Throwable? = null) {
-    Log.e(TAG, msg, e)
+    @JvmOverloads
+    internal fun w(msg: String, e: Throwable? = null) {
+        Log.w(tag, msg, e)
+    }
+
+    @JvmOverloads
+    internal fun e(msg: String, e: Throwable? = null) {
+        Log.e(tag, msg, e)
+    }
 }

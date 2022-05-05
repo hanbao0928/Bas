@@ -1,26 +1,5 @@
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-
-    /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka'
-    /*用于上传maven*/
-    id 'maven'
-}
-
+apply from: "$rootDir/gradle/android-lib-publishable.gradle"
 android {
-    compileSdkVersion rootProject.ext.globalCompileSdkVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.globalMinSdkVersion
-        targetSdkVersion rootProject.ext.globalTargetSdkVersion
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
     buildTypes {
         debug {
             minifyEnabled true
@@ -31,79 +10,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-}
-
-
-// kotlin android javadoc
-task generateSourcesJar(type: Jar) {
-    group = 'jar'
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-//    outputFormat = "javadoc"
-//    outputDirectory = javadoc.destinationDir
-//}
-
-task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
-    group = 'jar'
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives generateJavadoc
-    archives generateSourcesJar
-}
-
-
-def PROJECT_NAME = 'systemui'
-def PROJECT_VERSION = '0.0.1'
-def PROJECT_DESC = 'status bar and virtual navigation bar handler.'
-def ARTIFACT_ID = 'systemui'
-
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.droid'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation androidDeps.appcompat
+    implementation androidDeps.annotation
+    implementation androidDeps.coreKtx
 }

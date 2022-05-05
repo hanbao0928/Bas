@@ -1,0 +1,50 @@
+/*用于发布maven*/
+/*使用步骤
+* 1、 在module的build.gradle文件的开头，apply plugin语句的后面增加 ：
+* apply from: "$rootDir/gradle/base-project-config.gradle"
+*
+* 2、在module目录下创建gradle.properties文件，定义如下变量值
+PROJECT_NAME = {工程名字} //注意不要加单引号或者双引号
+PROJECT_VERSION = {版本号} //注意不要加单引号或者双引号
+GROUP_ID =
+ARTIFACT_ID =
+*/
+
+/*用于上传maven*/
+apply plugin: 'maven-publish'
+
+apply from: "$rootDir/gradle/generate-kotlin-doc.gradle"
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_URL_SNAPSHOT  = properties.getProperty('NEXUS_URL_SNAPSHOT')
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = GROUP_ID
+                artifactId = ARTIFACT_ID
+                version = PROJECT_VERSION
+            }
+        }
+
+        repositories {
+            //仓库配置
+            maven {
+                //对于非 https 的仓库地址，需要设置 allowInsecureProtocol true
+                allowInsecureProtocol true
+                name = PROJECT_NAME //可选
+                url = PROJECT_VERSION.endsWith('SNAPSHOT') ? NEXUS_URL_SNAPSHOT : NEXUS_URL
+                credentials {
+                    username = NEXUS_USER
+                    password = NEXUS_PWD
+                }
+            }
+        }
+    }
+}

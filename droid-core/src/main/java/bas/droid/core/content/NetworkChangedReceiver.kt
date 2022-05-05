@@ -65,7 +65,7 @@ open class NetworkChangedReceiver private constructor(val listener: OnNetworkCha
 
             //延迟发送消息
             this._handler.sendMessageDelayed(msg, MESSAGE_DELAY_SEND_TIME_MS)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
             val msg = this._handler.obtainMessage(WHAT_NETWORK_ERROR, e)
             this._handler.sendMessageDelayed(msg, MESSAGE_DELAY_SEND_TIME_MS)

@@ -3,12 +3,13 @@ package bas.droid.core.app.internal
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
-import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import bas.droid.core.app.ActivityStack
 import bas.droid.core.app.ApplicationManager
+import bas.lib.core.debuggable
 
 /**
  * Created by Lucio on 18/3/16.
@@ -19,9 +20,9 @@ internal object ApplicationManagerImpl : ApplicationManager {
 
     override var isDebuggable: Boolean
         set(value) {
-            bas.droid.core.debuggable = value
+            debuggable = value
         }
-        get() = bas.droid.core.debuggable
+        get() = debuggable
 
     private const val TAG: String = "AppManagerImpl"
 
@@ -34,7 +35,7 @@ internal object ApplicationManagerImpl : ApplicationManager {
     private var isPausing = false
 
     private val handler: Handler by lazy {
-        Handler()
+        Handler(Looper.getMainLooper())
     }
 
     private var checkRunnable: Runnable? = null
@@ -56,7 +57,6 @@ internal object ApplicationManagerImpl : ApplicationManager {
      * 初始化
      */
     fun init(app: Application) {
-        isDebuggable = (app.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
         //避免重复绑定
         app.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
         //绑定回调
@@ -117,7 +117,7 @@ internal object ApplicationManagerImpl : ApplicationManager {
                     stateListeners?.forEach {
                         try {
                             it.onAppBecameForeground()
-                        } catch (e: Exception) {
+                        } catch (e: Throwable) {
                             Log.d(TAG, "listener throw exception", e)
                         }
                     }
@@ -140,7 +140,7 @@ internal object ApplicationManagerImpl : ApplicationManager {
                         for (listener in stateListeners!!) {
                             try {
                                 listener.onAppBecameBackground()
-                            } catch (e: Exception) {
+                            } catch (e: Throwable) {
                                 e.printStackTrace()
                                 Log.e(TAG, "listener throw exception!", e)
                             }

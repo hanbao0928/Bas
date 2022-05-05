@@ -1,5 +1,10 @@
+
+
 //是否使用module依赖，如果不使用module依赖则使用远程依赖
 gradle.ext.useModule = true
+
+/*是否强制惰性Module强制使用本地module模式，如果为false，则读取单个module的配置信息进行配置*/
+gradle.ext.forceUseModule = false
 
 def useModuleDep = {
     gradle.ext.useModule || it == null || !it.version
@@ -57,15 +62,11 @@ modules.each { name, module ->
     }
 }
 
-/*是否强制惰性Module强制使用本地module模式，如果为false，则读取单个module的配置信息进行配置*/
-gradle.ext.forceUseModule = false
-
 /*配置惰性module：一般末端和顶端module不经常变动，适合放在这个位置*/
 def inertModules = [
-
         'systemui'           : [
                 group    : 'bas.droid',
-                version  : '0.0.1',
+                version  : '1.0.0',
                 useModule: false
         ],
         'droid-theme'        : [
@@ -75,17 +76,17 @@ def inertModules = [
         ],
         'labelview'          : [
                 group    : 'bas.droid',
-                version  : '0.0.1',
+                version  : '1.0.0',
                 useModule: false
         ],
         'compat-multidex'    : [
                 group    : 'bas.droid',
-                version  : '0.0.1',
+                version  : '1.0.2-SNAPSHOT',
                 useModule: false
         ],
         'adapter-imageloader': [
                 group     : 'bas.droid',
-                version   : '0.0.2',
+                version   : '1.0.0',
                 useModule : false,
                 /*无依赖，独立组件*/
                 isIndepend: true
@@ -99,7 +100,7 @@ def inertModules = [
         ],
         'leanback-tab'       : [
                 group     : 'bas.droid',
-                version   : '0.0.1',
+                version   : '1.0.0',
                 useModule : false,
                 /*无依赖，独立组件*/
                 isIndepend: true
@@ -107,7 +108,7 @@ def inertModules = [
         'leanback-effect'    : [
                 group     : 'bas.droid',
                 version   : '0.0.3',
-                useModule : false,
+                useModule : true,
                 /*无依赖，独立组件*/
                 isIndepend: true
         ],
@@ -138,9 +139,10 @@ inertModules.each { name, module ->
     if (useModuleDepInert(module)) {
         //如果设置使用本地module或者module为空（即没有在配置：modules变量中找到对用的module）、或者没有设置版本号，则视为本地依赖
         include ":${name}"
+        println("$module :${name}")
         if (!module.path) {
             //没有指定路径，使用默认路径
-            project(":${name}").projectDir = new File(rootDir.getParent(), "../Bas/${name}")
+            project(":${name}").projectDir = new File(rootDir.getParent(), "/Bas/${name}")
         } else {
             project(":${name}").projectDir = new File(module.path)
         }

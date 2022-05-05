@@ -2,15 +2,15 @@ package andme.arch.refresh.scene
 
 import andme.arch.refresh.AMRefreshableViewModel
 import andme.arch.refresh.RequestResult
-import andme.core.exception.onCatch
-import andme.core.exception.tryCatch
-import andme.core.exceptionHandlerAM
+import bas.lib.core.exception.onCatch
+import bas.lib.core.exception.tryCatch
 import android.app.Application
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import bas.droid.core.ui.droidExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +53,7 @@ abstract class AMRefreshableSceneViewModel<T>(application: Application) : AMRefr
     protected open fun onRefreshRequestError(err: Throwable) {
         onRefreshFail(err)
         invokeContextAction {
-            exceptionHandlerAM.handleUIException(it, err)
+            droidExceptionHandler.handleUIException(it, err)
         }
     }
 
@@ -84,7 +84,7 @@ abstract class AMRefreshableSceneViewModel<T>(application: Application) : AMRefr
     protected open fun onLoadMoreRequestError(err: Throwable) {
         onLoadMoreFail(err)
         invokeContextAction {
-            exceptionHandlerAM.handleUIException(it, err)
+            droidExceptionHandler.handleUIException(it, err)
         }
     }
 

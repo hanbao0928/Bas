@@ -104,7 +104,7 @@ class AMPagingLoadMoreView @JvmOverloads constructor(
     /**
      * 是否显示
      */
-    protected open fun shouldDisplay(loadState: LoadState): Boolean {
+    protected fun shouldDisplay(loadState: LoadState): Boolean {
         return loadState is LoadState.Loading || loadState is LoadState.Error || (loadState.endOfPaginationReached && loadState is LoadState.NotLoading)
     }
 

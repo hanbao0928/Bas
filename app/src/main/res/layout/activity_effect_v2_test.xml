@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <View
+        android:id="@+id/startline"
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="200dp"
+        android:background="#ff0000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/endline"
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="400dp"
+        android:background="#ff0000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <bas.leanback.v2.LeanbackEffectLayout
+        android:id="@+id/effect_layout"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="@id/startline"
+        app:layout_constraintTop_toBottomOf="@id/startline">
+
+
+    </bas.leanback.v2.LeanbackEffectLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/effect_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/nostroke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="去掉边框"/>
+        <Button
+            android:id="@+id/noshadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="去掉阴影"/>
+
+        <Button
+            android:id="@+id/shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="阴影"/>
+
+        <Button
+            android:id="@+id/stroke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="边框"/>
+        <Button
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="阴影+边框"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

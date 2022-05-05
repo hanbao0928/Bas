@@ -1,11 +1,5 @@
 package andme.arch.app
 
-import andme.core.dialogHandlerAM
-import bas.droid.core.lifecycle.SingleEvent
-import bas.droid.core.lifecycle.SingleLiveEvent
-import andme.core.support.ui.AMProgressDialog
-import bas.lib.core.lang.annotation.Note
-import bas.lib.core.coroutines.ControlledRunner
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -13,6 +7,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
+import bas.droid.core.lifecycle.SingleEvent
+import bas.droid.core.lifecycle.SingleLiveEvent
+import bas.droid.core.ui.ProgressDialog
+import bas.droid.core.ui.showLoading
+import bas.lib.core.coroutines.ControlledRunner
+import bas.lib.core.lang.annotation.Note
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -37,7 +37,7 @@ open class AMViewModel(application: Application) : AndroidViewModel(application)
         fun onContextAction(ctx: Context)
     }
 
-    protected var loadingDialog: AMProgressDialog? = null
+    protected var loadingDialog: ProgressDialog? = null
         private set
 
     val finishEvent: SingleEvent = SingleEvent()
@@ -141,7 +141,7 @@ open class AMViewModel(application: Application) : AndroidViewModel(application)
     fun showLoading(message: String) {
         hideLoading()
         invokeContextAction {
-            loadingDialog = dialogHandlerAM.showLoading(it, message)
+            loadingDialog =it.showLoading( message)
         }
     }
 

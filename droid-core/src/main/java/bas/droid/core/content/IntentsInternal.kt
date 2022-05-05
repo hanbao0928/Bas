@@ -15,7 +15,7 @@ import android.os.Build
 
 internal fun NotificationSettingDefault(ctx: Context): Intent {
     var intent = AppDetailSettingIntent(ctx.packageName)
-    if (!intent.canResolve(ctx)) {
+    if (!intent.canResolved(ctx)) {
         intent = SysSettingIntent()
     }
     return intent

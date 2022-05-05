@@ -1,56 +1,9 @@
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-
-    /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka'
-    /*用于上传maven*/
-    id 'maven'
-}
-
-android {
-    compileSdkVersion rootProject.ext.globalCompileSdkVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.globalMinSdkVersion
-        targetSdkVersion rootProject.ext.globalTargetSdkVersion30
-
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
+apply from: "$rootDir/gradle/android-lib-publishable.gradle"
 
 dependencies {
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-//    implementation 'androidx.core:core-ktx:1.2.0'
-//    implementation   implementation "androidx.appcompat:appcompat:$appcompat_version"
-//    implementation 'com.google.android.material:material:1.1.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 //    /*使用startup进行自动初始化，感觉没什么必要*/
 //    implementation "androidx.startup:startup-runtime:1.0.0"
-
-    def glide_version = "4.11.0"
 
     /**
      *  Glide
@@ -61,77 +14,20 @@ dependencies {
      * Compile Sdk Version - Glide 必须使用 API 27 (Oreo MR1) 或更高版本的 SDK 来编译。
      * Support Library Version - Glide 使用的支持库版本为 27。
      */
-    api("com.github.bumptech.glide:glide:$glide_version") {
+    api(glideDeps.glide) {
         exclude group: "com.android.support"
     }
+
     /*本库未用到compiler*/
 //    kapt "com.github.bumptech.glide:compiler:$glide_version"
     /**
      *  Glide OkHttp集成库
      *  将使 Glide 自动开始使用 OkHttp 来加载所有来自 http 和 https URL 的图片
      */
-    api("com.github.bumptech.glide:okhttp-integration:$glide_version") {
+    implementation(glideDeps.okhttpIntegration) {
         exclude group: "com.squareup.okhttp3", module: "okhttp"
     }
     /*END - Glide*/
 
 }
 
-// kotlin android javadoc
-task generateSourcesJar(type: Jar) {
-    group = 'jar'
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-//    outputFormat = "javadoc"
-//    outputDirectory = javadoc.destinationDir
-//}
-
-task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
-    group = 'jar'
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives generateJavadoc
-    archives generateSourcesJar
-}
-
-
-def PROJECT_NAME = 'adapter-imageloader'
-def PROJECT_VERSION = '0.0.2'
-def PROJECT_DESC = ''
-def ARTIFACT_ID = 'adapter-imageloader'
-
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.droid'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
-}

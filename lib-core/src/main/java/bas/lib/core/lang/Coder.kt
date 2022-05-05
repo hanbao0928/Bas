@@ -16,7 +16,6 @@ object Coder {
         fun encode(input: ByteArray): ByteArray
 
         fun encodeToString(input: ByteArray): String
-
     }
 
     interface Base64Decoder {

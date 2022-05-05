@@ -1,109 +1,12 @@
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-
-    /*用于kotlin生成javadoc*/
-    id 'org.jetbrains.dokka'
-    /*用于上传maven*/
-    id 'maven'
-}
-
-android {
-    compileSdkVersion rootProject.ext.globalCompileSdkVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.globalMinSdkVersion
-        targetSdkVersion rootProject.ext.globalTargetSdkVersion30
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
+apply from: "$rootDir/gradle/android-lib-publishable.gradle"
 
 dependencies {
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    //字节跳动MultiDex方案：https://github.com/bytedance/BoostMultiDex
+//    implementation "com.bytedance.boost_multidex:boost_multidex:1.0.1"
+    /*由于字节的原库存在一个问题，已提交pr，等字节合并并发布新版本之后切换过去*/
+    implementation "bas.droid:boost_multidex:1.0.1-fixed"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    //字节跳动MultiDex方案：https://github.com/bytedance/BoostMultiDex
-    implementation "com.bytedance.boost_multidex:boost_multidex:1.0.1"
-    implementation "androidx.multidex:multidex:2.0.1"
-}
-
-// kotlin android javadoc
-task generateSourcesJar(type: Jar) {
-    group = 'jar'
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-//    outputFormat = "javadoc"
-//    outputDirectory = javadoc.destinationDir
-//}
-
-task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
-    group = 'jar'
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives generateJavadoc
-    archives generateSourcesJar
-}
-
-def PROJECT_NAME = 'compat-multidex'
-def PROJECT_VERSION = '0.0.1'
-def PROJECT_DESC = ''
-def ARTIFACT_ID = 'compat-multidex'
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.droid'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
+    /*官方方案*/
+    implementation androidDeps.multidex
 }

@@ -31,7 +31,7 @@ fun readPictureTakeDate(path: String): Date? {
     } else {
         try {
             DateFormat.getInstance().parse(path)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
             null
         }
@@ -56,7 +56,7 @@ fun readPictureDegree(path: String): Int {
             ExifInterface.ORIENTATION_TRANSVERSE, ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
         }
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         0
     }
 }
@@ -241,7 +241,7 @@ fun Bitmap.saveToFile(
         out.flush()
         out.close()
         true
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         if (file.exists())
             file.deleteOnExit()
         false

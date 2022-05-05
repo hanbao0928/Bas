@@ -210,7 +210,7 @@ class EffectParams {
                 val vid = context.resources.getIdentifier(it, "id", context.packageName)
                 if (vid > 0)
                     excludeAdjustIds.add(vid)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 e.printStackTrace()
             }
         }

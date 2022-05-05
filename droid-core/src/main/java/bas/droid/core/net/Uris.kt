@@ -53,7 +53,7 @@ fun Uri.getRealPath(ctx: Context): String? {
                         ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
                             parseId)
                     return contentUri.queryDateColumn(ctx, null, null)
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     return tempId
                 }
             } else {

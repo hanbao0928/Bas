@@ -99,7 +99,7 @@ inline fun Context.getAppName(): String {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val labelRes = packageInfo.applicationInfo.labelRes
         resources.getString(labelRes)
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         e.printStackTrace()
         ""
     }

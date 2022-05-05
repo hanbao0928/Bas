@@ -1,8 +1,8 @@
 package andme.integration.oss
 
-import andme.core.ctxAM
 import bas.lib.core.lang.orDefault
 import androidx.annotation.WorkerThread
+import bas.droid.core.ctxBas
 import com.alibaba.sdk.android.oss.ClientConfiguration
 import com.alibaba.sdk.android.oss.OSSClient
 import com.alibaba.sdk.android.oss.common.OSSLog
@@ -35,7 +35,7 @@ abstract class AliOssSelfSignedClient : AliOssClient() {
         conf.maxErrorRetry = getMaxErrorRetry()
         OSSLog.enableLog()
         if (oss == null) {
-            oss = OSSClient(ctxAM, config!!.endpointConfig, credentialProvider, conf)
+            oss = OSSClient(ctxBas, config!!.endpointConfig, credentialProvider, conf)
         } else {
             oss!!.updateCredentialProvider(credentialProvider)
         }

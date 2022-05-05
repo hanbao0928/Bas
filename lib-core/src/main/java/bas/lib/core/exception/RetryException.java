@@ -5,7 +5,7 @@ package bas.lib.core.exception;
  * <p>
  * 重试异常，捕获之后重试逻辑：用于协程代码块在捕获对应类型异常时重新执行
  */
-public class RetryException extends Throwable {
+public class RetryException extends RuntimeException {
     public RetryException() {
     }
 

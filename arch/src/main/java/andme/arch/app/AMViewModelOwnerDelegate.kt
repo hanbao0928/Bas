@@ -1,12 +1,12 @@
 package andme.arch.app
 
-import andme.core.toastHandlerAM
 import bas.lib.core.lang.annotation.Note
 import bas.lib.core.lang.applyWhen
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import bas.droid.core.ui.toast
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -103,7 +103,7 @@ open class AMViewModelOwnerDelegate<VM : ViewModel> constructor(open val realOwn
     }
 
     protected open fun onToastByViewModel(msg: String, length: Int) {
-        toastHandlerAM.showToast(realCtx, msg, length)
+        realCtx.toast(msg, length)
     }
 
     protected open fun onContextActionByViewModel(event: AMViewModel.ContextAction) {

@@ -119,7 +119,7 @@ import java.util.*
                 fPop.isAccessible = true
                 val userAdapterListener = fPop.get(clazz) as ItemBridgeAdapter.AdapterListener?
                 apply(adapter, userAdapterListener)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 adapter.setAdapterListener(SharedViewPoolHelper())
             }
         }

@@ -1,51 +1,10 @@
-plugins {
-    id 'java-library'
-    /*用于上传maven*/
-    id 'maven'
-}
-
-java {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-}
+apply from: "../gradle/publish-java-lib.gradle"
 
 dependencies {
-    implementation("bas.lib:lib-compiler:0.0.1")
-    implementation("bas.droid:labelview-annotation:0.0.1")
+    implementation basDeps.libCompiler
+    implementation basDeps.labelviewAnnotation
 
-    /*注解处理器*/
-    compileOnly 'com.google.auto.service:auto-service:1.0.1'
-    annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
+//    /*注解处理器*/
+    compileOnly publishDeps.autoService
+    annotationProcessor publishDeps.autoService
 }
-
-
-def PROJECT_NAME = 'labelview-compiler'
-def PROJECT_VERSION = '0.0.1'
-def PROJECT_DESC = 'labelview compiler.'
-def ARTIFACT_ID = 'labelview-compiler'
-
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.droid'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
-}
-

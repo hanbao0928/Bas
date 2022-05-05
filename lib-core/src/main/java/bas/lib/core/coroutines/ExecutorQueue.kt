@@ -89,12 +89,12 @@ abstract class ExecutorQueue<T>(val threadCount: Int = 3) {
                         //执行工作
                         try {
                             executeTask(task)
-                        } catch (e: Exception) {
+                        } catch (e: Throwable) {
                             e.printStackTrace()
                         }
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 e.printStackTrace()
             } finally {
                 requestCount--

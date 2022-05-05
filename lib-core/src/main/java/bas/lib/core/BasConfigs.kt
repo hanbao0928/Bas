@@ -8,6 +8,11 @@ import bas.lib.core.converter.JsonConverter
 import bas.lib.core.lang.Coder
 
 /**
+ * 是否开启调试模式
+ */
+var debuggable: Boolean = false
+
+/**
  * 序列化和反序列化工具
  */
 var jsonConverter: JsonConverter
@@ -34,3 +39,14 @@ var base64Encoder: Coder.Base64Encoder
 var base64Decoder: Coder.Base64Decoder
     get() = Coder.getBase64Decoder()
     set(value) = Coder.setBase64Decoder(value)
+
+/**
+ * 调试执行代码
+ */
+inline fun <T> T.runOnDebug(action: () -> Unit): T {
+    if (debuggable) {
+        action()
+    }
+    return this
+}
+

@@ -1,4 +1,4 @@
--keep public class com.bas.android.leanback.tab.**{
+-keep public class bas.leanback.tab.**{
     public *;
     protected * ;
 }

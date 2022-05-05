@@ -125,7 +125,9 @@ class FragmentContainerActivity : AMActivity<AMViewModel>() {
         if (fm.findFragmentById(fragmentId) == null) {
             val fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME)!!
             val extras = intent.getBundleExtra(EXTRA_FRAGMENT_ARGUMENTS)
-            val fragment = androidx.fragment.app.Fragment.instantiate(this, fragmentName, extras)
+            val fragment = fm.fragmentFactory.instantiate(this.classLoader, fragmentName).also {
+                it.arguments = extras
+            }
             fm.beginTransaction().replace(fragmentId, fragment).commit()
         }
     }
@@ -263,11 +265,11 @@ class FragmentContainerActivity : AMActivity<AMViewModel>() {
             intent.putExtra(EXTRA_ACTIVITY_LIGHT_MODE, mIsLightMode)
             intent.putExtra(EXTRA_STATUS_BAR_MODE, mStatusBarMode)
 //            if (mStatusBarMode == STATUS_BAR_MODE_COLOR) {
-                if (mStatusBarColor != VALUE_UNDEFINED)
-                    intent.putExtra(EXTRA_STATUS_BAR_COLOR, mStatusBarColor)
+            if (mStatusBarColor != VALUE_UNDEFINED)
+                intent.putExtra(EXTRA_STATUS_BAR_COLOR, mStatusBarColor)
 
-                if (mStatusBarColorRes != VALUE_UNDEFINED)
-                    intent.putExtra(EXTRA_STATUS_BAR_COLOR_RES, mStatusBarColorRes)
+            if (mStatusBarColorRes != VALUE_UNDEFINED)
+                intent.putExtra(EXTRA_STATUS_BAR_COLOR_RES, mStatusBarColorRes)
 //            }
 
             return intent

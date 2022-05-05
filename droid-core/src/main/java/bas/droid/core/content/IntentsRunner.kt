@@ -44,7 +44,7 @@ fun Context.startIntentForUrlBySystemBrowser(url: String) {
         it.data = uri
         it.setClassName("com.android.browser", "com.android.browser.BrowserActivity")
         startActivity(it)
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         e.printStackTrace()
         startIntentForUri(uri)
     }

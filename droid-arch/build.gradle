@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "31.0.0"
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 30
+        minSdkVersion rootProject.ext.globalMinSdkVersion
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -46,10 +45,10 @@ dependencies {
 //    releaseImplementation("bas.droid:droid-core:$droid_core_version")
 //    implementation("bas.droid:droid-core:$droid_core_version")
 
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_verson"
+    implementation androidDeps.coreKtx
 //    implementation "androidx.activity:activity-ktx:$activity_ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
+    implementation androidDeps.appcompat
+    implementation androidDeps.material
 
     /*Kotlin*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -58,9 +57,8 @@ dependencies {
     * https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
     * https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
     * */
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_core_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core_version"
-
+    implementation kotlinDeps.kotlinxCoroutinesCore
+    implementation kotlinDeps.kotlinxCoroutinesAndroid
 
     /*START - retrofit*/
     /**

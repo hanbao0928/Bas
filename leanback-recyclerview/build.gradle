@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "31.0.0"
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 31
+        minSdkVersion rootProject.ext.globalMinSdkVersion
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -38,9 +37,9 @@ dependencies {
     gradle.ext.depImplementation(this,'droid-core')
 //    implementation "bas.droid:leanback-core:0.0.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.2.0'
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation androidDeps.coreKtx
+    implementation androidDeps.appcompat
+    implementation androidDeps.material
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

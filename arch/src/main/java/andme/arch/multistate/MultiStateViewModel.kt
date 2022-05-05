@@ -1,13 +1,17 @@
 package andme.arch.multistate
 
 import andme.arch.app.AMViewModel
-import andme.core.exception.friendlyMessage
+import andme.core.statelayout.StateLayout
 import andme.core.statelayout.StateView
-import bas.lib.core.lang.orDefaultIfNullOrEmpty
 import android.app.Application
 import android.view.View
 import androidx.annotation.MainThread
-import java.lang.RuntimeException
+import bas.droid.core.content.ProgressFakerTaskCallback
+import bas.droid.core.content.invokeTaskWithProgressFaker
+import bas.droid.core.lifecycle.MutableLiveEvent
+import bas.lib.core.exception.friendlyMessage
+import bas.lib.core.lang.orDefaultIfNullOrEmpty
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Created by Lucio on 2021/3/3.
@@ -117,5 +121,87 @@ open class MultiStateViewModel(application: Application) : AMViewModel(applicati
         multiStateLayoutViewModel.showNoNetworkView(setup)
     }
 
+    suspend fun <T> requestApiWithProgressFaker(
+        timeMax: Long = 6 * 1000,
+        progressCallback: ProgressFakerTaskCallback,
+        task: suspend () -> T
+    ): T {
+        return invokeTaskWithProgressFaker(
+            timeMax,
+            progressCallback = progressCallback,
+            task = task
+        )
+    }
 
+    suspend fun <T> requestApiWithProgressFaker(
+        timeMax: Long = 6 * 1000,
+        task: suspend () -> T
+    ): T {
+        return invokeTaskWithProgressFaker(
+            timeMax = timeMax,
+            progressCallback = MultiStateEventProcessFakerCallback(
+                this@MultiStateViewModel.multiStateLayoutViewModel.stateLayoutActionEvent,
+                timeMax
+            ),
+            task = task
+        )
+    }
+
+//    class MultiStateProcessFakerCallback(
+//        val vm: MultiStateViewModel,
+//        val timeMax: Long,
+//        val onlyProcessPercent: Boolean = false
+//    ) : ProgressFakerTaskCallback {
+//        override suspend fun onProgress(duration: Int, progress: Int) {
+//            if (duration > timeMax / 2) {
+//                vm.showMultiStateLoadingView("${if (onlyProcessPercent) "" else "拼命加载中..."}$progress%")
+//            } else {
+//                vm.showMultiStateLoadingView("${if (onlyProcessPercent) "" else "正在加载，请稍后..."}$progress%")
+//            }
+//        }
+//    }
+
+    class MultiStateEventProcessFakerCallback(
+        val stateEvent: MutableLiveEvent<MultiStateLayoutViewModel.StateLayoutEventAction>,
+        val timeMax: Long,
+        val waitLongMsg: String = "拼命加载中...",
+        val waitMsg: String = "正在加载，请稍后...",
+    ) : ProgressFakerTaskCallback {
+        override suspend fun onProgress(duration: Int, progress: Int) {
+            stateEvent.value = MultiStateLayoutViewModel.StateLayoutEventAction {
+                if (duration > timeMax / 2) {
+                    it.showLoadingView {
+                        showLoadingMsg("${waitLongMsg}$progress%")
+                    }
+                } else {
+                    it.showLoadingView {
+                        showLoadingMsg("${waitMsg}$progress%")
+                    }
+                }
+            }
+
+        }
+    }
+
+    class MultiStateLayoutProcessFakerCallback(
+        val layout: StateLayout,
+        val timeMax: Long,
+        val waitLongMsg: String = "拼命加载中...",
+        val waitMsg: String = "正在加载，请稍后...",
+    ) : ProgressFakerTaskCallback {
+        override suspend fun onProgress(duration: Int, progress: Int) {
+            if (duration > timeMax / 2) {
+                layout.showLoadingView {
+                    showLoadingMsg("${waitLongMsg}$progress%")
+                }
+            } else {
+                layout.showLoadingView {
+                    showLoadingMsg("${waitMsg}$progress%")
+                }
+            }
+
+        }
+    }
 }
+
+

@@ -1,0 +1,46 @@
+//参考文档：https://blog.csdn.net/qq_37455727/article/details/119778435
+apply plugin: 'maven-publish'
+
+def PROJECT_NAME = 'droid-core'
+def PROJECT_VERSION = '0.0.3'
+def ARTIFACT_ID = 'droid-core'
+
+
+//读取本地的maven配置信息（不适合放入云端管理，因此写入local.properties文件）
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def NEXUS_USER = properties.getProperty('NEXUS_USER')
+def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
+def NEXUS_URL = properties.getProperty('NEXUS_URL')
+def NEXUS_URL_SNAPSHOT  = properties.getProperty('NEXUS_URL_SNAPSHOT')
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release//如果是Android lib 则使用components.release，如果是java lib则使用components.java
+                groupId = GROUP_ID
+                artifactId = ARTIFACT_ID
+                version = PROJECT_VERSION
+            }
+        }
+
+        repositories {
+            //仓库配置
+            maven {
+                //对于非 https 的仓库地址，需要设置 allowInsecureProtocol true
+                allowInsecureProtocol true
+                name = PROJECT_NAME //可选
+                url = PROJECT_VERSION.endsWith('SNAPSHOT') ? NEXUS_URL_SNAPSHOT : NEXUS_URL
+                //凭证
+                credentials {
+                    username = NEXUS_USER
+                    password = NEXUS_PWD
+                }
+            }
+        }
+    }
+}
+
+//关于Kotlin生成Doc需要借助Dokka

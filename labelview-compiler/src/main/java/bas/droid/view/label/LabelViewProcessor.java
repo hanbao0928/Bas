@@ -25,9 +25,10 @@ import javax.lang.model.type.MirroredTypesException;
 import javax.lang.model.type.TypeMirror;
 
 import bas.droid.view.label.annotation.LabelView;
+import bas.lib.compiler.AnnotationUtils;
 import bas.lib.compiler.BaseProcessor;
-import bas.lib.compiler.MethodUtils;
-import bas.lib.compiler.ProcessorUtils;
+import bas.lib.compiler.DroidMethodUtils;
+import bas.lib.compiler.ParamsUtils;
 
 /**
  * LabelView系列生成处理器：文件名规则-在原有类型的末尾增加LabelView或者将View替换成LabelView
@@ -109,7 +110,7 @@ public class LabelViewProcessor extends BaseProcessor {
     }
 
     private void generateMethods(TypeSpec.Builder typeBuilder, String clazz) {
-        MethodUtils.constructorOverloads(typeBuilder, clazz, constructorCode());
+        DroidMethodUtils.viewConstructorOverloads(typeBuilder, clazz, constructorCode());
         if ("android.view.View".equalsIgnoreCase(clazz)) {
             onMeasure(typeBuilder, clazz);
         }
@@ -139,7 +140,7 @@ public class LabelViewProcessor extends BaseProcessor {
     }
 
     private void onSizeChanged(TypeSpec.Builder typeBuilder, String clazz) {
-        MethodSpec onSizeChanged = MethodUtils.onSizeChangedSignature()
+        MethodSpec onSizeChanged = DroidMethodUtils.onSizeChangedSignature()
                 .addStatement("super.onSizeChanged(w, h, oldw, oldh)")
                 .addStatement("labelHelper.onSizeChanged(w, h, oldw, oldh)")
                 .build();
@@ -147,7 +148,7 @@ public class LabelViewProcessor extends BaseProcessor {
     }
 
     private void onDraw(TypeSpec.Builder typeBuilder, String clazz) {
-        MethodSpec onDraw = MethodUtils.onDrawSignature()
+        MethodSpec onDraw = DroidMethodUtils.onDrawSignature()
                 .addStatement("super.onDraw(canvas)")
                 .addStatement("labelHelper.onDraw(canvas)")
                 .build();
@@ -157,21 +158,21 @@ public class LabelViewProcessor extends BaseProcessor {
     private void labelHelperApi(TypeSpec.Builder typeBuilder, String clazz) {
         MethodSpec setLabelText = MethodSpec.methodBuilder("setLabelText")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(ProcessorUtils.createString(true), "text")
+                .addParameter(ParamsUtils.stringTypeName(true), "text")
                 .addStatement("labelHelper.setText(text)")
                 .build();
         typeBuilder.addMethod(setLabelText);
 
         MethodSpec setLabelTextSize = MethodSpec.methodBuilder("setLabelTextSize")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.pxAnnotation), "textSizePx")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.pxAnnotation), "textSizePx")
                 .addStatement("labelHelper.setTextSize(textSizePx)")
                 .build();
         typeBuilder.addMethod(setLabelTextSize);
 
         MethodSpec setLabelTextColor = MethodSpec.methodBuilder("setLabelTextColor")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.colorIntAnnotation), "textColor")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.colorIntAnnotation), "textColor")
                 .addStatement("labelHelper.setTextColor(textColor)")
                 .build();
         typeBuilder.addMethod(setLabelTextColor);
@@ -202,42 +203,42 @@ public class LabelViewProcessor extends BaseProcessor {
 
         MethodSpec setLabelDistance = MethodSpec.methodBuilder("setLabelDistance")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.pxAnnotation), "distancePx")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.pxAnnotation), "distancePx")
                 .addStatement("labelHelper.setDistance(distancePx)")
                 .build();
         typeBuilder.addMethod(setLabelDistance);
 
         MethodSpec setLabelBackgroundColor = MethodSpec.methodBuilder("setLabelBackgroundColor")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.colorIntAnnotation), "backgroundColor")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.colorIntAnnotation), "backgroundColor")
                 .addStatement("labelHelper.setBackgroundColor(backgroundColor)")
                 .build();
         typeBuilder.addMethod(setLabelBackgroundColor);
 
         MethodSpec setLabelPadding = MethodSpec.methodBuilder("setLabelPadding")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.pxAnnotation), "paddingPx")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.pxAnnotation), "paddingPx")
                 .addStatement("labelHelper.setPadding(paddingPx)")
                 .build();
         typeBuilder.addMethod(setLabelPadding);
 
         MethodSpec setLabelStrokeWidth = MethodSpec.methodBuilder("setLabelStrokeWidth")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.pxAnnotation), "strokeWidthPx")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.pxAnnotation), "strokeWidthPx")
                 .addStatement("labelHelper.setStrokeWidth(strokeWidthPx)")
                 .build();
         typeBuilder.addMethod(setLabelStrokeWidth);
 
         MethodSpec setLabelStrokeColor = MethodSpec.methodBuilder("setLabelStrokeColor")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.colorIntAnnotation), "strokeColor")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.colorIntAnnotation), "strokeColor")
                 .addStatement("labelHelper.setStrokeColor(strokeColor)")
                 .build();
         typeBuilder.addMethod(setLabelStrokeColor);
 
         MethodSpec setLabelYAxisDegree = MethodSpec.methodBuilder("setLabelYAxisDegree")
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.get(int.class).annotated(ProcessorUtils.createIntRangeAnnotation(0, 90)), "degree")
+                .addParameter(TypeName.get(int.class).annotated(AnnotationUtils.createIntRangeAnnotation(0, 90)), "degree")
                 .addStatement("labelHelper.setYAxisDegree(degree)")
                 .build();
         typeBuilder.addMethod(setLabelYAxisDegree);

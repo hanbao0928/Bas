@@ -22,7 +22,7 @@ object XPopupImageLoaderImpl : XPopupImageLoader {
     override fun getImageFile(context: Context, uri: Any): File? {
         try {
             return Glide.with(context).downloadOnly().load(uri).submit().get()
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
         }
         return null

@@ -87,7 +87,7 @@
 //                    if (mRxLister != null) {
 //                        mRxLister!!.onTrafficRxNetBack(speed, scheduleTime)
 //                    }
-//                } catch (e: Exception) {
+//                } catch (e: Throwable) {
 //                    e.printStackTrace()
 //                }
 //

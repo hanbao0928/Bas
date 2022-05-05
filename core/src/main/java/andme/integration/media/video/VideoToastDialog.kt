@@ -1,7 +1,6 @@
 package andme.integration.media.video
 
 import andme.core.R
-import andme.core.exception.tryCatch
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +8,7 @@ import android.os.Handler
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
+import bas.lib.core.exception.tryCatch
 
 /**
  * Created by Lucio on 2021/4/8.

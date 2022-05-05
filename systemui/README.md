@@ -18,7 +18,7 @@ allprojects {
 
 在对应模块（Module）的build.gradle中添加依赖
 ```
-implementation("bas.droid:systemui:0.0.1")
+implementation("bas.droid:systemui:1.0.0")
 ```
 
 配置完成。

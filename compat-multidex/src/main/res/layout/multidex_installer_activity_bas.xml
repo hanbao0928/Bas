@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -17,7 +16,8 @@
         android:shadowRadius="3.0"
         android:textColor="?android:textColorPrimary"
         android:textSize="24sp"
-        android:text="系统准备中，请稍后..." />
+        android:gravity="center"
+        android:text="系统准备中，请稍后...\n(安装或更新后初次使用，请耐心等候)" />
 
     <ProgressBar
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"

@@ -5,7 +5,7 @@ plugins {
 //    /*用于kotlin生成javadoc*/
     id 'org.jetbrains.dokka'
     /*用于上传maven*/
-    id 'maven'
+    id 'maven-publish'
 }
 
 java {
@@ -27,7 +27,7 @@ dependencies {
     /**
      * Kotlin-协程 https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
      * */
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_core_version"
+    api kotlinDeps.kotlinxCoroutinesCore
 
     /*
     https://github.com/google/gson
@@ -104,9 +104,8 @@ artifacts {
 
 def PROJECT_NAME = 'lib-core'
 def PROJECT_VERSION = '0.0.4'
-def PROJECT_DESC = ''
+def GROUP_ID = 'bas.lib'
 def ARTIFACT_ID = 'lib-core'
-
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -114,19 +113,28 @@ def NEXUS_URL = properties.getProperty('NEXUS_URL')
 def NEXUS_USER = properties.getProperty('NEXUS_USER')
 def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.java
+                groupId = GROUP_ID
+                artifactId = ARTIFACT_ID
+                version = PROJECT_VERSION
             }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.lib'
-                packaging 'aar'
-                description PROJECT_DESC
+        }
+
+        repositories {
+            //仓库配置
+            maven {
+                //对于非 https 的仓库地址，需要设置 allowInsecureProtocol true
+                allowInsecureProtocol true
+                name = PROJECT_NAME //可选
+                url = PROJECT_VERSION.endsWith('SNAPSHOT') ? NEXUS_URL_SNAPSHOT : NEXUS_URL
+                credentials {
+                    username = NEXUS_USER
+                    password = NEXUS_PWD
+                }
             }
         }
     }

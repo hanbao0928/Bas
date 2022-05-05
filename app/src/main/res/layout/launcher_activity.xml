@@ -25,6 +25,13 @@
         android:onClick="onBtnClick"/>
 
     <Button
+        android:id="@+id/effect2_layout_test_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试EffectLayoutV2"
+        android:onClick="onBtnClick"/>
+
+    <Button
         android:id="@+id/label_test_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

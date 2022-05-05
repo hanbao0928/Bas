@@ -127,20 +127,29 @@ apply from : './module_dependon.gradle'
 //}
 
 //已发布，需要修改代码时再配置进来
-//include ':lib-compiler'
 //include ':lib-core-ktx'
 //include ':lib-core'
-//include ':systemui'
-//include ':adapter-imageloader'
-//include ':adapter-mediaplayer'
-//include ':droid-theme'
+
+//已发布1.0.0，需要修改代码时再配置进来
+//include ':lib-compiler'
+//已发布1.0.0，需要修改代码时再配置进来
 //include ':labelview'
 //include ':labelview-annotation'
 //include ':labelview-compiler'
+
+//已发布1.0.0，需要修改代码时再配置进来
+//include ':systemui'
+//include ':leanback-tab'
+//include ':adapter-imageloader'
+
+
+include ':adapter-mediaplayer'
+//include ':droid-theme'
+
 //include ':compat-multidex'
 //include ':droid-core'
 //include ':leanback-core'
-//include ':leanback-tab'
+
 
 //已发布，需要修改代码时再配置进来
 //include ':leanback-layout-annotation'
@@ -162,6 +171,8 @@ include ':binding-ext'
 include ':droid-arch'
 include ':arch'
 include ':core'
-include ':bas-leanback-paging'
 include ':app'
 rootProject.name = "Bas"
+include ':paging'
+//include ':droid-net'
+include ':droid-net'

@@ -38,7 +38,7 @@ public class Converters {
             } else {
                 System.out.println("Converters：null");
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

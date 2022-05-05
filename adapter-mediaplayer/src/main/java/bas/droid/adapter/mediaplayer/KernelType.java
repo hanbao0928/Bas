@@ -33,4 +33,8 @@ public @interface KernelType {
      */
     int QN = 2;
 
+    /**
+     * GSY 播放器
+     */
+    int GSY = 3;
 }

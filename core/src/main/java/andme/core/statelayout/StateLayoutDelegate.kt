@@ -6,7 +6,7 @@ import andme.core.statelayout.StateLayoutManager.STATE_EMPTY
 import andme.core.statelayout.StateLayoutManager.STATE_ERROR
 import andme.core.statelayout.StateLayoutManager.STATE_LOADING
 import andme.core.statelayout.StateLayoutManager.STATE_NO_NETWORK
-import andme.core.widget.isVisible
+import androidx.core.view.isVisible
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View

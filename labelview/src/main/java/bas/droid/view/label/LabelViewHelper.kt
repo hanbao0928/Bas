@@ -9,7 +9,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
 import androidx.annotation.Px
-import kotlin.math.*
 
 class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr: Int = 0) {
 
@@ -112,8 +111,8 @@ class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr:
                 return
 
             field = value
-            degreeSin = sin(Math.toRadians(value.toDouble())).toFloat()
-            degreeCos = cos(Math.toRadians(value.toDouble())).toFloat()
+            degreeSin = Math.sin(Math.toRadians(value.toDouble())).toFloat()
+            degreeCos = Math.cos(Math.toRadians(value.toDouble())).toFloat()
             view.invalidate()
         }
 
@@ -203,8 +202,8 @@ class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr:
         //一定要在设置文本大小之后再设置
         resetTextHeight()
 
-        degreeSin = sin(Math.toRadians(yAxisDegree.toDouble())).toFloat()
-        degreeCos = cos(Math.toRadians(yAxisDegree.toDouble())).toFloat()
+        degreeSin = Math.sin(Math.toRadians(yAxisDegree.toDouble())).toFloat()
+        degreeCos = Math.cos(Math.toRadians(yAxisDegree.toDouble())).toFloat()
 
     }
 
@@ -220,10 +219,10 @@ class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr:
             }
             View.MeasureSpec.AT_MOST -> {
                 /*外层三角形横边长度*/
-                val suggestWidth = (outerDistance * 4) / sqrt(2f)
+                val suggestWidth = (outerDistance * 4) / Math.sqrt(2.0)
                 val sideLength = (outerDistance / degreeCos).toInt()
-                result = min(suggestWidth.toInt(), specSize)
-                result = max(sideLength, result)
+                result = Math.min(suggestWidth.toInt(), specSize)
+                result = Math.max(sideLength, result)
 
             }
             else -> {
@@ -244,11 +243,11 @@ class LabelViewHelper(val view: View, attrs: AttributeSet? = null, defStyleAttr:
                 result = specSize
             }
             View.MeasureSpec.AT_MOST -> {
-                val suggestHeight = (outerDistance * 4) / sqrt(2f)
+                val suggestHeight = (outerDistance * 4) / Math.sqrt(2.0)
                 /*外层三角形横边长度*/
                 val sideLength = (outerDistance / degreeSin).toInt()
-                result = min(suggestHeight.toInt(), specSize)
-                result = max(sideLength, result)
+                result = Math.min(suggestHeight.toInt(), specSize)
+                result = Math.max(sideLength, result)
             }
             else -> {
                 result = View.getDefaultSize(view.minimumWidth, heightMeasureSpec)

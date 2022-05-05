@@ -1,7 +1,7 @@
 @file:JvmName("BasConfigsKt")
 @file:JvmMultifileClass
 
-//不要更改包名
+//notice 不要更改包名
 package bas.lib.core
 
 import bas.lib.core.exception.ExceptionHandler

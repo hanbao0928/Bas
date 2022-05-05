@@ -5,7 +5,7 @@ plugins {
     /*用于kotlin生成javadoc*/
     id 'org.jetbrains.dokka'
     /*用于上传maven*/
-    id 'maven'
+    id 'maven-publish'
 }
 
 android {
@@ -46,11 +46,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    api "androidx.core:core-ktx:$androidx_core_ktx_verson"
-    api "androidx.appcompat:appcompat:$appcompat_version"
-    api "com.google.android.material:material:$material_version"
+    api androidDeps.coreKtx
+    api androidDeps.appcompat
+    api androidDeps.material
 //    api "com.google.android.flexbox:flexbox:$flexbox_version"
-//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core_version"
 
 
     //permission: 个人权限处理框架
@@ -63,11 +62,11 @@ dependencies {
 
     gradle.ext.depApiInert(this,'adapter-imageloader')
 //    debugApi project(path: ':adapter-imageloader')
-//    releaseApi("bas.droid:adapter-imageloader:0.0.1")
+//    releaseApi(basDeps.adapterImageloader)
 
     gradle.ext.depApiInert(this,'systemui')
 //    debugApi project(path: ':systemui')
-//    releaseApi "bas.droid:systemui:0.0.1"
+//    releaseApi basDeps.systemui
 
     gradle.ext.depApiInert(this,'droid-theme')
 //    releaseApi "bas.droid:droid-theme:0.0.1"
@@ -91,8 +90,6 @@ dependencies {
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     /*必备组件 JetPack系列 END*/
 
-
-//    def retrofit_version = "2.6.4"
     /**
      *  [Retrofit Converter Gson] 使用Gson作为Retrofit的序列化和反序列化工具
      *  <proguard>
@@ -104,60 +101,3 @@ dependencies {
 //    compileOnly 'org.ligboy.retrofit2:converter-fastjson:2.0.2'
 }
 
-
-// kotlin android javadoc
-task generateSourcesJar(type: Jar) {
-    group = 'jar'
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-//    outputFormat = "javadoc"
-//    outputDirectory = javadoc.destinationDir
-//}
-
-task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
-    group = 'jar'
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives generateJavadoc
-    archives generateSourcesJar
-}
-
-def PROJECT_NAME = 'droid-core'
-def PROJECT_VERSION = '0.0.3'
-def PROJECT_DESC = ''
-def ARTIFACT_ID = 'droid-core'
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.droid'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
-}

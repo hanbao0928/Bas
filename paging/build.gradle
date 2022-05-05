@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.globalMinSdkVersion
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    kotlinOptions {
+        jvmTarget = '1.6'
+    }
+}
+
+dependencies {
+
+//    implementation androidDeps.coreKtx
+//    implementation androidDeps.appcompat
+//    implementation androidDeps.material
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+//    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation "androidx.leanback:leanback-paging:$leanback_paging_version"
+
+    implementation kotlinDeps.kotlinxCoroutinesCore
+
+}

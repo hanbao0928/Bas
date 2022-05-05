@@ -42,7 +42,7 @@ public class StringUtils {
             if (StringUtils.isNullOrEmpty(str))
                 return def;
             return Integer.parseInt(str);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return def;
         }
     }
@@ -56,7 +56,7 @@ public class StringUtils {
             if (StringUtils.isNullOrEmpty(str))
                 return def;
             return Long.parseLong(str);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return def;
         }
     }

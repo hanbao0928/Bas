@@ -1,5 +1,7 @@
 package bas.lib.core.exception
 
+import bas.lib.core.exceptionMessageTransformer
+
 
 interface ExceptionMessageTransformer {
     fun getTransformedMessage(e: Throwable): String
@@ -11,6 +13,15 @@ internal val defaultExceptionMessageTransformer = object : ExceptionMessageTrans
         return e.message.orEmpty()
     }
 }
+
+/**
+ * 扩展友好消息字段，用于将异常转换成对用户比较容易理解的信息。
+ */
+inline val Throwable.friendlyMessage: String
+    get() = exceptionMessageTransformer.getTransformedMessage(
+        this
+    )
+
 
 
 

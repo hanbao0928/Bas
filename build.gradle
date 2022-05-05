@@ -1,72 +1,59 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
 
-    ext {
-        globalCompileSdkVersion = 31
-        globalBuildToolsVersion = "31.0.0"
-        globalTargetSdkVersion = 31
-        globalMinSdkVersion = 17
-        globalTargetSdkVersion30 = 30
-
-        droid_core_version = '0.0.4'
-        droid_leanback_layout_version = '0.0.4'
-        droid_leanback_core_version = '0.0.4'
-
-        dokka_version = '1.6.10'
-        kotlin_version = '1.5.30'
-        kotlinx_coroutines_core_version = "1.5.2"
-
-        /*android  jetpack*/
-        androidx_annotation_version = "1.1.0"
-        androidx_core_ktx_verson = "1.3.2"
-        appcompat_version = "1.1.0"
-        material_version = "1.2.1"
-        lifecycle_version = "2.4.0-alpha03"
-        constraintlayout_version = "2.0.3"
-        flexbox_version = "3.0.0"
-        /*1.1.0-beta01*/
-        leanback_version = "1.2.0-alpha01"
-
-        gson_version = "2.8.7"
-        jackson_version = "2.9.6"
-        fastjson_version = "1.2.10"
-
-        /*支持到4.4 retrofit + okhttp的版本不能太高，高版本只支持ApiLevel 21*/
-        retrofit_version = "2.6.4"
-        okhttp3_version = "3.12.12"
-        
-    }
+    apply from: "gradle/dependencies.gradle"
 
     repositories {
-        google()
-        jcenter()
-//        maven {
-//            url "https://plugins.gradle.org/m2/"
-//        }
-//        maven {
-//            url "http://162.14.111.89:8081/repository/droid-app-release/"
-//        }
+        maven { url 'https://www.jitpack.io'}
+        /*阿里云镜像仓库，替代mavenCentral()和jcenter()*/
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+
+        /*替代google()仓库*/
+        maven { url 'https://dl.google.com/dl/android/maven2/'}
+        // release maven url
+        maven {
+            url "http://162.14.111.89:8081/repository/droid-app-release/"
+        }
+        // snapshot maven url
+        maven {
+            url 'http://162.14.111.89:8081/repository/droid-app-snapshot/'
+        }
+
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16'
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version")
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-
 //        classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
+
 }
 
 allprojects {
+
     repositories {
-        google()
-        jcenter()
+//        google()
+//        mavenCentral()
+        maven { url 'https://www.jitpack.io'}
+        /*阿里云镜像仓库，替代mavenCentral()和jcenter()*/
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+
+        /*替代google()仓库*/
+        maven { url 'https://dl.google.com/dl/android/maven2/'}
+        // release maven url
         maven {
             url "http://162.14.111.89:8081/repository/droid-app-release/"
+        }
+        // snapshot maven url
+        maven {
+            url 'http://162.14.111.89:8081/repository/droid-app-snapshot/'
         }
     }
 }

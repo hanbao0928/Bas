@@ -266,7 +266,7 @@ class EffectLayoutDelegate private constructor(
                     layout.viewTreeObserver.removeOnPreDrawListener(startAnimationPreDrawListener)
                     layout.viewTreeObserver.addOnPreDrawListener(startAnimationPreDrawListener)
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 e.printStackTrace()
             }
             return
@@ -381,7 +381,7 @@ class EffectLayoutDelegate private constructor(
                     }
                     val value = it.animatedValue as Float
                     setShimmerTranslate(value)
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     e.printStackTrace()
                     Log.e("[EffectLayout]","Shimmer动画异常", e)
                 }

@@ -3,7 +3,7 @@
  *
  * 系统属性读取相关
  */
-@file:JvmName("SystemProperties")
+@file:JvmName("SystemPropertiesKt")
 
 package bas.droid.core.os
 
@@ -33,45 +33,53 @@ const val PROP_NAME_SERIALNO = "ro.serialno"
  * 获取设备序列号
  */
 @SuppressLint("HardwareIds", "MissingPermission")
-fun getSerialNO(): String? {
-    var value = getSerialNOFromBuildField()
-    if (value.isNullOrEmpty()) {
-        value = if (Build.VERSION.SDK_INT >= 26 && ContextCompat.checkSelfPermission(
-                ctxBas,
-                Manifest.permission.READ_PHONE_STATE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            Build.getSerial()
-        } else {
-            getSystemProperty(PROP_NAME_SERIALNO, "")
+fun getSerialNO(defVal: String = UNKNOWN_PROPERTY): String {
+    try {
+        var value = Build.SERIAL
+        if (value.isNullOrEmpty() || value == Build.UNKNOWN) {
+            value = if (Build.VERSION.SDK_INT >= 26 && ContextCompat.checkSelfPermission(
+                    ctxBas,
+                    Manifest.permission.READ_PHONE_STATE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                Build.getSerial()
+            } else {
+                getSystemProperty(PROP_NAME_SERIALNO, defVal)
+            }
         }
+        if (!value.isNullOrEmpty() && value != Build.UNKNOWN)
+            return value
+        return defVal
+    } catch (e: Throwable) {
+        Logger.e(TAG, "get serialno error:${e.message}", e)
+        e.printStackTrace()
+        return defVal
     }
-    if (value == Build.UNKNOWN)
-        value = null
-    return value
+
 }
 
 /**
- * 读取系统变量：优先通过命令形式->读取配置文件->反射读取
+ * 读取系统变量：优先通过反射读取->命令形式->读取配置文件流
  * @param defVal 默认值
  */
 fun getSystemProperty(propName: String, defVal: String = UNKNOWN_PROPERTY): String {
-    var value = getSystemPropertyByShell(propName, defVal)
+    var value = getSystemPropertyByReflect(propName, defVal)
     if (!value.isInvalidPropertyValue(defVal)) {
         return value
     }
 
+    value = getSystemPropertyByShell(propName, defVal)
+    if (!value.isInvalidPropertyValue(defVal)) {
+        return value
+    }
     value = getSystemPropertyByStream(propName, defVal)
     if (!value.isInvalidPropertyValue(defVal)) {
         return value
     }
-    value = getSystemPropertyByReflect(propName, defVal)
-    if (!value.isInvalidPropertyValue(defVal)) {
-        return value
-    }
-    Logger.i(TAG, "getPropertyAttempt(propName=$propName defVal=$defVal) = $value")
+    Logger.i(TAG, "getSystemProperty(propName=$propName defVal=$defVal) = $value")
     return value.orDefaultIfNullOrEmpty(defVal)
 }
+
 
 /**
  * 通过脚本读取属性：通过[Runtime]执行命令读取属性
@@ -80,41 +88,26 @@ fun getSystemProperty(propName: String, defVal: String = UNKNOWN_PROPERTY): Stri
  * 此方法参考[https://searchcode.com/codesearch/view/41537878/]
  */
 fun getSystemPropertyByShell(propName: String, defVal: String = UNKNOWN_PROPERTY): String {
-    Logger.i(TAG, "getPropertyByRuntime(propName=$propName defVal=$defVal)")
-    val line = java.lang.StringBuilder()
-    var input: BufferedReader? = null
+    val signature = "getPropertyByRuntime(propName=$propName defVal=$defVal)"
+    Logger.d(TAG, signature)
+    val sb = StringBuilder()
     try {
         val p = Runtime.getRuntime().exec("getprop $propName")
-        input = BufferedReader(InputStreamReader(p.inputStream), 10240)
-        var temp: String? = null
-        do {
-            temp = input.readLine()
-            if (temp != null) {
-                line.append(temp)
-            }
-        } while (temp != null)
-        try {
-            input.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Logger.e(
-                TAG,
-                "getPropertyByRuntime(propName=$propName defVal=$defVal) Close BufferedReader Error",
-                e
-            )
+        BufferedReader(InputStreamReader(p.inputStream), 10240).use { stream ->
+            var temp: String? = null
+            do {
+                temp = stream.readLine()
+                if (temp != null) {
+                    sb.append(temp)
+                }
+            } while (temp != null)
         }
-        val value = line.toString()
-        Logger.i(TAG, "getPropertyByRuntime = $value")
-        return value.orDefaultIfNullOrEmpty(defVal)
-    } catch (e: Exception) {
-        Logger.e(TAG, "getPropertyByRuntime(propName=$propName defVal=$defVal)", e)
+        val value = sb.toString().orDefaultIfNullOrEmpty(defVal)
+        Logger.i(TAG, "$signature = $value")
+        return value
+    } catch (e: Throwable) {
+        Logger.e(TAG, "$signature failed,return default value(=$defVal)", e)
         return defVal
-    } finally {
-        try {
-            input?.close()
-        } catch (e: IOException) {
-            Logger.e(TAG, "getPropertyByRuntime Exception while closing InputStream", e)
-        }
     }
 }
 
@@ -122,12 +115,17 @@ fun getSystemPropertyByShell(propName: String, defVal: String = UNKNOWN_PROPERTY
  * 从文件流中读取：读取系统配置文件
  */
 fun getSystemPropertyByStream(propName: String, defVal: String = UNKNOWN_PROPERTY): String {
+    val signature = "getSystemPropertyByStream(propName=$propName defVal=$defVal)"
     return try {
+        Logger.d(TAG, signature)
         val prop = Properties()
-        val `is` = FileInputStream(File(Environment.getRootDirectory(), "build.prop"))
-        prop.load(`is`)
-        prop.getProperty(propName, defVal)
-    } catch (e: Exception) {
+        FileInputStream(File(Environment.getRootDirectory(), "build.prop")).use { fis ->
+            prop.load(fis)
+        }
+        val value = prop.getProperty(propName, defVal).orDefaultIfNullOrEmpty(UNKNOWN_PROPERTY)
+        Logger.i(TAG, "$signature = $value")
+        value
+    } catch (e: Throwable) {
         defVal
     }
 }
@@ -138,16 +136,17 @@ fun getSystemPropertyByStream(propName: String, defVal: String = UNKNOWN_PROPERT
  */
 @SuppressLint("PrivateApi")
 fun getSystemPropertyByReflect(propName: String, defVal: String = UNKNOWN_PROPERTY): String {
+    val signature = "getPropertyBySystemProperties(propName=$propName defVal=$defVal)"
     try {
-        Logger.i(TAG, "getPropertyBySystemProperties(propName=$propName defVal=$defVal)")
+        Logger.d(TAG, signature)
         val cls = Class.forName("android.os.SystemProperties")
         val method = cls.getMethod("get", String::class.java, String::class.java)
         val value = method.invoke(cls, propName, defVal) as? String
-        Logger.i(TAG, "getPropertyBySystemProperties = $value")
+        Logger.i(TAG, "$signature = $value")
         return value ?: defVal
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         e.printStackTrace()
-        Logger.e(TAG, "getPropertyBySystemProperties(key=$propName defVal=$defVal)", e)
+        Logger.e(TAG, "$signature failed,default value(=$defVal)", e)
         return defVal
     }
 }
@@ -177,7 +176,7 @@ fun getPropertyByBuild(propName: String, defVal: String = UNKNOWN_PROPERTY): Str
         } else {
             value
         }
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         Logger.e(TAG, "getPropertyByBuild(key=$propName defVal=$defVal)", e)
         e.printStackTrace()
         return defVal
@@ -186,19 +185,10 @@ fun getPropertyByBuild(propName: String, defVal: String = UNKNOWN_PROPERTY): Str
 
 private const val TAG = "SystemProperties"
 
-/**
- * 通过Build读取设备序列号
- */
-private fun getSerialNOFromBuildField(): String? {
-    val value = Build.SERIAL
-    if (value.isNullOrEmpty() || value == Build.UNKNOWN)
-        return null
-    return value
-}
 
 /**
  * 是否是不可用的属性值
  */
-internal inline fun String.isInvalidPropertyValue(defVal: String): Boolean {
-    return isEmpty() || this == defVal || this == Build.UNKNOWN
+inline fun String?.isInvalidPropertyValue(defVal: String = UNKNOWN_PROPERTY): Boolean {
+    return isNullOrEmpty() || this == defVal || this == Build.UNKNOWN
 }

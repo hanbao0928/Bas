@@ -21,19 +21,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Basic">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".sample.LauncherActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+        </activity>
+
+
+        <activity android:name=".sample.LauncherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".sample.IndexActivity"
             android:exported="true"/>
@@ -42,6 +43,9 @@
         <activity android:name=".sample.leanbacktab.CustomTabActivity" />
         <activity android:name=".sample.leanbacktab.MixedTabActivity" />
         <activity android:name=".sample.leanbacktab.DynamicTabActivity" />
+
+        <activity android:name=".sample.effectv2.Effectv2Activity"
+            android:screenOrientation="landscape"/>
 
         <activity android:name=".sample.leanbacklayout.LeanbackLayoutActivity"/>
 

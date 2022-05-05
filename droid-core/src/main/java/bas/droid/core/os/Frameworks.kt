@@ -1,3 +1,4 @@
+@file:JvmName("FrameworksKt")
 package bas.droid.core.os
 
 import android.app.Application
@@ -169,7 +170,7 @@ fun getProcessNameByRunningProcesses(ctx: Context, pid: Int): String? {
                 return info.processName
             }
         }
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
     }
     return null
 }

@@ -2,7 +2,7 @@ package andme.arch.refresh.scene
 
 import andme.arch.refresh.AMRefreshLayout
 import andme.arch.refresh.AMRefreshableViewModel
-import andme.core.exception.tryCatch
+import bas.lib.core.exception.tryCatch
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log

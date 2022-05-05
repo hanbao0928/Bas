@@ -41,7 +41,7 @@ class LeanbackVerticalGridView @JvmOverloads constructor(
 //        try {
             super.requestChildFocus(child, focused)
             memoryHelper.requestChildFocus(child, focused)
-//        } catch (e: Exception) {
+//        } catch (e: Throwable) {
 //            e.printStackTrace()
 //        }
     }

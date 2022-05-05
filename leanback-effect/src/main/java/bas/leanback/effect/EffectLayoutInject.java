@@ -12,6 +12,6 @@ import bas.leanback.effect.annotation.EffectLayout;
  * Created by Lucio on 2021/12/9.
  * 注入EffectLayout，不支持LinearLayout
  */
-@EffectLayout({LinearLayout.class,RelativeLayout.class, FrameLayout.class, ConstraintLayout.class})
+@EffectLayout({LinearLayout.class, RelativeLayout.class, FrameLayout.class, ConstraintLayout.class})
 class EffectLayoutInject {
 }

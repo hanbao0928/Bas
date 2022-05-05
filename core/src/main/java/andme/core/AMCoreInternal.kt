@@ -6,6 +6,8 @@ package andme.core
 import andme.integration.media.MediaStore
 import android.content.Context
 import android.content.SharedPreferences
+import bas.droid.core.ctxBas
+import bas.droid.core.util.ctxInject
 
 /**
  * Created by Lucio on 2020/11/23.
@@ -25,5 +27,5 @@ internal const val DEVICE_UNIQUE_ID = "pig_device_unique_id"
  * 私有的
  */
 internal val sharedPrefAM: SharedPreferences by lazy {
-    mApp.applicationContext.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+    ctxBas.applicationContext.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
 }

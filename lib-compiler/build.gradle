@@ -1,14 +1,4 @@
-plugins {
-    id 'java-library'
-    /*用于上传maven*/
-    id 'maven'
-}
-
-java {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-}
-
+apply from: "../gradle/publish-java-lib.gradle"
 
 dependencies {
 //    /*//自动注册，动态生成 META-INF/...文件*/
@@ -17,35 +7,4 @@ dependencies {
 //    implementation 'com.google.auto:auto-common:1.2'
     /*使用JavaPoet方式生成代码*/
     api 'com.squareup:javapoet:1.10.0'
-}
-
-
-def PROJECT_NAME = 'lib-compiler'
-def PROJECT_VERSION = '0.0.1'
-def PROJECT_DESC = 'base lib for compiler.'
-def ARTIFACT_ID = 'lib-compiler'
-
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def NEXUS_URL = properties.getProperty('NEXUS_URL')
-def NEXUS_USER = properties.getProperty('NEXUS_USER')
-def NEXUS_PWD = properties.getProperty('NEXUS_PWD')
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: NEXUS_URL) {
-                authentication(userName: NEXUS_USER, password: NEXUS_PWD)
-            }
-            pom.project {
-                name PROJECT_NAME
-                version PROJECT_VERSION
-                artifactId ARTIFACT_ID
-                groupId 'bas.lib'
-                packaging 'aar'
-                description PROJECT_DESC
-            }
-        }
-    }
 }

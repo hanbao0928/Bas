@@ -10,6 +10,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import com.bas.R
 import com.bas.sample.effectlayout.EffectLayoutActivity
+import com.bas.sample.effectv2.Effectv2Activity
 import com.bas.sample.imageloader.ImageLoaderTestFragment
 import com.bas.sample.label.LabelLayoutActivity
 import com.bas.sample.leanbacklayout.LeanbackLayoutActivity
@@ -31,6 +32,9 @@ class LauncherActivity() : AppCompatActivity(R.layout.launcher_activity) {
             }
             R.id.effect_layout_test_btn -> {
                 this.startActivity(Intent(this, EffectLayoutActivity::class.java))
+            }
+            R.id.effect2_layout_test_btn ->{
+                this.startActivity(Intent(this, Effectv2Activity::class.java))
             }
             R.id.label_test_btn -> {
                 this.startActivity(Intent(this, LabelLayoutActivity::class.java))

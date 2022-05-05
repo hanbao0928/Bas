@@ -1,12 +1,12 @@
 package andme.arch.app
 
-import andme.core.exceptionHandlerAM
 import bas.lib.core.coroutines.launchRetryable
-import andme.core.support.ui.showAlertDialog
+import bas.droid.core.ui.showAlertDialog
 import android.content.DialogInterface
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import bas.droid.core.ui.droidExceptionHandler
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -40,9 +40,9 @@ inline fun AMViewModel.tryUi(func: AMViewModel.() -> Unit): Throwable? {
     return try {
         func(this)
         null
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         invokeContextAction {
-            exceptionHandlerAM.handleUIException(it, e)
+            droidExceptionHandler.handleUIException(it, e)
         }
         e
     }

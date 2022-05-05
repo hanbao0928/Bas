@@ -20,7 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-
 #保持库中所有代码
 -keep class com.bytedance.boost_multidex.** { *; }
 

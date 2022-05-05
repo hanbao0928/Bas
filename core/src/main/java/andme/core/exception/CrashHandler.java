@@ -125,7 +125,7 @@
 //                            UXApp.mInstance.logout(false, null);
 ////                            Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。", Toast.LENGTH_LONG)
 ////                                    .show();
-//                        } catch (Exception e) {
+//                        } catch (Throwable e) {
 //                            e.printStackTrace();
 //                        }
 //
@@ -173,7 +173,7 @@
 //                field.setAccessible(true);
 //                infos.put(field.getName(), field.get(null).toString());
 //                Log.d(TAG, field.getName() + " : " + field.get(null));
-//            } catch (Exception e) {
+//            } catch (Throwable e) {
 //                e.printStackTrace();
 //                Log.e(TAG, "an error occured when collect crash info", e);
 //            }
@@ -226,7 +226,7 @@
 ////            }
 //
 //            return fileName;
-//        } catch (Exception e) {
+//        } catch (Throwable e) {
 //            e.printStackTrace();
 //            Log.e(TAG, "an error occured while writing file...", e);
 //        }

@@ -4,17 +4,20 @@
 package bas.droid.core.content
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresPermission
+import bas.droid.core.BuildConfig
 import bas.droid.core.content.FileProviderCompat
 import java.io.File
 
@@ -27,7 +30,11 @@ inline fun Intent.checkValidationOrThrow(ctx: Context) {
         ?: throw ActivityNotFoundException("no activity can handle this intent $this")
 }
 
-inline fun Intent.canResolve(ctx: Context): Boolean {
+/**
+ * 是否能够被处理：即系统中是否存在该Intent
+ */
+@SuppressLint("QueryPermissionsNeeded")
+inline fun Intent.canResolved(ctx: Context): Boolean {
     return resolveActivity(ctx.packageManager) != null
 }
 
@@ -179,7 +186,7 @@ fun SMSIntent(tel: String, extraContent: String = ""): Intent {
 @JvmOverloads
 fun MailIntent(
     addrs: Array<String>,
-    chooserTitle:String = "发送邮件",
+    chooserTitle: String = "发送邮件",
     subject: String? = null,
     extraContent: String? = null
 ): Intent {
@@ -192,7 +199,7 @@ fun MailIntent(
     // 设置邮件文本内容
     if (!extraContent.isNullOrEmpty())
         it.putExtra(Intent.EXTRA_TEXT, extraContent)
-    return Intent.createChooser(it,chooserTitle)
+    return Intent.createChooser(it, chooserTitle)
 }
 
 
@@ -304,6 +311,15 @@ inline fun ActionIntent(data: String): Intent {
  */
 fun LauncherIntent(ctx: Context, pkgName: String): Intent? {
     return ctx.packageManager.getLaunchIntentForPackage(pkgName)
+}
+
+/**
+ * 指定包名启动意图
+ */
+fun LeanbackLauncherIntent(ctx: Context, pkgName: String): Intent? {
+    if (Build.VERSION.SDK_INT >= 21)
+        return ctx.packageManager.getLeanbackLaunchIntentForPackage(pkgName)
+    return LauncherIntent(ctx, pkgName)
 }
 
 /**

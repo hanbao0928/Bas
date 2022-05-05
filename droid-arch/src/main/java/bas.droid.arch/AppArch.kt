@@ -3,6 +3,7 @@ package bas.droid.arch
 
 import android.app.Activity
 import android.app.Application
+import bas.droid.adapter.imageloader.ImageLoaderAdapter
 import bas.droid.core.app.AppManager
 import bas.droid.core.app.ApplicationManager
 import bas.droid.core.initDroidCore
@@ -14,9 +15,9 @@ import bas.droid.core.util.Logger
  */
 abstract class AppArch : Application(), ApplicationManager by AppManager {
 
-    override fun onCreate() {
+    final override fun onCreate() {
         super.onCreate()
-        initDroidCore(this)
+        setupBasDependencies()
         val processName = this.processName
         val packageName = this.packageName
         log("processName = $processName  packageName=$packageName")
@@ -27,22 +28,45 @@ abstract class AppArch : Application(), ApplicationManager by AppManager {
             log("invoke onCreateOtherProcess")
             onCreateOtherProcess(processName)
         }
+    }
 
+    /**
+     * 主进程执行[Application.onCreate]
+     */
+    protected open fun onCreateMainProcess(processName: String) {
+        setupImageLoader()
+    }
+
+    /**
+     * 子进程执行[Application.onCreate]
+     */
+    protected abstract fun onCreateOtherProcess(processName: String)
+
+    /**
+     * 初始化Bas依赖库
+     */
+    protected open fun setupBasDependencies() {
+        initDroidCore(this)
+        initDroidArch(this)
+    }
+
+    /**
+     * 初始化ImageLoader
+     */
+    protected open fun setupImageLoader() {
+        ImageLoaderAdapter.init(this)
+        val config = ImageLoaderAdapter.Config.Builder()
+            .setDiskCacheEnabled(true)
+            .setDiskCacheFolderName(ImageLoaderAdapter.DEFAULT_DISK_CACHE_FOLDER_NAME)
+            .setMemoryCacheEnabled(true)
+            .build()
+        ImageLoaderAdapter.setConfig(config)
     }
 
     private fun log(msg: String) {
         Logger.i("AppArch", msg)
     }
 
-    /**
-     * 主进程执行[Application.onCreate]
-     */
-    abstract fun onCreateMainProcess(processName: String)
-
-    /**
-     * 子进程执行[Application.onCreate]
-     */
-    abstract fun onCreateOtherProcess(processName: String)
 
     fun finishAllActivity() {
         activityStack.finishAll()
