@@ -37,7 +37,7 @@ fun ViewModel.launchWithDelay(
     block: suspend CoroutineScope.() -> Unit
 ) {
     viewModelScope.launch(context, start){
-        delay(1000)
+        delay(delay)
         block.invoke(this)
     }
 }

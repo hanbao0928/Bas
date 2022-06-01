@@ -14,5 +14,6 @@ sealed class UiState(val extra: Any? = null) {
 
     class ContentState(extra: Any? = null) : UiState(extra)
 
-
 }
+
+data class UserMessage(val id: Long, val message: String)

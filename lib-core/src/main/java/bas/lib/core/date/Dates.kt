@@ -57,7 +57,11 @@ inline fun Date?.toDateFormatCN(): String = DateUtils.toCNDateFormat(this)
 /**
  * 转换成[DateUtils.CN_DATETIME_PATTERN]日期时间格式
  */
-inline fun Date?.toDateTimeFormatCN(): String = DateUtils.toCNDateTimeFormat(this)
+@Deprecated(message = "", replaceWith = ReplaceWith("this.dateTimeFormatCN()", imports = ["bas.lib.core.date.dateTimeFormatCN"]))
+inline fun Date?.toDateTimeFormatCN(): String =this.dateTimeFormatCN()
+
+
+inline fun Date?.dateTimeFormatCN(): String = DateUtils.toCNDateTimeFormat(this)
 
 /**
  * 转换成时间格式（24hour）

@@ -18,7 +18,9 @@
 
 package bas.droid.core.text
 
+import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.Shader
 import android.text.InputFilter
 import android.text.Spanned
 import android.text.TextPaint
@@ -66,6 +68,20 @@ fun TextView.applyUnderLine() {
 fun TextView.applyBold() {
     this.paintFlags = this.paintFlags or Paint.FAKE_BOLD_TEXT_FLAG
 }
+
+///**
+// * 渐变色文字
+// */
+//fun TextView.applyGradientText() {
+//    val colors = intArrayOf(Color.RED, Color.GREEN, Color.BLUE)//颜色的数组
+//    val position = floatArrayOf(0f, 0.7f, 1.0f)//颜色渐变位置的数组
+//    val shadow = LinearGradient(
+//        0f, 0f, paint.textSize * text.length, 0f, colors, position,
+//        Shader.TileMode.CLAMP
+//    )
+//    paint.shader = shadow
+//    invalidate()
+//}
 
 /**
  * 获取文本高度
