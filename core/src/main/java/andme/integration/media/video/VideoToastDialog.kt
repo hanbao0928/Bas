@@ -8,7 +8,7 @@ import android.os.Handler
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
-import bas.lib.core.exception.tryCatch
+import bas.lib.core.exception.tryIgnore
 
 /**
  * Created by Lucio on 2021/4/8.
@@ -30,7 +30,7 @@ abstract class VideoToastDialog(ctx: Context) : Dialog(ctx, R.style.VideoPopupDi
     }
 
     protected val autoDismissRunnable = Runnable {
-        tryCatch {
+        tryIgnore {
             invokeAutoDismiss()
         }
     }

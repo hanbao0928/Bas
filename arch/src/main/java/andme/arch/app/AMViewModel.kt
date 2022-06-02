@@ -186,7 +186,7 @@ open class AMViewModel(application: Application) : AndroidViewModel(application)
         //nothing
     }
 
-    private val cancelPrevioursRunners: ConcurrentHashMap<String, ControlledRunner<Any?>> =
+    private val cancelPreviousRunners: ConcurrentHashMap<String, ControlledRunner<Any?>> =
         ConcurrentHashMap()
 
     /**
@@ -194,13 +194,10 @@ open class AMViewModel(application: Application) : AndroidViewModel(application)
      */
     @Synchronized
     suspend fun <T> launchAndCancelPrevious(key: String, func: suspend () -> T): T {
-        val runner = synchronized(cancelPrevioursRunners) {
-            var runner = cancelPrevioursRunners[key]
-            if (runner == null) {
-                runner = ControlledRunner<Any?>()
-                cancelPrevioursRunners[key] = runner
+        val runner = synchronized(cancelPreviousRunners) {
+            cancelPreviousRunners.getOrPut(key){
+                ControlledRunner<Any?>()
             }
-            runner
         }
         return runner.cancelPreviousThenRun(func) as T
     }
@@ -213,13 +210,10 @@ open class AMViewModel(application: Application) : AndroidViewModel(application)
      */
     @Synchronized
     suspend fun <T> launchOrJoinPrevious(key: String, func: suspend () -> T): T {
-        val runner = synchronized(cancelPrevioursRunners) {
-            var runner = joinPreviousRunners[key]
-            if (runner == null) {
-                runner = ControlledRunner<Any?>()
-                joinPreviousRunners[key] = runner
+        val runner = synchronized(joinPreviousRunners) {
+            joinPreviousRunners.getOrPut(key){
+                ControlledRunner<Any?>()
             }
-            runner
         }
         return runner.joinPreviousOrRun(func) as T
     }

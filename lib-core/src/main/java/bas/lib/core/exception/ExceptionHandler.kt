@@ -2,10 +2,35 @@ package bas.lib.core.exception
 
 import bas.lib.core.exceptionHandler
 
+/**
+ * 对标 kotlin的扩展，方便接入全局的异常处理
+ * @see runCatching
+ */
+inline fun <R> tryCatching(block: () -> R): Result<R> {
+    return runCatching(block).onFailure { exceptionHandler.handleCatchException(it) }
+}
+
+/**
+ * 对标 kotlin的扩展，方便接入全局的异常处理
+ * @see runCatching
+ */
+inline fun <T, R> T.tryCatching(block: T.() -> R): Result<R> {
+    return runCatching(block)
+        .onFailure {
+            exceptionHandler.handleCatchException(it)
+        }
+}
+
+@Deprecated("使用kotlin 库", ReplaceWith("this.onFailure(action)"))
+inline fun <T> Result<T>.onCatch(action: (exception: Throwable) -> Unit): Result<T> {
+    return onFailure(action)
+}
 
 /**
  * 异常处理
+ * @see tryCatching
  */
+@Deprecated("使用tryCatching")
 inline fun <T> T.tryCatch(action: T.() -> Unit): Throwable? {
     return try {
         action()
@@ -15,6 +40,7 @@ inline fun <T> T.tryCatch(action: T.() -> Unit): Throwable? {
         e
     }
 }
+
 
 inline fun <T> T.tryIgnore(action: T.() -> Unit): Throwable? {
     return try {

@@ -24,7 +24,7 @@ sealed interface UiState {
     /**
      * 错误状态
      */
-    data class ErrorUiStat @JvmOverloads constructor(
+    data class ErrorUiState @JvmOverloads constructor(
         val error: Throwable,
         val message: String = error.message.orEmpty(),
         override val extra: Any? = null
