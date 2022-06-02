@@ -205,10 +205,14 @@ interface DialogUI {
 }
 
 interface Dialog {
+
     fun dismiss()
+
+    val isShowing: Boolean
 }
 
 interface ProgressDialog : Dialog {
+
     fun setMessage(msg: String)
 
     fun setOnDismissListener(listener: DialogInterface.OnDismissListener?)

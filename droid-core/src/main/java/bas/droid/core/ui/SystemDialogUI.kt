@@ -76,6 +76,9 @@ object SystemDialogUI : DialogUI {
             override fun dismiss() {
                 dialog.dismiss()
             }
+
+            override val isShowing: Boolean
+                get() = dialog.isShowing
         }
     }
 
@@ -92,6 +95,10 @@ object SystemDialogUI : DialogUI {
             override fun dismiss() {
                 dialog.dismiss()
             }
+
+            override val isShowing: Boolean
+                get() = dialog.isShowing
+
         }
     }
 }

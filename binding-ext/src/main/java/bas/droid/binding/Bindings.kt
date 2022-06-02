@@ -17,8 +17,6 @@ fun bindTextOrGone(view: TextView, oldValue: CharSequence?, newValue: CharSequen
         }
         return
     }
-
-
     if (newValue.isNullOrEmpty()) {
         view.visibility = View.GONE
         view.text = ""
@@ -33,7 +31,7 @@ fun bindTextOrInvisible(view: TextView, oldValue: CharSequence?, newValue: CharS
     if (oldValue == newValue) {
         //确保都为空时运行效果
         if (newValue.isNullOrEmpty() && view.visibility != View.INVISIBLE) {
-            view.visibility = View.GONE
+            view.visibility = View.INVISIBLE
         }
         return
     }
