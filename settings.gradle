@@ -176,3 +176,4 @@ rootProject.name = "Bas"
 include ':paging'
 //include ':droid-net'
 include ':droid-net'
+include ':usecase'

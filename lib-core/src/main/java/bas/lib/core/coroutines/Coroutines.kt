@@ -27,8 +27,10 @@ fun IOCoroutineScope(): CloseableCoroutineScope {
     return CloseableCoroutineScope(SupervisorJob() + Dispatchers.IO)
 }
 
-fun MainCoroutineScope(): CloseableCoroutineScope {
-    return CloseableCoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+fun MainCoroutineContext() = SupervisorJob() + Dispatchers.Main.immediate
+
+fun MainCoroutineScope(context: CoroutineContext = MainCoroutineContext()): CloseableCoroutineScope {
+    return CloseableCoroutineScope(context)
 }
 
 /**

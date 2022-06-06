@@ -21,6 +21,22 @@ inline fun <T, R> T.tryCatching(block: T.() -> R): Result<R> {
         }
 }
 
+/**
+ * 对标 kotlin的扩展,只是为了补充[tryCatching]不提交全局异常的情况
+ * @see runCatching
+ */
+inline fun <R> trySilent(block: () -> R): Result<R> {
+    return runCatching(block)
+}
+
+/**
+ * 对标 kotlin的扩展,只是为了补充[tryCatching]不提交全局异常的情况
+ * @see runCatching
+ */
+inline fun <T, R> T.trySilent(block: T.() -> R): Result<R> {
+    return runCatching(block)
+}
+
 @Deprecated("使用kotlin 库", ReplaceWith("this.onFailure(action)"))
 inline fun <T> Result<T>.onCatch(action: (exception: Throwable) -> Unit): Result<T> {
     return onFailure(action)

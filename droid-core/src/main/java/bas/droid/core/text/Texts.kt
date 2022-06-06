@@ -18,13 +18,9 @@
 
 package bas.droid.core.text
 
-import android.graphics.LinearGradient
 import android.graphics.Paint
-import android.graphics.Shader
 import android.text.InputFilter
-import android.text.Spanned
 import android.text.TextPaint
-import android.text.TextUtils
 import android.widget.TextView
 
 /**

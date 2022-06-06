@@ -41,20 +41,18 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
 
-
-
-//    /*START - retrofit*/
-//    /**
-//     *  [Retrofit]  Http客户端实现
-//     *  <proguard>
-//     *  https://github.com/square/retrofit
-//     *  Retrofit requires at minimum Java 8+ or Android API 21+.
-//     *      间接引入：
-//     *       [OkHttp] <proguard>
-//     *       [Okio] <proguard>
-//     *
-//     */
-//    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    /*START - retrofit*/
+    /**
+     *  [Retrofit]  Http客户端实现
+     *  <proguard>
+     *  https://github.com/square/retrofit
+     *  Retrofit requires at minimum Java 8+ or Android API 21+.
+     *      间接引入：
+     *       [OkHttp] <proguard>
+     *       [Okio] <proguard>
+     *
+     */
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 //
 //    /**
 //     *  [logging-interceptor] okhttp请求日志打印拦截器，版本号与okhttp版本一致
