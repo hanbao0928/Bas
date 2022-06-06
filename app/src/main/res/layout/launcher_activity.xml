@@ -59,5 +59,11 @@
         android:text="打开TV测试"
         android:onClick="onBtnClick"/>
 
+    <Button
+        android:id="@+id/debounce_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Debounce test"
+        android:onClick="onBtnClick"/>
 
 </bas.leanback.layout.LeanbackLinearLayout>

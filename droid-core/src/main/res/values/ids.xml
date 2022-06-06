@@ -4,4 +4,5 @@
     <item name="shake_x_anim_tag_bas" type="id"/>
     <item name="shake_y_anim_tag_bas" type="id"/>
 
+    <item name="click_trigger_time" type="id"/>
 </resources>

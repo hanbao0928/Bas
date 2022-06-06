@@ -17,7 +17,7 @@ class DroidExceptionMessageTransformer : ExceptionMessageTransformer {
                 return "连接失败，请检查网络。"
             }
             is UnknownHostException -> {
-                return "当前网络或服务器异常。"
+                return "无法连接服务器（请检查网络或服务器）。"
             }
             is SocketTimeoutException -> {
                 return "网络连接超时。"

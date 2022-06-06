@@ -43,6 +43,7 @@
         <activity android:name=".sample.leanbacktab.CustomTabActivity" />
         <activity android:name=".sample.leanbacktab.MixedTabActivity" />
         <activity android:name=".sample.leanbacktab.DynamicTabActivity" />
+        <activity android:name=".sample.DebounceActivity" />
 
         <activity android:name=".sample.effectv2.Effectv2Activity"
             android:screenOrientation="landscape"/>

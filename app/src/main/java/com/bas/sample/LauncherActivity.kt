@@ -33,7 +33,7 @@ class LauncherActivity() : AppCompatActivity(R.layout.launcher_activity) {
             R.id.effect_layout_test_btn -> {
                 this.startActivity(Intent(this, EffectLayoutActivity::class.java))
             }
-            R.id.effect2_layout_test_btn ->{
+            R.id.effect2_layout_test_btn -> {
                 this.startActivity(Intent(this, Effectv2Activity::class.java))
             }
             R.id.label_test_btn -> {
@@ -58,6 +58,9 @@ class LauncherActivity() : AppCompatActivity(R.layout.launcher_activity) {
             }
             R.id.tvtest_btn -> {
                 this.startActivity(Intent(this, TVTestActivity::class.java))
+            }
+            R.id.debounce_btn -> {
+                startActivity(Intent(this, DebounceActivity::class.java))
             }
         }
     }
