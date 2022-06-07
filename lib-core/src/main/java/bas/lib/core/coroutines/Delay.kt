@@ -4,7 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * 限流：在指定时间内只发出
+ * 限流：在指定时间内只响应最开始的那个数据流
+ * @param thresholdMillis 限流时间，即在该时间内产生的数据只发射最开始那个数据
  */
 fun <T> Flow<T>.throttleFirst(thresholdMillis: Long): Flow<T> = flow {
     var lastEmitTime = 0L // 上次发射数据的时间

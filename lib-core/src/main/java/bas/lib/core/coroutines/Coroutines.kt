@@ -23,9 +23,14 @@ class CloseableCoroutineScope(context: CoroutineContext) : Closeable, CoroutineS
     }
 }
 
-fun IOCoroutineScope(): CloseableCoroutineScope {
-    return CloseableCoroutineScope(SupervisorJob() + Dispatchers.IO)
+fun IOCoroutineContext(): CoroutineContext {
+    return SupervisorJob() + Dispatchers.IO
 }
+
+fun IOCoroutineScope(context: CoroutineContext = IOCoroutineContext()): CloseableCoroutineScope {
+    return CloseableCoroutineScope(context)
+}
+
 
 fun MainCoroutineContext() = SupervisorJob() + Dispatchers.Main.immediate
 
