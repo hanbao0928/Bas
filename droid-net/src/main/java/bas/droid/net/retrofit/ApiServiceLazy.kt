@@ -6,18 +6,17 @@ import kotlin.reflect.KClass
  * Created by Lucio on 2018/7/12.
  */
 
-class ApiServiceLazy<Service : Any>(
-    private val clz: KClass<Service>,
+class ApiServiceLazy<ApiService : Any>(
+    private val clz: KClass<ApiService>,
     private val factory: ApiServiceFactory
-) : Lazy<Service> {
+) : Lazy<ApiService> {
 
     @Volatile
-    private var _service: Service? = null
+    private var _service: ApiService? = null
 
     private var _url: String? = null
 
-
-    override val value: Service
+    override val value: ApiService
         get() {
             val retrofit = factory.retrofit
             val currentUrl = retrofit.baseUrl().toString()
@@ -30,7 +29,7 @@ class ApiServiceLazy<Service : Any>(
                 synchronized(ApiServiceLazy::class.java) {
                     if (_service == null) {
                         _url = currentUrl
-                        _service = retrofit.create(clz.java)
+                        _service = factory.createService(clz)
                     }
                 }
             }
@@ -40,6 +39,12 @@ class ApiServiceLazy<Service : Any>(
     override fun isInitialized(): Boolean = _service != null
 }
 
-inline fun <reified Service : Any> apiService(factory: ApiServiceFactory): Lazy<Service> {
-    return ApiServiceLazy(Service::class, factory)
+/**
+ * 使用方法：
+ * val service : T by apiService()
+ *
+ * @param factory service factory用于提供retrofit对象
+ */
+inline fun <reified ApiService : Any> apiService(factory: ApiServiceFactory): Lazy<ApiService> {
+    return ApiServiceLazy(ApiService::class, factory)
 }
